@@ -43,6 +43,7 @@
   <!-- prepare -->
   <target name="prepare" description="ビルド環境の準備">
     <mkdir dir="${dir.build}" />
+    <mkdir dir="target/generated-sources/cxf" />
     <ivy:settings file="ivy-settings.xml" />
     <ivy:convertpom pomFile="pom.xml" ivyFile="ivy.xml" />
     <ivy:retrieve />
@@ -68,7 +69,7 @@
         <pathelement location="${dir.build}" />
       </classpath>
       <include name="**/*.java" />
-      <src path="target/generated-sources/cxf" />
+      <src path="target/generated-sources/" />
       <src path="src/test/java" />
     </javac>
 
@@ -228,7 +229,6 @@
     <java classname="TestWS" fork="yes">
       <classpath>
         <pathelement location="${dir.build}" />
-        <path refid="cxf.class.path" />
       </classpath>
       <arg value="${ws.translate.language}" />
       <arg value="${ws.translate.text}" />
@@ -240,14 +240,6 @@
     <java classname="WebserviceXTranslator" fork="yes">
       <classpath>
         <pathelement location="${dir.build}" />
-        <pathelement location="${dir.support2}/src" />
-        <fileset dir="${dir.support1}/lib">
-          <include name="*.jar" />
-        </fileset>
-        <fileset dir="${dir.support2}/lib">
-          <include name="*.jar" />
-        </fileset>
-        <path refid="cxf.class.path" />
       </classpath>
       <arg value="${java.test.997.run.en}" />
       <arg value="${java.test.997.run.ja}" />
@@ -260,14 +252,6 @@
       <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
       <classpath>
         <pathelement location="${dir.build}" />
-        <pathelement location="${dir.support2}/src" />
-        <fileset dir="${dir.support1}/lib">
-          <include name="*.jar" />
-        </fileset>
-        <fileset dir="${dir.support2}/lib">
-          <include name="*.jar" />
-        </fileset>
-        <path refid="cxf.class.path" />
       </classpath>
       <arg value="${tranlate.language}" />
       <arg value="${tranlate.in}" />
@@ -281,14 +265,6 @@
     <java classname="Translation" fork="yes">
       <classpath>
         <pathelement location="${dir.build}" />
-        <pathelement location="${dir.support2}/src" />
-        <fileset dir="${dir.support1}/lib">
-          <include name="*.jar" />
-        </fileset>
-        <fileset dir="${dir.support2}/lib">
-          <include name="*.jar" />
-        </fileset>
-        <path refid="cxf.class.path" />
       </classpath>
       <arg value="${tranlate.language}" />
       <arg value="${tranlate.in}" />
@@ -304,7 +280,7 @@
     <java classname="SendSMS" fork="yes">
       <classpath>
         <pathelement location="${dir.build}" />
-        <path refid="cxf.class.path" />
+        <path refid="project.class.path" />
         <arg value="vavivavi@yahoo.co.jp" />
         <arg value="81" />
         <arg value="09052136861" />
@@ -318,7 +294,7 @@
     <java classname="SendFax" fork="yes">
       <classpath>
         <pathelement location="${dir.build}" />
-        <path refid="cxf.class.path" />
+        <path refid="project.class.path" />
         <arg value="vavivavi@yahoo.co.jp" />
         <arg value="Test" />
         <arg value="813066422377" />
@@ -354,7 +330,7 @@
         <arg value="src"/>
         <arg value="@{wsdl}"/>
         <classpath>
-          <path refid="cxf.class.path"/>
+          <path refid="project.class.path"/>
         </classpath>
       </java>
     </sequential>
@@ -362,9 +338,45 @@
 
   <!-- itunes -->
   <target name="itunes" depends="compile" description="iTunes">
-    <java classname="iTunes" fork="yes" output="tmp/composers.tsv">
+    <java classname="iTunes" fork="yes" output="tmp/composers.tsv" error="${stderr}">
       <jvmarg value="-Xmx256m" />    
       <jvmarg value="-Dfile.encoding=${encoding}" />    
+<!--
+      <jvmarg value="-verbose" />    
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl" />    
+-->
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="target/test-classes" />
+      </classpath>
+    </java>
+  </target>
+
+  <!-- test2 -->
+  <target name="test2" depends="compile" description="pronunciation">
+    <java classname="Test2" fork="yes" output="tmp/pronunciation.txt">
+      <jvmarg value="-Xmx256m" />    
+      <jvmarg value="-Dfile.encoding=${encoding}" />    
+      <arg value="/Users/nsano/tmp/11/NNN2" />    
+<!--
+      <jvmarg value="-verbose" />    
+      <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
+      <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl" />    
+-->
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="target/test-classes" />
+      </classpath>
+    </java>
+  </target>
+
+  <!-- test7 -->
+  <target name="test7" depends="compile" description="pronunciation">
+    <java classname="Test7" fork="yes">
+      <jvmarg value="-Xmx256m" />    
+      <jvmarg value="-Dfile.encoding=${encoding}" />    
+      <arg value="/Users/nsano/tmp/11/NNN2" />    
 <!--
       <jvmarg value="-verbose" />    
       <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
@@ -392,6 +404,18 @@
   <!-- it -->
   <target name="it" depends="compile" description="iTunes test">
     <java classname="Test1" fork="yes">
+      <jvmarg value="-Xmx256m" />    
+      <jvmarg value="-Dfile.encoding=${encoding}" />    
+      <classpath>
+        <path refid="project.class.path" />
+        <pathelement location="target/test-classes" />
+      </classpath>
+    </java>
+  </target>
+
+  <!-- eqtest -->
+  <target name="eqtest" depends="compile" description="EQ Test">
+    <java classname="EqTest" fork="yes" output="tmp/eqtest.json">
       <jvmarg value="-Xmx256m" />    
       <jvmarg value="-Dfile.encoding=${encoding}" />    
       <classpath>

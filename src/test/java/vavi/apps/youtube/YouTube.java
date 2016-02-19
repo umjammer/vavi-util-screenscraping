@@ -56,7 +56,7 @@ class YouTube {
             getUrlFormat = props.getProperty("get.url.format");
         } catch (Exception e) {
 Debug.printStackTrace(e);
-            System.exit(1);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -155,6 +155,7 @@ System.err.println(header.getName() + "=" + header.getValue());
             FileChannel outputChannel = out.getChannel();
 System.err.println("downloading... size: " + length);
             outputChannel.transferFrom(inputChannel, 0, length);
+            out.close();
 
             get.releaseConnection();
 
@@ -205,6 +206,7 @@ System.err.println(header.getName() + "=" + header.getValue());
             FileChannel outputChannel = out.getChannel();
 System.err.println("downloading... size: " + length);
             outputChannel.transferFrom(inputChannel, 0, length);
+            out.close();
 
             get.releaseConnection();
 

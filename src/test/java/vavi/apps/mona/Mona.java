@@ -48,7 +48,7 @@ class Mona {
             userAgent = props.getProperty("useragent");
         } catch (Exception e) {
 Debug.printStackTrace(e);
-            System.exit(1);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -69,6 +69,7 @@ Debug.printStackTrace(e);
                 menu.key = scanner.nextLine();
                 menus.add(menu);
             }
+            scanner.close();
             return menus;
         }
         /**  */

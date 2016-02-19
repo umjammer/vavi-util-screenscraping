@@ -59,7 +59,7 @@ class KGet {
             encoding = props.getProperty("encoding");
         } catch (Exception e) {
 Debug.printStackTrace(e);
-            System.exit(1);
+            throw new IllegalStateException(e);
         }
     }
 

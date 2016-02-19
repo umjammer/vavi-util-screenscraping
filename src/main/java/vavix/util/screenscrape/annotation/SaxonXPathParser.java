@@ -50,7 +50,10 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
 //System.err.println("SaxonXPathParser: xpath: " + XPathFactory.newInstance().getClass());
     }
 
-    /** TODO WebScraper#value() */
+    /**
+     * <li> TODO WebScraper#value()
+     * <li> TODO now 1 step XPath only
+     */
     public List<T> parse(Class<T> type, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
@@ -165,7 +168,7 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
 
                 @SuppressWarnings("unchecked")
                 List<NodeInfo> nodeList = List.class.cast(nodeSet);
-System.err.println("nodeList: " + nodeList.size());
+//System.err.println("nodeList: " + nodeList.size());
 
                 for (int i = 0; i < nodeList.size(); i++) {
                     T bean = type.newInstance();
@@ -177,6 +180,9 @@ System.err.println("nodeList: " + nodeList.size());
                     Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
                     for (Field field : targetFields) {
                         String subXpath = Target.Util.getValue(field); 
+//System.err.println("----------------------------------------------------------------------------------------------------");
+//System.err.println(baos.toString());
+//System.err.println("----------------------------------------------------------------------------------------------------");
                         InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
                         String text = (String) xPath.evaluate(subXpath, is, XPathConstants.STRING);
                         BeanUtil.setFieldValue(field, bean, text);
@@ -198,7 +204,7 @@ System.err.println("nodeList: " + nodeList.size());
         
                     Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
                     for (Field field : targetFields) {
-                        String subXpath = Target.Util.getValue(field); 
+                        String subXpath = Target.Util.getValue(field);
                         InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
                         String text = (String) xPath.evaluate(subXpath, is, XPathConstants.STRING);
                         BeanUtil.setFieldValue(field, bean, text);

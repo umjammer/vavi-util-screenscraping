@@ -13,6 +13,8 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Properties;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -23,6 +25,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Node;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -41,17 +46,32 @@ public class PrettyPrinter {
         result = new StreamResult(writer);
     }
 
-    /** */
+    /** use default encoding */
     public PrettyPrinter(OutputStream os) {
         try {
             result = new StreamResult(new OutputStreamWriter(os, System.getProperty("file.encoding")));
         } catch (UnsupportedEncodingException e) {
-            throw (RuntimeException) new IllegalStateException().initCause(e);
+            throw new IllegalStateException(e);
         }
     }
 
     /**
      *
+     * @throw IllegalStateException
+     */
+    public void print(InputSource source) throws IOException {
+        try {
+            print(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(source));
+        } catch (SAXException e) {
+            throw new IllegalStateException(e);
+        } catch (ParserConfigurationException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     *
+     * @throw IllegalStateException
      */
     public void print(Node node) throws IOException {
 
@@ -68,6 +88,7 @@ public class PrettyPrinter {
         // set encode
         Properties props = new Properties();
         props.setProperty(OutputKeys.INDENT, "yes");
+        props.setProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 //      props.setProperty(OutputKeys.DOCTYPE_SYSTEM, systemId);
 //      props.setProperty(OutputKeys.DOCTYPE_PUBLIC, publicId);
 //      props.setProperty(OutputKeys.ENCODING, "Shift_JIS");
@@ -76,7 +97,7 @@ public class PrettyPrinter {
         try {
             transformer.transform(source, result);
         } catch (TransformerException e) {
-            throw (IOException) new IOException().initCause(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -88,8 +109,8 @@ public class PrettyPrinter {
             TransformerFactory tf = TransformerFactory.newInstance();
             transformer = tf.newTransformer();
         } catch (TransformerConfigurationException e) {
-e.printStackTrace();
-            System.exit(1);
+e.printStackTrace(System.err);
+            throw new IllegalStateException(e);
         }
     }
 }

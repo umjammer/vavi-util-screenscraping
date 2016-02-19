@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import org.junit.Assert;
 import org.junit.Test;
 
-import vavi.util.CharConverterJa;
+import vavi.util.CharNormalizerJa;
 
 
 /**
@@ -215,7 +215,7 @@ System.err.println("N: " + title + " -> " + normalizedName);
         };
 
         for (String cs : csx) {
-            System.out.println(iTunes.normalizeComposer(CharConverterJa.toHalf2(cs)));
+            System.out.println(iTunes.normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(cs)));
         }
     }
 

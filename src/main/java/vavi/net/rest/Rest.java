@@ -6,12 +6,16 @@
 
 package vavi.net.rest;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -163,6 +167,24 @@ System.err.println("use: " + name + ", " + value);
             }
 
             return url + sb.toString();
+        }
+        
+        public static byte[] getContent(Object bean) throws IOException {
+            String url = getUrl(bean);
+System.err.println("url: " + url);
+
+            InputStream is = new URL(url).openStream();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] b = new byte[8192];
+            while (true) {
+                int r = is.read(b, 0, b.length);
+                if (r < 0) {
+                    break;
+                }
+                baos.write(b, 0, r);
+            }
+            is.close();
+            return baos.toByteArray();
         }
     }
 }

@@ -157,7 +157,7 @@ Debug.println("url: " + url);
             xpath2   = props.getProperty("xpath2");
         } catch (Exception e) {
 Debug.printStackTrace(e);
-            System.exit(1);
+            throw new IllegalStateException(e);
         }
     }
     

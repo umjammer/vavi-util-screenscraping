@@ -90,7 +90,7 @@ Debug.println("builder: " + builder);
 Debug.println("isValidating: " + builder.isValidating());
         } catch (ParserConfigurationException e) {
 Debug.printStackTrace(e);
-            System.exit(1);
+            throw new IllegalStateException(e);
         }
     }
 

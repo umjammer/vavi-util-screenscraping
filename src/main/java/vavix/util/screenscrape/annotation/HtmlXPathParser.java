@@ -66,6 +66,8 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
                 in.setEncoding(encoding);
 
                 String xpath = Target.Util.getValue(field);
+//PrettyPrinter pp = new PrettyPrinter(System.err);
+//pp.print(in);
 //System.err.println("xpath: " + xpath);
 
                 if (WebScraper.Util.isCollection(type)) {

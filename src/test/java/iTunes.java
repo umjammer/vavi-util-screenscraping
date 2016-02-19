@@ -23,7 +23,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 
-import vavi.util.CharConverterJa;
+import vavi.util.CharNormalizerJa;
 import vavi.util.LevenshteinDistance;
 import vavix.util.screenscrape.annotation.EachHandler;
 import vavix.util.screenscrape.annotation.HtmlXPathParser;
@@ -56,6 +56,8 @@ public class iTunes {
         String album;
         @Target("/dict/key[text()='Album Artist']/following-sibling::string[1]/text()")
         String albumArtist;
+        @Target("/dict/key[text()='Location']/following-sibling::string[1]/text()")
+        String location;
         public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append(artist);
@@ -67,7 +69,7 @@ public class iTunes {
         }
     }
     
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_3);
+    static WebClient client = new WebClient(BrowserVersion.FIREFOX_10);
 
     static {
         client.setJavaScriptEnabled(false);
@@ -132,9 +134,9 @@ public class iTunes {
         String url;
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append(CharConverterJa.toHalf2(artist));
+            sb.append(CharNormalizerJa.ToHalfAns2.normalize(artist));
             sb.append(", ");
-            sb.append(CharConverterJa.toHalf2(title));
+            sb.append(CharNormalizerJa.ToHalfAns2.normalize(title));
             return sb.toString();
         }
     }
@@ -173,7 +175,7 @@ public class iTunes {
             StringBuilder sb = new StringBuilder();
             sb.append(type);
             sb.append(", ");
-            sb.append(CharConverterJa.toHalf2(name));
+            sb.append(CharNormalizerJa.ToHalfAns2.normalize(name));
             return sb.toString();
         }
     }
@@ -248,9 +250,9 @@ public class iTunes {
         String url;
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append(CharConverterJa.toHalf2(artist));
+            sb.append(CharNormalizerJa.ToHalfAns2.normalize(artist));
             sb.append(", ");
-            sb.append(CharConverterJa.toHalf2(title));
+            sb.append(CharNormalizerJa.ToHalfAns2.normalize(title));
             return sb.toString();
         }
     }
@@ -325,9 +327,9 @@ public class iTunes {
         String url;
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append(CharConverterJa.toHalf2(artist));
+            sb.append(CharNormalizerJa.ToHalfAns2.normalize(artist));
             sb.append(", ");
-            sb.append(CharConverterJa.toHalf2(title));
+            sb.append(CharNormalizerJa.ToHalfAns2.normalize(title));
             return sb.toString();
         }
     }
@@ -369,11 +371,11 @@ public class iTunes {
 //System.err.println(composer);
 //System.err.println(composer.type + ", " + composer.type.indexOf("作詞") + ", " + composer.type.indexOf("作曲"));
             if ((composer.type.indexOf("作詞") != -1 || composer.type.indexOf("訳詞") != -1) && composer.name.indexOf("権利者") == -1) {
-                lyrics_.append(normalizeComposer(CharConverterJa.toHalf2(composer.name)));
+                lyrics_.append(normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(composer.name)));
                 lyrics_.append(", ");
             }
             if ((composer.type.indexOf("作曲") != -1 || composer.type.indexOf("不明") != -1) && composer.name.indexOf("権利者") == -1) {
-                music_.append(normalizeComposer(CharConverterJa.toHalf2(composer.name)));
+                music_.append(normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(composer.name)));
                 music_.append(", ");
             }
         }
@@ -396,7 +398,7 @@ public class iTunes {
             this.artist = artist.toUpperCase();
         }
         public int compare(TitleUrl3 o1, TitleUrl3 o2) {
-            int d1 = ld.calculate(artist, CharConverterJa.toHalf2(o1.artist)) - ld.calculate(artist, CharConverterJa.toHalf2(o2.artist));
+            int d1 = ld.calculate(artist, CharNormalizerJa.ToHalfAns2.normalize(o1.artist)) - ld.calculate(artist, CharNormalizerJa.ToHalfAns2.normalize(o2.artist));
             return d1;
         }
     }
@@ -409,7 +411,7 @@ public class iTunes {
             this.name = name.toUpperCase();
         }
         public int compare(TitleUrl4 o1, TitleUrl4 o2) {
-            int d1 = ld.calculate(name, CharConverterJa.toHalf2(o1.title)) - ld.calculate(name, CharConverterJa.toHalf2(o2.title));
+            int d1 = ld.calculate(name, CharNormalizerJa.ToHalfAns2.normalize(o1.title)) - ld.calculate(name, CharNormalizerJa.ToHalfAns2.normalize(o2.title));
             return d1;
         }
     }
@@ -418,13 +420,25 @@ public class iTunes {
      * @param args 0: artist, 1: title 
      */
     public static void main(String[] args) throws Exception {
+        processByWwebScraper(args);
+    }
+    
+    static void processByWwebScraper(String[] args) throws Exception {
         WebScraper.Util.foreach(Title.class, new EachHandler<Title>() {
             public void exec(Title each) {
                 try {
-                    doEach(each);
-//                    Thread.sleep(1000);
+                    if (each.location.startsWith("file:///Users/nsano/Music/iTunes/iTunes%20Music/") &&
+                        !each.location.startsWith("file:///Users/nsano/Music/iTunes/iTunes%20Music/Podcasts/") &&
+                        !each.location.endsWith(".pdf")
+                        ) {
+                        doEach(each);
+                    } else {
+                        System.err.println("not music: " + each.location);
+                    }
+//                      Thread.sleep(1000);
                 } catch (Exception e) {
-                    System.err.println(e);
+                    e.printStackTrace(System.err);
+                    System.err.println("error: " + each);
                 }
             }
         }, args);
@@ -490,11 +504,11 @@ public class iTunes {
         if (url4s.size() > 0) {
             Collections.sort(url4s, new MyComparator4(normalizedName));
             for (TitleUrl4 url4 : url4s) {
-                if (ca == 0 && normalizedName.equalsIgnoreCase(CharConverterJa.toHalf2(url4.title))) {
+                if (ca == 0 && normalizedName.equalsIgnoreCase(CharNormalizerJa.ToHalfAns2.normalize(url4.title))) {
                     System.out.println("RESULTp\t" + each + getComposer(url4.url));
                     return;
                 }
-                System.out.println("MAYBEa" + ca + "\t" + each + "(" + getComposer(url4.url) + ")" + "\t[" + CharConverterJa.toHalf2(url4.artist) + ", " + CharConverterJa.toHalf2(url4.title) + "]");
+                System.out.println("MAYBEa" + ca + "\t" + each + "(" + getComposer(url4.url) + ")" + "\t[" + CharNormalizerJa.ToHalfAns2.normalize(url4.artist) + ", " + CharNormalizerJa.ToHalfAns2.normalize(url4.title) + "]");
                 ca++;
                 if (ca > 2) {
                     break;
@@ -512,7 +526,7 @@ public class iTunes {
             }
             Collections.sort(url3s, new MyComparator3(normalizedArtist));
             for (TitleUrl3 url3 : url3s) {
-                System.out.println("MAYBEn" + cn + "\t" + each + "(" + getComposer(url3.url) + ")" + "\t[" + CharConverterJa.toHalf2(url3.artist) + ", " + CharConverterJa.toHalf2(url3.title) + "]");
+                System.out.println("MAYBEn" + cn + "\t" + each + "(" + getComposer(url3.url) + ")" + "\t[" + CharNormalizerJa.ToHalfAns2.normalize(url3.artist) + ", " + CharNormalizerJa.ToHalfAns2.normalize(url3.title) + "]");
                 cn++;
                 if (cn > 2) {
                     break;

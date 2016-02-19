@@ -30,7 +30,7 @@ public class DefaultInputHandler implements InputHandler<Reader> {
      */
     public Reader getInput(String ... args) throws IOException {
         String url = args[0];
-System.err.println("url: " + url);
+//System.err.println("url: " + url);
         URLConnection connection = new URL(url).openConnection();
         InputStream is = connection.getInputStream();
 //System.err.println(StringUtil.getDump(baos.toByteArray()));

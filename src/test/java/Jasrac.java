@@ -19,7 +19,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 
-import vavi.util.CharConverterJa;
+import vavi.util.CharNormalizerJa;
 import vavix.util.screenscrape.annotation.InputHandler;
 import vavix.util.screenscrape.annotation.Target;
 import vavix.util.screenscrape.annotation.WebScraper;
@@ -34,7 +34,7 @@ import vavix.util.screenscrape.annotation.XPathParser;
  */
 public class Jasrac {
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_3);
+    static WebClient client = new WebClient(BrowserVersion.FIREFOX_10);
 
     static {
         client.setJavaScriptEnabled(true);
@@ -116,9 +116,9 @@ System.err.println("last page: " + sb.length());
         String url;
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append(CharConverterJa.toHalf2(artist));
+            sb.append(CharNormalizerJa.ToHalfAns2.normalize(artist));
             sb.append(", ");
-            sb.append(CharConverterJa.toHalf2(title));
+            sb.append(CharNormalizerJa.ToHalfAns2.normalize(title));
 //            sb.append(", ");
 //            sb.append(url);
             return sb.toString();
@@ -159,7 +159,7 @@ System.err.println("last page: " + sb.length());
             StringBuilder sb = new StringBuilder();
             sb.append(type);
             sb.append(", ");
-            sb.append(CharConverterJa.toHalf2(name));
+            sb.append(CharNormalizerJa.ToHalfAns2.normalize(name));
             return sb.toString();
         }
     }
@@ -172,11 +172,11 @@ System.err.println("last page: " + sb.length());
 //System.err.println(composer);
 //System.err.println(composer.type + ", " + composer.type.indexOf("作詞") + ", " + composer.type.indexOf("作曲"));
             if ((composer.type.indexOf("作詞") != -1 || composer.type.indexOf("訳詞") != -1) && composer.name.indexOf("権利者") == -1) {
-                lyrics_.append(iTunes.normalizeComposer(CharConverterJa.toHalf2(composer.name)));
+                lyrics_.append(iTunes.normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(composer.name)));
                 lyrics_.append(", ");
             }
             if ((composer.type.indexOf("作曲") != -1 || composer.type.indexOf("不明") != -1) && composer.name.indexOf("権利者") == -1) {
-                music_.append(iTunes.normalizeComposer(CharConverterJa.toHalf2(composer.name)));
+                music_.append(iTunes.normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(composer.name)));
                 music_.append(", ");
             }
         }
@@ -197,7 +197,7 @@ System.err.println("last page: " + sb.length());
     public static void main(String[] args) throws Exception {
         List<TitleUrl> urls = WebScraper.Util.scrape(TitleUrl.class, args);
         for (TitleUrl url : urls) {
-            System.out.println(CharConverterJa.toHalf2(url.artist) + "\t" + CharConverterJa.toHalf2(url.title) + "\t" + getComposer(url.url));
+            System.out.println(CharNormalizerJa.ToHalfAns2.normalize(url.artist) + "\t" + CharNormalizerJa.ToHalfAns2.normalize(url.title) + "\t" + getComposer(url.url));
         }
     }
 }
