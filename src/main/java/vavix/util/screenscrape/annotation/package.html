@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Shift_JIS"?>
+<?xml version="1.0" encoding="utf-8"?>
 <html lang="ja">
 
 <head>
@@ -27,12 +27,12 @@
 <body>
 
 <p>
-Screen Scraping �֘A�̃N���X��񋟂��܂��D
+Screen Scraping 関連のクラスを提供します．
 </p>
 
-<h2>Screen Scraping ����ł��I�H</h2>
+<h2>Screen Scraping 決定版か！？</h2>
 
-<h3>POJO �N���X����ăN���X�� URL�A�t�B�[���h�� XPath ���w�肷�邾���ŃX�N���C�s���O�ł����I</h3>
+<h3>POJO クラス作ってクラスに URL、フィールドに XPath を指定するだけでスクレイピングできるよ！</h3>
 
 <pre>
     <span class="strong">@WebScraper(url = "http://foo.com/bar.html")</span>
@@ -50,22 +50,22 @@ Screen Scraping �֘A�̃N���X��񋟂��܂��D
     List&lt;Buz&gt; buzs = <span class="strong">WebScraper.Util.scrape(Buz.class);</span>
 </pre>
 
-<h3>�傫�ȃt�@�C���ł����C����I</h3>
+<h3>大きなファイルでも平気だよ！</h3>
 
  SaxonXPathParser
 
-<h3>����ȓ��͂ł����v����I</h3>
+<h3>特殊な入力でも大丈夫だよ！</h3>
 
  InputHandler
 
-<h3>��������ߖ�ł����I</h3>
+<h3>メモリを節約できるよ！</h3>
 
  EachHandler
 
-<h2>���ꂩ��������邱��</h2>
+<h2>これから実装すること</h2>
 
 <ul>
-<li>���͂� htmlunit �Ƃ��ʓ|�Ȃ̂ŁA����ς�X�N���v�g�H</li>
+<li>入力が htmlunit とか面倒なので、やっぱりスクリプト？</li>
 <li></li>
 </ul>
 
