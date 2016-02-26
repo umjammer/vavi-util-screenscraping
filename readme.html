@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Shift_JIS"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <html lang="ja">
 
 <head>
@@ -14,7 +14,7 @@
  * Written by Naohide Sano
  *
  * @description	HTML XML binding
- * @status	“®ìŠm”F
+ * @status	å‹•ä½œç¢ºèª
  *
  * @author	<a href=mailto:"vavivavi@yahoo.co.jp">Naohide Sano</a>(nsano)
  *
@@ -29,22 +29,23 @@ HTML XML binding.
 </p>
 
 <h2>
-ˆË‘¶ (Maven)
+ã“ã‚Œã‹ã‚‰å®Ÿè£…ã™ã‚‹ã“ã¨
 </h2>
 
 <ul>
-  <li><a href="http://code.google.com/p/vavi-commons/source/browse/#svn%2Ftrunk%2Fvavi-commons">http://code.google.com/p/vavi-commons/source/browse/#svn%2Ftrunk%2Fvavi-commons</a></li>
-  <li><a href="http://code.google.com/p/vavi-commons/source/browse/#svn%2Ftrunk%2Fvavi-commons-sandbox">http://code.google.com/p/vavi-commons/source/browse/#svn%2Ftrunk%2Fvavi-commons-sandbox</a></li>
-  <li><a href="http://code.google.com/p/vavi-commons/source/browse/#svn%2Ftrunk%2Fvavi-commons-net">http://code.google.com/p/vavi-commons/source/browse/#svn%2Ftrunk%2Fvavi-commons-net</a></li>
-</ul>
+  <li><del>Tidy ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚‚ä½œã‚‹</del></li>
+  <li>æ–‡å­—åŒ–ã‘ã§ã‚³ãƒ¡ãƒ³ãƒˆæ¶ˆã—ãŸ</li>
+  <li>InputHandler ã§ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã—ãªãã¦ã‚‚ã„ã„ã‚ˆã†ã«</li>
+  <li>WebScraper#url ã« åŸ‹ã‚è¾¼ã¿
+    <code>
+        @WebScraper(url = "http://foo.com?bar={bar}")
+        public static class Result {
+            :
 
-<h2>
-‚±‚ê‚©‚çÀ‘•‚·‚é‚±‚Æ
-</h2>
-
-<ul>
-  <li>Tidy ƒo[ƒWƒ‡ƒ“‚àì‚é</li>
-  <li>•¶š‰»‚¯‚ÅƒRƒƒ“ƒgÁ‚µ‚½</li>
+        List<Result> data = WebScraper.Util.scrape(Result.class, @UrlParam(bar) args[0]);
+    </code>
+  </li>
+  <li>json parser</li>
 </ul>
 
 </body>
