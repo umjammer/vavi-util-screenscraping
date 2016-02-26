@@ -15,10 +15,10 @@ import java.util.Scanner;
 import vavi.net.rest.Rest;
 import vavi.util.properties.annotation.Property;
 import vavi.util.properties.annotation.PropsEntity;
+
 import vavix.util.screenscrape.annotation.InputHandler;
 import vavix.util.screenscrape.annotation.Target;
 import vavix.util.screenscrape.annotation.WebScraper;
-import vavix.util.screenscrape.annotation.XPathParser;
 
 
 /**
@@ -38,7 +38,7 @@ public class Test7 {
         String cacheKey;
         byte[] cache;
         /**
-         * @param args 0: artist
+         * @param args 1: sentence
          */
         public Reader getInput(String ... args) throws IOException {
 
@@ -62,8 +62,7 @@ System.err.println("sentence: " + sentence);
     }
 
     /** */
-    @WebScraper(input = MyInput.class,
-                parser = XPathParser.class)
+    @WebScraper(input = MyInput.class)
     public static class Data {
         @Target("//Segment/SegmentText/text()")
         String name;

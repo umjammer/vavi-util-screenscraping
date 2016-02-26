@@ -57,12 +57,11 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>6</source>
-          <target>6</target>
-          <compilerVersion>6</compilerVersion>
-          <executable>${JAVA_HOME}/bin/java</executable>
+          <source>1.8</source>
+          <target>1.8</target>
           <generatedSourcesDirectory>target/generated-sources/cxf</generatedSourcesDirectory>
         </configuration>
+        <version>3.3</version>
       </plugin>
     </plugins>
   </build>
@@ -70,6 +69,14 @@
     <repository>
       <id>vavi-commons-mvn-repo</id>
       <url>https://raw.github.com/umjammer/vavi-commons/mvn-repo/</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>vavi-math-mvn-repo</id>
+      <url>https://raw.github.com/umjammer/vavi-math/mvn-repo/</url>
       <snapshots>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>
@@ -107,12 +114,17 @@
         <groupId>vavi</groupId>
         <artifactId>vavi-commons-sandbox</artifactId>
         <version>0.3.1</version>
-        <optional>false</optional>
     </dependency>
     <dependency>
         <groupId>vavi</groupId>
         <artifactId>vavi-media-cc</artifactId>
         <version>1.0.0</version>
+        <optional>false</optional>
+    </dependency>
+    <dependency>
+        <groupId>vavi</groupId>
+        <artifactId>vavi-math</artifactId>
+        <version>0.0.1</version>
         <optional>false</optional>
     </dependency>
     <dependency>
@@ -164,6 +176,18 @@
       <groupId>commons-httpclient</groupId>
       <artifactId>commons-httpclient</artifactId>
       <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-core-asl</artifactId>
+      <version>1.9.9</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>1.9.9</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <properties>
