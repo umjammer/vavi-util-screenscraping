@@ -24,6 +24,15 @@ public interface InputHandler<T> {
      *             の args
      */
     T getInput(String ... args) throws IOException;
+    
+    /**
+     * Converts args.
+     * This default method does nothing.
+     * Returns args just as it is.
+     */
+    default String[] dealUrlAndArgs(String url, String ... args) {
+        return args;
+    }
 }
 
 /* */

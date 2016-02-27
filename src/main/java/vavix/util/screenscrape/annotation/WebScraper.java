@@ -166,16 +166,9 @@ public @interface WebScraper {
             
             // inputHandler がデフォルトの場合 url が設定されていれば
             // 自動的に url が InputHandler#getInput() の引数に採用される
-            if (inputHandler instanceof DefaultInputHandler) {
-                String url = WebScraper.Util.getUrl(type);
-                if (url != null && !url.isEmpty()) {
-                    if (args != null && args.length > 0) {
-                        args[0] = url;
-                    } else {
-                        args = new String[] { url };
-                    }
-                }
-            }
+            String url = WebScraper.Util.getUrl(type);
+            args = inputHandler.dealUrlAndArgs(url, args);
+
             return parser.parse(type, inputHandler, args);
         }
 
@@ -201,16 +194,9 @@ public @interface WebScraper {
             
             // inputHandler がデフォルトの場合 url が設定されていれば
             // 自動的に url が InputHandler#getInput() の引数に採用される
-            if (inputHandler instanceof DefaultInputHandler) {
-                String url = WebScraper.Util.getUrl(type);
-                if (url != null && !url.isEmpty()) {
-                    if (args != null && args.length > 0) {
-                        args[0] = url;
-                    } else {
-                        args = new String[] { url };
-                    }
-                }
-            }
+            String url = WebScraper.Util.getUrl(type);
+            args = inputHandler.dealUrlAndArgs(url, args);
+
             parser.foreach(type, eachHandler, inputHandler, args);
         }
     }
