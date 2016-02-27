@@ -16,7 +16,9 @@
   <description>1.0.2
 
     add url replacing with args
-</description>
+    deprecate vavi.net.webquery
+    deprecate vavi.util.screenscrape
+    deprecate vavi.xml.util.jxpath.html</description>
   <distributionManagement>
     <repository>
       <id>internal.repo</id>
@@ -134,7 +136,7 @@
     	<groupId>jaxen</groupId>
     	<artifactId>jaxen</artifactId>
     	<version>1.1.1</version>
-    	<optional>false</optional>
+    	<scope>test</scope>
     </dependency>
     <dependency>
     	<groupId>org.hibernate</groupId>
