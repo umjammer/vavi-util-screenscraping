@@ -13,7 +13,10 @@
   </organization>
   <version>1.0.2</version>
   <url>https://github.com/umjammer/vavi-util-screenscraping</url>
-  <description>1.0.2 add @WebParam</description>
+  <description>1.0.2
+
+    add url replacing with args
+</description>
   <distributionManagement>
     <repository>
       <id>internal.repo</id>

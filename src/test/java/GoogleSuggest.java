@@ -4,16 +4,8 @@
  * Programmed by Naohide Sano
  */
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.nio.charset.Charset;
 import java.util.List;
 
-import vavi.net.rest.Parameter;
-import vavi.net.rest.Rest;
-
-import vavix.util.screenscrape.annotation.InputHandler;
 import vavix.util.screenscrape.annotation.Target;
 import vavix.util.screenscrape.annotation.WebScraper;
 
@@ -28,44 +20,8 @@ import vavix.util.screenscrape.annotation.WebScraper;
  */
 public class GoogleSuggest {
 
-    @Rest(url = "http://www.google.com/complete/search", method = "GET")
-    public static class Query {
-        /** query word */
-        @Parameter(required = true)
-        String q;
-        /** language */
-        @Parameter(required = true)
-        String hl = "ja";
-        /** result as xml */
-        @Parameter(required = true)
-        String output = "toolbar";
-        /** encoding for input */
-        @Parameter
-        String ie = "utf-8";
-        /** encoding for output */
-        @Parameter
-        String oe = "utf-8";
-    }
-
-    /** */
-    public static class MyInput implements InputHandler<Reader> {
-        String cacheKey; // word cache
-        byte[] cache; // result cache
-        /** @param args 0: key */
-        public Reader getInput(String ... args) throws IOException {
-            String key = args[0];
-            if (!key.equals(cacheKey)) {
-                Query queryBean = new Query();
-                queryBean.q = key;
-                cache = Rest.Util.getContent(queryBean);
-                cacheKey = key;
-            }
-            return new StringReader(new String(cache, Charset.forName("UTF8").name()));
-        }
-    }
-
     /** query result as xml */
-    @WebScraper(input = MyInput.class)
+    @WebScraper(url = "http://www.google.com/complete/search?q={0}&hl={1}&output={2}&ie={3}&oe={3}")
     public static class Result {
         @Target("//toplevel/CompleteSuggestion/suggestion/@data")
         String data;
@@ -76,7 +32,7 @@ public class GoogleSuggest {
 
     /** @args 0: word */
     public static void main(String[] args) throws Exception {
-        List<Result> data = WebScraper.Util.scrape(Result.class, args[0]);
+        List<Result> data = WebScraper.Util.scrape(Result.class, args[0], "ja", "toolbar", "utf-8");
         data.forEach(System.err::println);
     }
 }
