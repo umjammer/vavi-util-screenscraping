@@ -199,6 +199,11 @@
       <version>1.9.9</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>net.sourceforge.nekohtml</groupId>
+      <artifactId>nekohtml</artifactId>
+      <version>1.9.16</version>
+    </dependency>
   </dependencies>
   <properties>
     <!-- github server corresponds to entry in ~/.m2/settings.xml -->
