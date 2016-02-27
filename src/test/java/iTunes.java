@@ -420,10 +420,10 @@ public class iTunes {
      * @param args 0: artist, 1: title 
      */
     public static void main(String[] args) throws Exception {
-        processByWwebScraper(args);
+        processByWebScraper(args);
     }
     
-    static void processByWwebScraper(String[] args) throws Exception {
+    static void processByWebScraper(String[] args) throws Exception {
         WebScraper.Util.foreach(Title.class, new EachHandler<Title>() {
             public void exec(Title each) {
                 try {

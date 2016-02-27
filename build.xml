@@ -338,7 +338,7 @@
 
   <!-- itunes -->
   <target name="itunes" depends="compile" description="iTunes">
-    <java classname="iTunes" fork="yes" output="tmp/composers.tsv" error="${stderr}">
+    <java classname="iTunes" fork="yes" jvm="${jvm}" output="tmp/composers.tsv" error="${stderr}">
       <jvmarg value="-Xmx256m" />    
       <jvmarg value="-Dfile.encoding=${encoding}" />    
 <!--
