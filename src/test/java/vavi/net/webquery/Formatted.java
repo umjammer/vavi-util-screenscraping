@@ -57,7 +57,7 @@ public @interface Formatted {
 //System.err.println("formatter: " + formatter + ", " + format);
                 return fieldValue == null ? "null" : formatter.format(format, fieldValue); 
             } catch (Exception e) {
-                throw (RuntimeException) new IllegalStateException().initCause(e);
+                throw new IllegalStateException(e);
             }
         }
     }

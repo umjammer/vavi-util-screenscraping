@@ -58,7 +58,7 @@ public class HTMLParser implements XMLParser {
 //Debug.println(result);
             return result;
         } catch (ParserConfigurationException e) {
-            throw (RuntimeException) new IllegalStateException().initCause(e);
+            throw new IllegalStateException(e);
         } catch (SAXException e) {
           throw (RuntimeException) new IllegalArgumentException().initCause(e);
         } catch (IOException e) {

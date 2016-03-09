@@ -185,7 +185,7 @@ System.err.println("lyrics:\n" + lyrics);
                 
                 return file;
             } catch (Exception e) {
-                throw (RuntimeException) new IllegalStateException().initCause(e);
+                throw new IllegalStateException(e);
             }
         }
     }

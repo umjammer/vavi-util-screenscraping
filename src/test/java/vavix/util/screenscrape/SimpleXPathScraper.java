@@ -18,6 +18,7 @@ import javax.xml.xpath.XPathFactory;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */
+@Deprecated
 public abstract class SimpleXPathScraper<O> extends XPathScraper<InputStream, O> {
 
     /** */

@@ -13,6 +13,7 @@ package vavi.net.webquery;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 080212 nsano initial version <br>
  */
+@Deprecated
 public enum EnumType {
     /** */
     ORDINAL,

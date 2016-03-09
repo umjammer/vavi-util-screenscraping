@@ -15,6 +15,7 @@ import java.util.Map;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 080219 nsano initial version <br>
  */
+@Deprecated
 public interface QueryHandler {
 
     /** */

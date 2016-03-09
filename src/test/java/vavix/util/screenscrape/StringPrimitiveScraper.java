@@ -22,6 +22,7 @@ import vavix.util.screenscrape.Scraper;
  * @version 0.00 031103 nsano initial version <br>
  *          0.01 031228 nsano outsource retrying <br>
  */
+@Deprecated
 public class StringPrimitiveScraper implements Scraper<InputStream, String> {
 
     /** encoding for html */
@@ -38,7 +39,7 @@ public class StringPrimitiveScraper implements Scraper<InputStream, String> {
         try {
             html = toString(is);
         } catch (IOException e) {
-            throw (RuntimeException) new IllegalStateException().initCause(e);
+            throw new IllegalStateException(e);
         }
 
         String[] htmlParts = html.split("translation_TEXT");

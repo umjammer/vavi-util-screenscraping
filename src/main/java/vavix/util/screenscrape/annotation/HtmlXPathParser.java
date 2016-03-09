@@ -54,7 +54,7 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
             String encoding = WebScraper.Util.getEncoding(type);
 //System.err.println("encoding: " + encoding);
 
-            List<T> results = new ArrayList<T>();
+            List<T> results = new ArrayList<>();
 
             Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
             for (Field field : targetFields) {

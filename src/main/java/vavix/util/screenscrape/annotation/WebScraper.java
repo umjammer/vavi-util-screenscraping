@@ -75,7 +75,6 @@ public @interface WebScraper {
         }
 
         /** */
-        @SuppressWarnings("unchecked")
         public static <T> Parser<?, T> getParser(Class<T> type) {
             try {
                 WebScraper webScraper = type.getAnnotation(WebScraper.class);
@@ -132,7 +131,7 @@ public @interface WebScraper {
             }
 
             //
-            Set<Field> targetFields = new HashSet<Field>(); 
+            Set<Field> targetFields = new HashSet<>(); 
 
             for (Field field : type.getDeclaredFields()) {
                 Target target = field.getAnnotation(Target.class);

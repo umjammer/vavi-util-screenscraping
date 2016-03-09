@@ -28,6 +28,7 @@ import javax.script.ScriptEngineManager;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 070224 nsano initial version <br>
  */
+@Deprecated
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface WebQuery {
@@ -59,7 +60,7 @@ public @interface WebQuery {
                 QueryHandler urlHandler = webQuery.urlHandler().newInstance();
                 return urlHandler;
             } catch (Exception e) {
-                throw (RuntimeException) new IllegalStateException().initCause(e);
+                throw new IllegalStateException(e);
             }
         }
 
@@ -85,7 +86,7 @@ public @interface WebQuery {
             }
 
             //
-            Set<Field> parameterFields = new HashSet<Field>(); 
+            Set<Field> parameterFields = new HashSet<>(); 
 
             for (Field field : bean.getClass().getDeclaredFields()) {
                 Parameter parameter = field.getAnnotation(Parameter.class);
@@ -112,7 +113,7 @@ public @interface WebQuery {
             QueryHandler queryHandler = WebQuery.Util.getQueryHandler(bean);
 
             //
-            Map<String, String> parameters = new HashMap<String, String>(); 
+            Map<String, String> parameters = new HashMap<>(); 
 
             //
             for (Field field : bean.getClass().getDeclaredFields()) {

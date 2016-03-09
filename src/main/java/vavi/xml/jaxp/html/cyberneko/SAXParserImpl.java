@@ -49,12 +49,12 @@ public class SAXParserImpl extends SAXParser {
     /** */
     public XMLReader getXMLReader() throws SAXException {
         return new XMLReader() {
-            Map<String, Object> properties = new HashMap<String, Object>();
+            Map<String, Object> properties = new HashMap<>();
             @Override
             public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
                 properties.put(name, value);
             }
-            Map<String, Boolean> features = new HashMap<String, Boolean>();
+            Map<String, Boolean> features = new HashMap<>();
             @Override
             public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
                 features.put(name, value);

@@ -27,7 +27,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 080319 nsano initial version <br>
  */
-@PropsEntity(url = "/yahoo.properties", resource = true)
+@PropsEntity(url = "classpath:yahoo.properties")
 public class Test7 {
 
     @Property
@@ -81,6 +81,8 @@ System.err.println("sentence: " + sentence);
 
     /** */
     public static void main(String[] args) throws Exception {
+        System.setProperty("java.protocol.handler.pkgs", "vavi.net.www.protocol");
+
         Test7 app = new Test7();
         PropsEntity.Util.bind(app);
         Scanner scanner = new Scanner(new File(args[0]));

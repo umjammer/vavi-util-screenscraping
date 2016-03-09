@@ -91,7 +91,7 @@ Debug.printStackTrace(e);
             try {
                 return pattern2(url);
             } catch (IOException e) {
-                throw (RuntimeException) new IllegalStateException().initCause(e);
+                throw new IllegalStateException(e);
             }
         }
 

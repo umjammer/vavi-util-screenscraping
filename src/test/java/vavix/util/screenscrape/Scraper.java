@@ -15,6 +15,7 @@ package vavix.util.screenscrape;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */
+@Deprecated
 public interface Scraper<I, O> {
     /** */
     O scrape(I source);

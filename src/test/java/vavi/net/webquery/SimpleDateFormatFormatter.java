@@ -18,6 +18,7 @@ import vavi.net.rest.Formatter;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 080212 nsano initial version <br>
  */
+@Deprecated
 public class SimpleDateFormatFormatter implements Formatter {
 
     @Override

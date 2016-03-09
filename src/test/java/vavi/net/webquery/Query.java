@@ -18,6 +18,7 @@ import java.util.Map;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 080220 nsano initial version <br>
  */
+@Deprecated
 public class Query {
 
     /** */
@@ -47,7 +48,7 @@ public class Query {
     /** */
     public void setHeaderField(String key, String value) {
         if (headerFields.containsKey(key)) {
-            List<String> values = new ArrayList<String>();
+            List<String> values = new ArrayList<>();
             values.add(value);
             headerFields.put(key, values);
         } else {
@@ -63,7 +64,7 @@ public class Query {
     /** */
     public void setRequestProperty(String key, String value) {
         if (requestProperties.containsKey(key)) {
-            List<String> values = new ArrayList<String>();
+            List<String> values = new ArrayList<>();
             values.add(value);
             requestProperties.put(key, values);
         } else {

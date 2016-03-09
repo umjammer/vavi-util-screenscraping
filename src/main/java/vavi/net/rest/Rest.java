@@ -94,7 +94,7 @@ public @interface Rest {
             }
 
             //
-            Set<Field> parameterFields = new HashSet<Field>(); 
+            Set<Field> parameterFields = new HashSet<>(); 
 
             for (Field field : bean.getClass().getDeclaredFields()) {
                 Parameter parameter = field.getAnnotation(Parameter.class);
@@ -120,7 +120,7 @@ public @interface Rest {
             String url = rest.url();
 
             //
-            Map<String, String> parameters = new HashMap<String, String>(); 
+            Map<String, String> parameters = new HashMap<>(); 
 
             //
             for (Field field : bean.getClass().getDeclaredFields()) {

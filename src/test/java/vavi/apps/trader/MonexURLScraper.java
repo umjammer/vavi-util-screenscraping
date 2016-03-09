@@ -77,7 +77,7 @@ public class MonexURLScraper extends ApacheURLScraper<String> {
             // /Etc/0000JK8D/member/M901/menu/frame/topmenu2.htm
             // HTML/BODY/TABLE[1]/TR[1]/TD[3]/TABLE/TR[2]/FROM/@onsubmit
         } catch (IOException e) {
-            throw (RuntimeException) new IllegalStateException().initCause(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -98,7 +98,7 @@ public class MonexURLScraper extends ApacheURLScraper<String> {
 
             return value;
         } catch (IOException e) {
-            throw (RuntimeException) new IllegalStateException().initCause(e);
+            throw new IllegalStateException(e);
         }
     }
 }

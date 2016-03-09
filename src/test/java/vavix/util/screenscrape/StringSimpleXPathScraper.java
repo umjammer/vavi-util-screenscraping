@@ -23,6 +23,7 @@ import vavi.xml.util.PrettyPrinter;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */
+@Deprecated
 public class StringSimpleXPathScraper extends SimpleXPathScraper<String> {
 
     /** */
@@ -41,7 +42,7 @@ PrettyPrinter pp = new PrettyPrinter(System.out);
 }
             return xPath.evaluate(xpath, new InputSource(source));
         } catch (XPathExpressionException e) {
-            throw (RuntimeException) new IllegalStateException().initCause(e);
+            throw new IllegalStateException(e);
         }
     }
 }

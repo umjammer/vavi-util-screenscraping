@@ -55,7 +55,7 @@ Debug.printStackTrace(e);
         props.setProperty("password", args[4]);
 
 //      Scraper<URL, String> scraper = new ApacheURLScraper(new ApacheStreamXPathScraper(xpath), props);
-        Scraper<URL, String> scraper = new SimpleURLScraper<String>(new StringSimpleXPathScraper(xpath), props);
+        Scraper<URL, String> scraper = new SimpleURLScraper<>(new StringSimpleXPathScraper(xpath), props);
 
         System.out.println(scraper.scrape(new URL(url)));
     }

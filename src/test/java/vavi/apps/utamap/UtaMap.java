@@ -102,7 +102,7 @@ System.err.println("downloading... size: " + result);
                 
                 return file;
             } catch (IOException e) {
-                throw (RuntimeException) new IllegalStateException().initCause(e);
+                throw new IllegalStateException(e);
             }
         }
     }
