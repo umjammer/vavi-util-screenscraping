@@ -392,26 +392,24 @@ public class iTunes {
 
     /** アーティスト名で近い順 */
     static class MyComparator3 implements Comparator<TitleUrl3> {
-        LevenshteinDistance ld = new LevenshteinDistance();
         String artist;
         MyComparator3(String artist) {
             this.artist = artist.toUpperCase();
         }
         public int compare(TitleUrl3 o1, TitleUrl3 o2) {
-            int d1 = ld.calculate(artist, CharNormalizerJa.ToHalfAns2.normalize(o1.artist)) - ld.calculate(artist, CharNormalizerJa.ToHalfAns2.normalize(o2.artist));
+            int d1 = LevenshteinDistance.calculate(artist, CharNormalizerJa.ToHalfAns2.normalize(o1.artist)) - LevenshteinDistance.calculate(artist, CharNormalizerJa.ToHalfAns2.normalize(o2.artist));
             return d1;
         }
     }
 
     /** 作品名で近い順 */
     static class MyComparator4 implements Comparator<TitleUrl4> {
-        LevenshteinDistance ld = new LevenshteinDistance();
         String name;
         MyComparator4(String name) {
             this.name = name.toUpperCase();
         }
         public int compare(TitleUrl4 o1, TitleUrl4 o2) {
-            int d1 = ld.calculate(name, CharNormalizerJa.ToHalfAns2.normalize(o1.title)) - ld.calculate(name, CharNormalizerJa.ToHalfAns2.normalize(o2.title));
+            int d1 = LevenshteinDistance.calculate(name, CharNormalizerJa.ToHalfAns2.normalize(o1.title)) - LevenshteinDistance.calculate(name, CharNormalizerJa.ToHalfAns2.normalize(o2.title));
             return d1;
         }
     }

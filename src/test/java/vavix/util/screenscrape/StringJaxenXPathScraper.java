@@ -37,6 +37,7 @@ import vavix.util.screenscrape.XPathScraper;
  * @version 0.00 031103 nsano initial version <br>
  *          0.01 031228 nsano outsource xpath <br>
  */
+@Deprecated
 public class StringJaxenXPathScraper extends XPathScraper<InputStream, String> {
 
     /** encoding for html */
@@ -69,7 +70,7 @@ public class StringJaxenXPathScraper extends XPathScraper<InputStream, String> {
 
             return value;
         } catch (IOException e) {
-            throw (RuntimeException) new IllegalStateException().initCause(e);
+            throw new IllegalStateException(e);
         } catch (SAXException e) {
             throw (RuntimeException) new IllegalArgumentException("wrong input").initCause(e);
         } catch (JaxenException e) {

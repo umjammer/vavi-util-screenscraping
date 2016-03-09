@@ -36,7 +36,7 @@ public class t60 {
     private static final String BuildVersion = "145";
 
     private String partition = null;
-    private Map<String, Device> devices = new HashMap<String, Device>();
+    private Map<String, Device> devices = new HashMap<>();
     private String username;
     private String password;
 

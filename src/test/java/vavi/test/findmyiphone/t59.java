@@ -75,12 +75,12 @@ public class t59 {
         os.close();
         Matcher m = Pattern.compile("DeviceMgmt.deviceIdMap\\['[0-9]+'\\] = '([a-z0-9]+)';")
                 .matcher(new String(os.toByteArray()));
-        List<String> deviceList = new ArrayList<String>();
+        List<String> deviceList = new ArrayList<>();
         while (m.find()) {
             deviceList.add(m.group(1));
         }
 
-        List<JsonNode> results = new ArrayList<JsonNode>();
+        List<JsonNode> results = new ArrayList<>();
 
         // For each available device, get the location
         JsonFactory jf = new JsonFactory();

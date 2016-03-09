@@ -39,7 +39,7 @@ public class getGlobalIpTest extends TestCase {
             props.setProperty("account", account);
             props.setProperty("password", password);
 
-            Scraper<URL, String> scraper = new ApacheURLScraper<String>(new StringApacheXPathScraper("/HTML/BODY/text()"), props);
+            Scraper<URL, String> scraper = new ApacheURLScraper<>(new StringApacheXPathScraper("/HTML/BODY/text()"), props);
 
             System.out.println("ApacheXPathURLScraper: " + scraper.scrape(new URL(url)));
         } catch (Exception e) {
@@ -55,7 +55,7 @@ e.printStackTrace();
             props.setProperty("account", account);
             props.setProperty("password", password);
 
-            Scraper<URL, String> scraper = new SimpleURLScraper<String>(new StringSimpleXPathScraper("/HTML/BODY/text()"), props);
+            Scraper<URL, String> scraper = new SimpleURLScraper<>(new StringSimpleXPathScraper("/HTML/BODY/text()"), props);
 
             System.out.println("SimpleXPathURLScraper: " + scraper.scrape(new URL(url)).trim());
         } catch (Exception e) {

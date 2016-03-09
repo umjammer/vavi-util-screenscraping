@@ -19,6 +19,7 @@ import java.lang.reflect.Field;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 080212 nsano initial version <br>
  */
+@Deprecated
 @Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Enumerated {

@@ -22,6 +22,7 @@ import vavix.util.screenscrape.XPathScraper;
  * @version 0.00 031103 nsano initial version <br>
  *          0.01 031228 nsano outsource xpath <br>
  */
+@Deprecated
 public class StringJXPathXPathScraper extends XPathScraper<InputStream, String> {
 
     /** encoding for html */

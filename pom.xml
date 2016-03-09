@@ -11,14 +11,23 @@
   <organization>
     <name></name>
   </organization>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <url>https://github.com/umjammer/vavi-util-screenscraping</url>
-  <description>1.0.2
+  <description>1.0.3
+
+    move pretty printer to vavi-commons, vavi-commons-sandbox
+
+1.0.2
 
     add url replacing with args
     deprecate vavi.net.webquery
     deprecate vavi.util.screenscrape
-    deprecate vavi.xml.util.jxpath.html</description>
+    deprecate vavi.xml.util.jxpath.html
+
+TODO
+
+    move PrettyPrinter to vavi-commons
+    add @Depricate to depricated classes</description>
   <distributionManagement>
     <repository>
       <id>internal.repo</id>
@@ -107,12 +116,12 @@
     <dependency>
     	<groupId>vavi</groupId>
     	<artifactId>vavi-commons</artifactId>
-    	<version>1.0.4</version>
+    	<version>1.0.5</version>
     </dependency>
     <dependency>
         <groupId>vavi</groupId>
         <artifactId>vavi-commons-sandbox</artifactId>
-        <version>0.3.1</version>
+        <version>0.3.2</version>
         <scope>test</scope>
     </dependency>
     <dependency>
@@ -125,7 +134,7 @@
         <groupId>vavi</groupId>
         <artifactId>vavi-math</artifactId>
         <version>0.0.1</version>
-        <optional>false</optional>
+        <scope>test</scope>
     </dependency>
     <dependency>
     	<groupId>jaxen</groupId>
@@ -172,10 +181,9 @@
         <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>saxon</groupId>
-    	<artifactId>saxon</artifactId>
-    	<version>9.2.1.2j</version>
-    	<optional>false</optional>
+    	<groupId>net.sf.saxon</groupId>
+    	<artifactId>Saxon-HE</artifactId>
+    	<version>9.7.0-3</version>
     </dependency>
     <dependency>
       <groupId>commons-httpclient</groupId>

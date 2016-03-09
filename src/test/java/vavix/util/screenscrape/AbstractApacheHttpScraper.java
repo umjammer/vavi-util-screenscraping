@@ -29,6 +29,7 @@ import org.apache.commons.httpclient.UsernamePasswordCredentials;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 071004 nsano initial version <br>
  */
+@Deprecated
 abstract class AbstractApacheHttpScraper<I, O> extends AbstractHttpScraper<I, O> implements Scraper<I, O> {
     /** */
     protected String realm;
@@ -40,7 +41,7 @@ abstract class AbstractApacheHttpScraper<I, O> extends AbstractHttpScraper<I, O>
     /** */
     protected AbstractApacheHttpScraper(Scraper<InputStream, O> scraper) {
         super(scraper);
-        responseHeaders = new HashMap<String, List<String>>();
+        responseHeaders = new HashMap<>();
     }
 
     /**
@@ -101,7 +102,7 @@ abstract class AbstractApacheHttpScraper<I, O> extends AbstractHttpScraper<I, O>
                 List<String> values = responseHeaders.get(name);
                 values.add(value);
             } else {
-                List<String> values = new ArrayList<String>();
+                List<String> values = new ArrayList<>();
                 values.add(value);
                 responseHeaders.put(name, values);
             }

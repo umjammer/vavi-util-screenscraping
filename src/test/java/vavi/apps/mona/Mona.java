@@ -61,7 +61,7 @@ Debug.printStackTrace(e);
         static List<Menu> readMenus() throws IOException {
             URLConnection uc = new URL(menuUrl).openConnection();
             Scanner scanner = new Scanner(uc.getInputStream());
-            List<Menu> menus = new ArrayList<Menu>();
+            List<Menu> menus = new ArrayList<>();
             while (scanner.hasNextLine()) {
                 Menu menu = new Menu();
                 menu.category = scanner.nextLine();
@@ -103,7 +103,7 @@ Debug.printStackTrace(e);
                 try {
                     nodeList = (NodeList) xPath.evaluate(xpath, source, XPathConstants.NODESET);
                 } catch (XPathExpressionException e) {
-                    throw (RuntimeException) new IllegalStateException().initCause(e);
+                    throw new IllegalStateException(e);
                 }
                 return nodeList;
             }
@@ -121,7 +121,7 @@ Debug.printStackTrace(e);
                 uc.getInputStream();
                 return null;
             } catch (Exception e) {
-                throw (RuntimeException) new IllegalStateException().initCause(e);
+                throw new IllegalStateException(e);
             }
         }
     }

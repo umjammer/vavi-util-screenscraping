@@ -21,6 +21,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */
+@Deprecated
 public class ApacheURLScraper<O> extends AbstractApacheHttpScraper<URL, O> {
 
     /** */
@@ -66,7 +67,7 @@ public class ApacheURLScraper<O> extends AbstractApacheHttpScraper<URL, O> {
 
             return value;
         } catch (IOException e) {
-            throw (RuntimeException) new IllegalStateException().initCause(e);
+            throw new IllegalStateException(e);
         }
     }
 }

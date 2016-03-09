@@ -21,6 +21,7 @@ import org.xml.sax.InputSource;
  * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
  * @version 0.00 050909 nsano initial version <br>
  */
+@Deprecated
 public class StringI18nSimpleXPathScraper extends SimpleXPathScraper<String> {
 
     /** encoding for html */

@@ -59,7 +59,7 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
             String encoding = WebScraper.Util.getEncoding(type);
 //System.err.println("encoding: " + encoding);
 
-            List<T> results = new ArrayList<T>();
+            List<T> results = new ArrayList<>();
 
             Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
             for (Field field : targetFields) {
@@ -76,7 +76,6 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
     
                     if (List.class.isInstance(nodeSet)) {
     
-                        @SuppressWarnings("unchecked")
                         List<NodeInfo> nodeList = List.class.cast(nodeSet);
 //System.err.println("nodeList: " + nodeList.size());
                         for (int i = 0; i < nodeList.size(); i++) {
@@ -166,7 +165,6 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
 
             if (List.class.isInstance(nodeSet)) {
 
-                @SuppressWarnings("unchecked")
                 List<NodeInfo> nodeList = List.class.cast(nodeSet);
 //System.err.println("nodeList: " + nodeList.size());
 

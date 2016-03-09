@@ -20,6 +20,7 @@ import vavi.xml.util.jxpath.html.HtmlDocumentContainer;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */
+@Deprecated
 public class StringApacheXPathScraper extends XPathScraper<InputStream, String> {
 
     /** */

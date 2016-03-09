@@ -35,12 +35,12 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
         try {
             updateProxyAddresses();
         } catch (IOException e) {
-            throw (RuntimeException) new IllegalStateException().initCause(e);
+            throw new IllegalStateException(e);
         }
     }
 
     /** */
-    private List<InternetAddress> proxyAddresses = new ArrayList<InternetAddress>();
+    private List<InternetAddress> proxyAddresses = new ArrayList<>();
 
     /* */
     public List<InternetAddress> getProxyInetSocketAddresses() {

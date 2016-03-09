@@ -22,6 +22,7 @@ import java.util.Properties;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */
+@Deprecated
 public class SimpleURLScraper<O> extends AbstractHttpScraper<URL, O> {
 
     /** */
@@ -84,7 +85,7 @@ public class SimpleURLScraper<O> extends AbstractHttpScraper<URL, O> {
             return value;
         } catch (IOException e) {
 e.printStackTrace(System.err);
-            throw (RuntimeException) new IllegalStateException().initCause(e);
+            throw new IllegalStateException(e);
         }
     }
 

@@ -21,6 +21,7 @@ import java.util.Properties;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 071004 nsano initial version <br>
  */
+@Deprecated
 abstract class AbstractHttpScraper<I, O> implements Scraper<I, O> {
     /** */
     protected Scraper<InputStream, O> scraper;
@@ -31,7 +32,7 @@ abstract class AbstractHttpScraper<I, O> implements Scraper<I, O> {
     }
 
     /** */
-    protected Map<String, String> requestHeaders = new HashMap<String, String>();
+    protected Map<String, String> requestHeaders = new HashMap<>();
 
     /** */
     protected Map<String, List<String>> responseHeaders;

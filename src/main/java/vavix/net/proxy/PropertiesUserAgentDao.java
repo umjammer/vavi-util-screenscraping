@@ -22,7 +22,7 @@ import java.util.Properties;
 public class PropertiesUserAgentDao implements UserAgentDao {
 
     /** */
-    private static List<String> userAgents = new ArrayList<String>();
+    private static List<String> userAgents = new ArrayList<>();
 
     /** always returns same instances */
     public List<String> getUserAgents() {
