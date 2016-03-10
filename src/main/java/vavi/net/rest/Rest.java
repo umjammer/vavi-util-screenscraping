@@ -54,6 +54,10 @@ public @interface Rest {
 
     /** */
     class Util {
+
+        private Util() {
+        }
+
         /** */
         public static String getProtocol(Object bean) {
             Rest rest = bean.getClass().getAnnotation(Rest.class);

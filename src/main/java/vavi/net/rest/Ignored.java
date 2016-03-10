@@ -47,6 +47,9 @@ public @interface Ignored {
      */
     static class Util {
 
+        private Util() {
+        }
+
         /**
          * <pre>
          * 1. @Ignored
