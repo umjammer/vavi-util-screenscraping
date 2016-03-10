@@ -30,6 +30,9 @@ public @interface Target {
      */
     class Util {
 
+        private Util() {
+        }
+
         /**
          * @param field {@link @Target} annotated
          */

@@ -38,6 +38,9 @@ public @interface Formatted {
      */
     static class Util {
 
+        private Util() {
+        }
+
         /** */
         public static boolean isFormatted(Field field) {
             return field.getAnnotation(Formatted.class) != null;

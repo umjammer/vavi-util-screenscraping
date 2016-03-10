@@ -31,6 +31,9 @@ public @interface Enumerated {
      */
     static class Util {
 
+        private Util() {
+        }
+
         /** */
         public static boolean isEnumetated(Field field) {
             return field.getAnnotation(Enumerated.class) != null;

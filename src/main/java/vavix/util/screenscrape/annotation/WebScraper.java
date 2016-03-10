@@ -64,6 +64,9 @@ public @interface WebScraper {
     /** */
     class Util {
 
+        private Util() {
+        }
+
         /** */
         public static InputHandler<?> getInputHandler(Class<?> type) {
             try {

@@ -42,6 +42,10 @@ public @interface Parameter {
      * TODO アノテーションがメソッド指定の場合 
      */
     class Util {
+
+        private Util() {
+        }
+
         /**
          * 
          * @param field
