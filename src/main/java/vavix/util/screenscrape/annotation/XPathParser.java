@@ -27,6 +27,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import vavi.beans.BeanUtil;
+import vavi.util.Debug;
 import vavi.xml.util.PrettyPrinter;
 
 
@@ -51,6 +52,7 @@ public class XPathParser<T> implements Parser<Reader, T> {
     /**
      * TODO Reader は、 InputSource の引数ならどれでもとか
      * TODO Reader が fields のループに入ってるから InputHandler にキャッシュが必要になる 
+     * <li> TODO now 1 step XPath only
      */
     public List<T> parse(Class<T> type, InputHandler<Reader> handler, String ... args) {
         try {
@@ -124,6 +126,9 @@ public class XPathParser<T> implements Parser<Reader, T> {
      *  {@link WebScraper#value()} で指定した XPath で取得できる部分 XML から
      *  {@link Target#value()} で指定した XPath で取得する方法。
      * </p>
+     * <p>
+     * you need to specify at the first element of the {@link Target#value()} as same as the last element in {@link WebScraper#value()}.
+     * </p>
      * <li> TODO now 2 step XPath only
      * <li> TODO {@link WebScraper#value()} が存在すれば 2 step とか
      */
@@ -141,6 +146,9 @@ public class XPathParser<T> implements Parser<Reader, T> {
 
             NodeList nodeList = NodeList.class.cast(nodeSet);
 //System.err.println("nodeList: " + nodeList.getLength());
+if (nodeList.getLength() == 0) {
+ Debug.println("no node list: " + xpath);
+}
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 T bean = type.newInstance();
@@ -153,6 +161,7 @@ public class XPathParser<T> implements Parser<Reader, T> {
                 for (Field field : targetFields) {
                     String subXpath = Target.Util.getValue(field);
                     InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
+                    in.setEncoding(encoding);
                     String text = (String) xPath.evaluate(subXpath, is, XPathConstants.STRING);
                     BeanUtil.setFieldValue(field, bean, text);
                 }

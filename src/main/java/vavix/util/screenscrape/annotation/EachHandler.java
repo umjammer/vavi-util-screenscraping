@@ -13,6 +13,7 @@ package vavix.util.screenscrape.annotation;
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/07 nsano initial version <br>
  */
+@FunctionalInterface
 public interface EachHandler<T> {
 
     /** @see {@link Parser#foreach(Class, EachHandler, InputHandler, String...)} */

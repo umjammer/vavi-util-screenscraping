@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import vavi.net.www.protocol.URLStreamHandlerUtil;
+
 
 /**
  * WebScraper. 
@@ -26,6 +28,9 @@ import java.util.Set;
  * 繰り返し対応は {@link #isCollection()} で指定します。デフォルトでは複数対応です。
  * {@link #isCollection()} を false に設定すると、戻り値のリストの有効添字は 0 のみになります。
  * </p>
+ * <p>
+ * {@link #input()} がデフォルトの場合 {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
+ * </p>
  * 
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 2010/09/30 nsano initial version <br>
@@ -34,7 +39,13 @@ import java.util.Set;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface WebScraper {
 
-    /** for {@link DefaultInputHandler} */
+    /**
+     * for {@link DefaultInputHandler}
+     * <p>
+     * url 中の文字 {args_index} は args の順に置き換えられます。
+     * </p>
+     * @see {@link DefaultInputHandler#dealUrlAndArgs(String, String...)}
+     */
     String url() default "";
 
     /**
@@ -58,8 +69,8 @@ public @interface WebScraper {
     /** repeatable data or not */
     boolean isCollection() default true;
 
-    /** input encoding */
-    String encoding() default "UTF-8";
+    /** input encoding. default is <code>System.getProperty("file.encoding")</code> */
+    String encoding() default "";
 
     /** */
     class Util {
@@ -111,7 +122,12 @@ public @interface WebScraper {
             if (webScraper == null) {
                 throw new IllegalArgumentException("type is not annotated with @WebScraper");
             }
-            return webScraper.encoding();
+            String encoding = webScraper.encoding();
+            if (encoding.isEmpty()) {
+                return System.getProperty("file.encoding");
+            } else {
+                return encoding;
+            }
         }
 
         /** */
@@ -146,13 +162,23 @@ public @interface WebScraper {
             return targetFields;
         }
 
+        /* for "classpath" schema */
+        static {
+            URLStreamHandlerUtil.loadService();
+        }
+
         /**
          * Scrapes data.
          * ユーザが使用するべきトップレベルの API です。
+         * <p>
+         * {@link WebScraper#input()} がデフォルトの場合 {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
+         * </p>
          * 
          * @param type type annotated by {@link WebScraper}
          * @param args parameters for input handler
          * @return List of type objects.
+         * @throws IllegalArgumentException when {@link WebScraper#input()} is default and url is null.
+         * @see {@link DefaultInputHandler#dealUrlAndArgs(String, String...)}
          */
         public static <I, T> List<T> scrape(Class<T> type, String ... args) throws IOException {
             //
@@ -177,10 +203,15 @@ public @interface WebScraper {
         /**
          * Scrapes data.
          * ユーザが使用するべきトップレベルの API です。
+         * <p>
+         * {@link WebScraper#input()} がデフォルトの場合 {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
+         * </p>
          * 
          * @param type type annotated by {@link WebScraper}
          * @param args parameters for input handler
          * @return List of type objects.
+         * @throws IllegalArgumentException when {@link WebScraper#input()} is default and url is null.
+         * @see {@link DefaultInputHandler#dealUrlAndArgs(String, String...)}
          */
         public static <I, T> void foreach(Class<T> type, EachHandler<T> eachHandler, String ... args) throws IOException {
             //

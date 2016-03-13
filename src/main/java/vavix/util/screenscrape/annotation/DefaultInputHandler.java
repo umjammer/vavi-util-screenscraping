@@ -18,7 +18,7 @@ import java.net.URLConnection;
 /**
  * DefaultInputHandler. 
  * 
- * WebScraper で指定された url 中の文字 {args_index} は args の順に置き換えられます。
+ * {@link WebScraper} で指定された {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
  * @see {@link DefaultInputHandler#dealUrlAndArgs(String, String...)}
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
@@ -27,9 +27,10 @@ import java.net.URLConnection;
 public class DefaultInputHandler implements InputHandler<Reader> {
 
     /**
-     * CAUTION!!! Reader が -Dfile.encoding に依存しているので注意
+     * CAUTION!!! Reader が <code>-Dfile.encoding</code> に依存しているので注意
      * 
-     * @param args 0: url 
+     * @param args 0: url, 1, 2, 3...: {@link WebScraper.Util#scrape(Class, String...)}'s args or
+     *             {@link WebScraper.Util#foreach(Class, EachHandler, String...)}'s args.
      */
     public Reader getInput(String ... args) throws IOException {
         String url = args[0];
@@ -50,14 +51,18 @@ public class DefaultInputHandler implements InputHandler<Reader> {
      *      
      *      result: "http://foo.com?bar=VAVI&buz=UMJAMMER"
      * </pre>
+     * @return [ url, args... ]
+     * @throws IllegalArgumentException when url is null.
      */
     public String[] dealUrlAndArgs(String url, String... args) {
-        String[] newArgs = new String[1];
+        String[] newArgs = new String[args.length + 1];
         if (url != null && !url.isEmpty()) {
             int c = 0;
             for (String arg : args) {
-                url = url.replace("{" + c++ + "}", arg);
+                url = url.replace("{" + c + "}", arg);
                 //System.err.println(url + ", " + arg);
+                newArgs[c + 1] = arg;
+                c++;
             }
             newArgs[0] = url;
             return newArgs;
