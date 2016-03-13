@@ -27,7 +27,8 @@
 TODO
 
     move PrettyPrinter to vavi-commons
-    add @Depricate to depricated classes</description>
+    add @Depricate to depricated classes
+    @WebScraper#encoding()</description>
   <distributionManagement>
     <repository>
       <id>internal.repo</id>
