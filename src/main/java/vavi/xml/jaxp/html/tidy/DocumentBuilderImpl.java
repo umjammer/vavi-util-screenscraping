@@ -100,8 +100,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         String encoding = (String) dbf.getAttribute("encoding");
 // System.err.println("encoding: " + encoding);
         if (encoding != null) {
-//            domParser.setInputEncoding(encoding); TODO
-             domParser.setCharEncoding(org.w3c.tidy.Configuration.UTF8);
+            domParser.setInputEncoding(encoding);
         }
 //System.err.println("encoding: " + domParser.getInputEncoding());
 

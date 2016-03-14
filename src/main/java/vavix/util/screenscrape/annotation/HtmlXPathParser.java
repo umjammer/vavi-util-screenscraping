@@ -6,7 +6,10 @@
 
 package vavix.util.screenscrape.annotation;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -18,17 +21,23 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import org.xml.sax.InputSource;
 
 import vavi.beans.BeanUtil;
+import vavi.util.Debug;
+import vavi.xml.util.PrettyPrinter;
 
 
 /**
  * HtmlXPathParser. 
  * <p>
  * parse HTML using cyberneko.
+ * </p>
+ * <p>
+ * xpath should be capitalized.
  * </p>
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
@@ -48,6 +57,7 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
 
     /**
      * TODO Reader は、 InputSource の引数ならどれでもとか 
+     * <li> TODO now 1 step XPath only
      */
     public List<T> parse(Class<T> type, InputHandler<Reader> handler, String ... args) {
         try {
@@ -56,11 +66,11 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
 
             List<T> results = new ArrayList<>();
 
+            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");    
+
             Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
             for (Field field : targetFields) {
                 Reader reader = handler.getInput(args);
-
-                System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");    
 
                 InputSource in = new InputSource(reader);
                 in.setEncoding(encoding);
@@ -102,9 +112,9 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
                     String text = ((String) xPath.evaluate(xpath, in, XPathConstants.STRING)).trim();
                     BeanUtil.setFieldValue(field, bean, text);
                 }
-
-                System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "");    
             }
+
+            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");    
             
             return results;
 
@@ -119,9 +129,70 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
         }
     }
 
-    /** TODO implement */
+    /**
+     * <h4>2 step XPath</h4>
+     * <p>
+     *  {@link WebScraper#value()} で指定した XPath で取得できる部分 XML から
+     *  {@link Target#value()} で指定した XPath で取得する方法。
+     * </p>
+     * <p>
+     * you need to specify at the first element of the {@link Target#value()} as same as the last element in {@link WebScraper#value()}.
+     * </p>
+     * <li> TODO now 2 step XPath only
+     * <li> TODO {@link WebScraper#value()} が存在すれば 2 step とか
+     */
     public void foreach(Class<T> type, EachHandler<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
-        throw new UnsupportedOperationException("not implemented yet");
+        try {
+            String encoding = WebScraper.Util.getEncoding(type);
+//System.err.println("encoding: " + encoding);
+            
+            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");    
+
+            InputSource in = new InputSource(inputHandler.getInput(args));
+            in.setEncoding(encoding);
+    
+            String xpath = WebScraper.Util.getValue(type);
+
+            Object nodeSet = xPath.evaluate(xpath, in, XPathConstants.NODESET);
+
+            // TODO vavi.xml.jaxp.html.cyberneko has bug!
+            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");    
+
+            NodeList nodeList = NodeList.class.cast(nodeSet);
+//System.err.println("nodeList: " + nodeList.getLength());
+if (nodeList.getLength() == 0) {
+ Debug.println("no node list: " + xpath);
+}
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                T bean = type.newInstance();
+                
+                Node node = nodeList.item(i);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                new PrettyPrinter(new PrintWriter(baos)).print(node);
+//System.err.println(baos.toString(encoding));
+    
+                Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
+                for (Field field : targetFields) {
+                    String subXpath = Target.Util.getValue(field);
+                    InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
+                    in.setEncoding(encoding);
+                    String text = (String) xPath.evaluate(subXpath, is, XPathConstants.STRING);
+                    BeanUtil.setFieldValue(field, bean, text.trim());
+                }
+                
+                eachHandler.exec(bean);
+            }
+
+        } catch (XPathExpressionException e) {
+            throw new IllegalArgumentException(e);
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        } catch (InstantiationException e) {
+            throw new IllegalStateException(e);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
 

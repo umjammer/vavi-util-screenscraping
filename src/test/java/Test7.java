@@ -81,8 +81,6 @@ System.err.println("sentence: " + sentence);
 
     /** */
     public static void main(String[] args) throws Exception {
-        System.setProperty("java.protocol.handler.pkgs", "vavi.net.www.protocol");
-
         Test7 app = new Test7();
         PropsEntity.Util.bind(app);
         Scanner scanner = new Scanner(new File(args[0]));

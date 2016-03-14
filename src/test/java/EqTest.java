@@ -21,7 +21,6 @@ import vavi.math.TriDecimal;
 import vavix.util.screenscrape.annotation.InputHandler;
 import vavix.util.screenscrape.annotation.Target;
 import vavix.util.screenscrape.annotation.WebScraper;
-import vavix.util.screenscrape.annotation.XPathParser;
 
 
 /**
@@ -38,7 +37,7 @@ public class EqTest {
         client.setJavaScriptEnabled(false);
     }
 
-    /**  */
+    /** */
     public static class MyInput implements InputHandler<Reader> {
         private String cache;
         /**
@@ -144,7 +143,6 @@ System.out.println("  \"url\": \"" + resultAnchor.getHrefAttribute() + "\", ");
     }
 
     @WebScraper(input = MyInput.class,
-                parser = XPathParser.class,
                 isCollection = false,
                 encoding = "UTF-8")
     public static class Result {

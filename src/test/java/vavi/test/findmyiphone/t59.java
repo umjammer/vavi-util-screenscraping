@@ -27,6 +27,9 @@ import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
 
+import vavi.util.properties.annotation.Property;
+import vavi.util.properties.annotation.PropsEntity;
+
 
 /**
  * t59. find my iphone [obsolete]
@@ -34,13 +37,20 @@ import org.codehaus.jackson.JsonParser;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2012/08/10 umjammer initial version <br>
  */
+@PropsEntity(url = "file://${user.dir}/local.properties")
 public class t59 {
-
+    @Property(name = "java.test.59.email")
+    String email;
+    @Property(name = "java.test.59.password")
+    String password;
     /**
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        List<JsonNode> locations = getDeviceLocations("vavivavi@yahoo.co.jp", "varl8824");
+        t59 app = new t59();
+        PropsEntity.Util.bind(app);
+        System.exit(0);
+        List<JsonNode> locations = getDeviceLocations(app.email, app.password);
         for (JsonNode node : locations) {
             System.err.println(node);
         }

@@ -25,7 +25,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 
 import vavi.util.CharNormalizerJa;
 import vavi.util.LevenshteinDistance;
-import vavix.util.screenscrape.annotation.EachHandler;
+
 import vavix.util.screenscrape.annotation.HtmlXPathParser;
 import vavix.util.screenscrape.annotation.InputHandler;
 import vavix.util.screenscrape.annotation.SaxonXPathParser;
@@ -422,22 +422,20 @@ public class iTunes {
     }
     
     static void processByWebScraper(String[] args) throws Exception {
-        WebScraper.Util.foreach(Title.class, new EachHandler<Title>() {
-            public void exec(Title each) {
-                try {
-                    if (each.location.startsWith("file:///Users/nsano/Music/iTunes/iTunes%20Music/") &&
-                        !each.location.startsWith("file:///Users/nsano/Music/iTunes/iTunes%20Music/Podcasts/") &&
-                        !each.location.endsWith(".pdf")
-                        ) {
-                        doEach(each);
-                    } else {
-                        System.err.println("not music: " + each.location);
-                    }
-//                      Thread.sleep(1000);
-                } catch (Exception e) {
-                    e.printStackTrace(System.err);
-                    System.err.println("error: " + each);
+        WebScraper.Util.foreach(Title.class, (each) -> {
+            try {
+                if (each.location.startsWith("file:///Users/nsano/Music/iTunes/iTunes%20Music/") &&
+                    !each.location.startsWith("file:///Users/nsano/Music/iTunes/iTunes%20Music/Podcasts/") &&
+                    !each.location.endsWith(".pdf")
+                    ) {
+                    doEach(each);
+                } else {
+                    System.err.println("not music: " + each.location);
                 }
+//                      Thread.sleep(1000);
+            } catch (Exception e) {
+                e.printStackTrace(System.err);
+                System.err.println("error: " + each);
             }
         }, args);
     }
