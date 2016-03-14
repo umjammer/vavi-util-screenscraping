@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>vavi</groupId>
+  <artifactId>vavi-util-screenscraping</artifactId>
+  <name>Vavi Screen Scraping API</name>
+  <organization>
+    <name></name>
+  </organization>
+  <version>1.0.3</version>
+  <url>https://github.com/umjammer/vavi-util-screenscraping</url>
+  <description>1.0.3
+
+    move pretty printer to vavi-commons, vavi-commons-sandbox
+
+1.0.2
+
+    add url replacing with args
+    deprecate vavi.net.webquery
+    deprecate vavi.util.screenscrape
+    deprecate vavi.xml.util.jxpath.html
+
+TODO
+
+    move PrettyPrinter to vavi-commons
+    add @Depricate to depricated classes
+    @WebScraper#encoding()</description>
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>Temporary Staging Repository</name>
+      <url>file://${project.build.directory}/mvn-repo</url>
+    </repository>
+  </distributionManagement>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.8.1</version>
+        <configuration>
+          <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.11</version>
+        <configuration>
+          <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
+          <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
+          <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
+          <branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
+          <includes><include>**/*</include></includes>
+          <repositoryName>vavi-util-screenscraping</repositoryName>      <!-- github repo name -->
+          <repositoryOwner>umjammer</repositoryOwner>    <!-- github username  -->
+          <merge>true</merge>
+        </configuration>
+        <executions>
+          <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+          <execution>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <generatedSourcesDirectory>target/generated-sources/cxf</generatedSourcesDirectory>
+        </configuration>
+        <version>3.3</version>
+      </plugin>
+    </plugins>
+  </build>
+  <repositories>
+    <repository>
+      <id>vavi-commons-mvn-repo</id>
+      <url>https://raw.github.com/umjammer/vavi-commons/mvn-repo/</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>vavi-math-mvn-repo</id>
+      <url>https://raw.github.com/umjammer/vavi-math/mvn-repo/</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>umjammer-mvn-repo</id>
+      <url>https://raw.github.com/umjammer/umjammer/mvn-repo/</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+  <dependencies>
+  	<dependency>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<version>4.5</version>
+  		<scope>test</scope>
+  		<optional>false</optional>
+  	</dependency>
+    <dependency>
+    	<groupId>vavi</groupId>
+    	<artifactId>vavi-commons</artifactId>
+    	<version>1.0.5</version>
+    </dependency>
+    <dependency>
+        <groupId>vavi</groupId>
+        <artifactId>vavi-commons-sandbox</artifactId>
+        <version>0.3.2</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>vavi</groupId>
+    	<artifactId>vavi-commons-net</artifactId>
+    	<version>1.0.0</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>vavi</groupId>
+        <artifactId>vavi-math</artifactId>
+        <version>0.0.1</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>jaxen</groupId>
+    	<artifactId>jaxen</artifactId>
+    	<version>1.1.1</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.hibernate</groupId>
+    	<artifactId>jtidy-r8</artifactId>
+    	<version>21122004</version>
+    	<optional>false</optional>
+    </dependency>
+    <dependency>
+    	<groupId>commons-jxpath</groupId>
+    	<artifactId>commons-jxpath</artifactId>
+    	<version>1.3</version>
+    	<optional>false</optional>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-api</artifactId>
+        <version>2.2</version>
+        <scope>test</scope>
+        <optional>false</optional>
+    </dependency>
+        <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-transports-http</artifactId>
+          <version>2.2</version>
+        <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-frontend-simple</artifactId>
+          <version>2.2</version>
+        <scope>test</scope>
+        </dependency>
+    <dependency>
+    	<groupId>net.sourceforge.htmlunit</groupId>
+    	<artifactId>htmlunit</artifactId>
+    	<version>2.10</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>net.sf.saxon</groupId>
+    	<artifactId>Saxon-HE</artifactId>
+    	<version>9.7.0-3</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-core-asl</artifactId>
+      <version>1.9.9</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>1.9.9</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.nekohtml</groupId>
+      <artifactId>nekohtml</artifactId>
+      <version>1.9.16</version>
+    </dependency>
+  </dependencies>
+  <properties>
+    <!-- github server corresponds to entry in ~/.m2/settings.xml -->
+    <github.global.server>github</github.global.server>
+  </properties>
+  <scm>
+    <url>https://github.com/umjammer/vavi-util-screenscraping</url>
+  </scm>
+  <issueManagement>
+    <url>https://github.com/umjammer/vavi-util-screenscraping/issues</url>
+  </issueManagement>
+</project>
