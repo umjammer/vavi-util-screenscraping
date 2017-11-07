@@ -16,8 +16,8 @@ import java.net.URLConnection;
 
 
 /**
- * DefaultInputHandler. 
- * 
+ * DefaultInputHandler.
+ *
  * {@link WebScraper} で指定された {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
  * @see {@link DefaultInputHandler#dealUrlAndArgs(String, String...)}
  *
@@ -28,7 +28,7 @@ public class DefaultInputHandler implements InputHandler<Reader> {
 
     /**
      * CAUTION!!! Reader が <code>-Dfile.encoding</code> に依存しているので注意
-     * 
+     *
      * @param args 0: url, 1, 2, 3...: {@link WebScraper.Util#scrape(Class, String...)}'s args or
      *             {@link WebScraper.Util#foreach(Class, EachHandler, String...)}'s args.
      */
@@ -44,11 +44,11 @@ public class DefaultInputHandler implements InputHandler<Reader> {
 
     /**
      * replaces "{args_index}" in url.
-     * 
+     *
      * <pre>
      *  ex. url: "http://foo.com?bar={0}&buz={1}"
      *      args: { "VAVI", "UMJAMMER" }
-     *      
+     *
      *      result: "http://foo.com?bar=VAVI&buz=UMJAMMER"
      * </pre>
      * @return [ url, args... ]

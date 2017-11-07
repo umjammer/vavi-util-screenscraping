@@ -158,7 +158,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
 //        String encoding = null;
 //System.err.println(StringUtil.paramString(is));
 //
-//        Reader reader = null; 
+//        Reader reader = null;
 //        InputStream in = is.getByteStream();
 //        if (in == null) {
 //            reader = is.getCharacterStream();

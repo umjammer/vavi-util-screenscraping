@@ -8,7 +8,7 @@ package vavi.apps.trader;
 
 
 /**
- * Trader. 
+ * Trader.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 051125 nsano initial version <br>
@@ -17,7 +17,7 @@ public class Trader {
 
     /** */
     public Trader() {
-        
+
     }
 
 }

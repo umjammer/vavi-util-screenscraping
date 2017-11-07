@@ -15,7 +15,7 @@ import org.apache.commons.jxpath.xml.XMLParser;
 
 /**
  * HtmlDocumentContainer.
- * 
+ *
  * @author <a href=mailto:vavivavi@yahoo.co.jp>Naohide Sano</a> (nsano)
  * @version 0.00 040311 nsano initial version <br>
  */
@@ -43,7 +43,7 @@ public class HtmlDocumentContainer implements Container {
      * @param stream is a stream for an XML file. Use getClass().getResource
      * (resourceName) to load XML from a resource file.
      *
-     * @param encoding 
+     * @param encoding
      */
     public HtmlDocumentContainer(InputStream stream, String encoding) {
         this.stream = stream;

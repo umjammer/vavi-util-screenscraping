@@ -10,16 +10,16 @@ import java.util.List;
 
 
 /**
- * Parser. 
+ * Parser.
  *
  * @param <I> input type (Reader etc.)
  * @param <T> output type (fields to be injected)
- * 
+ *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>
  */
 public interface Parser<I, T> {
-    
+
     /**
      * @return list of scraped
      */

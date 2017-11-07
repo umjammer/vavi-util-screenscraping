@@ -27,7 +27,7 @@ import vavix.util.screenscrape.annotation.XPathParser;
 
 
 /**
- * Jasrac. 
+ * Jasrac.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/02 nsano initial version <br>
@@ -124,7 +124,7 @@ System.err.println("last page: " + sb.length());
             return sb.toString();
         }
     }
-    
+
     /** */
     public static class MyInput2 implements InputHandler<Reader> {
         private String cache;
@@ -163,7 +163,7 @@ System.err.println("last page: " + sb.length());
             return sb.toString();
         }
     }
-    
+
     static String getComposer(String url) throws IOException {
         List<Composer> cs = WebScraper.Util.scrape(Composer.class, url);
         StringBuilder lyrics_ = new StringBuilder();
@@ -192,7 +192,7 @@ System.err.println("last page: " + sb.length());
     }
 
     /**
-     * @param args 0: artist, 1: title 
+     * @param args 0: artist, 1: title
      */
     public static void main(String[] args) throws Exception {
         List<TitleUrl> urls = WebScraper.Util.scrape(TitleUrl.class, args);

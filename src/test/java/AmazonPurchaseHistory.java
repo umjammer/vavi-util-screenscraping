@@ -32,7 +32,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
 
 
 /**
- * AmazonPurchaseHistory. 
+ * AmazonPurchaseHistory.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2016/03/12 umjammer initial version <br>
@@ -78,7 +78,7 @@ System.err.println(page0.getUrl());
                 HtmlInput input2 = (HtmlInput) page0.getHtmlElementById("ap_password");
                 input2.setValueAttribute(password);
                 HtmlInput input3 = (HtmlInput) page0.getHtmlElementById("signInSubmit");
-                
+
                 page0 = input3.click();
 System.err.println("-----------------------------------------------------------------------------------");
             }
@@ -89,7 +89,7 @@ System.err.println("------------------------------------------------------------
             cache = page0.asXml();
 //System.err.println(cache);
             try {
-                System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");    
+                System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");
                 XPath xPath = XPathFactory.newInstance().newXPath();
                 InputSource in = new InputSource(new StringReader(cache));
                 String xpath = "//*[@id='controlsContainer']/DIV[2]/SPAN[2]/SPAN/text()";
@@ -103,7 +103,7 @@ System.err.println("------------------------------------------------------------
             } catch (XPathExpressionException e) {
                 throw new IllegalStateException(e);
             }
-            
+
             return new StringReader(cache);
         }
     }

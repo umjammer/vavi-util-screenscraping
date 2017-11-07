@@ -17,7 +17,7 @@ import vavix.util.screenscrape.StringSimpleXPathScraper;
 
 
 /**
- * getGlobalIpTest. 
+ * getGlobalIpTest.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>

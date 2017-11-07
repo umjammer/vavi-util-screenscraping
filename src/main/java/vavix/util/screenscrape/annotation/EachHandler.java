@@ -8,7 +8,7 @@ package vavix.util.screenscrape.annotation;
 
 
 /**
- * EachHandler. 
+ * EachHandler.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/07 nsano initial version <br>

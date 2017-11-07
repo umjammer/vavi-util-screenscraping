@@ -28,7 +28,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
     }
 
     /**
-     * 
+     *
      */
     public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
         return new DocumentBuilderImpl(this);

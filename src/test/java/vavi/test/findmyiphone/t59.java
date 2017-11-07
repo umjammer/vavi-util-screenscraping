@@ -33,7 +33,7 @@ import vavi.util.properties.annotation.PropsEntity;
 
 /**
  * t59. find my iphone [obsolete]
- * 
+ *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2012/08/10 umjammer initial version <br>
  */

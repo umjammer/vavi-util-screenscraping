@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 
 
 /**
- * HttpQueryHandler. 
+ * HttpQueryHandler.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 080219 nsano initial version <br>
@@ -29,14 +29,14 @@ public class HttpQueryHandler implements QueryHandler {
         try {
             if (doInput == true && doOutput == false) {
                 StringBuilder sb = new StringBuilder();
-    
+
                 for (Entry<String, String> entry : parameters.entrySet()) {
                     sb.append(sb.length() == 0 ? '?' : '&');
                     sb.append(entry.getKey());
                     sb.append('=');
                     sb.append(entry.getValue());
                 }
-    
+
                 Query query = new Query();
                 query.setUrl(new URL(url));
                 return query;

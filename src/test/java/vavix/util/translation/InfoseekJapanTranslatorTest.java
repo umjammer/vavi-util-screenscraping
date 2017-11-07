@@ -13,7 +13,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * InfoseekJapanTranslatorTest. 
+ * InfoseekJapanTranslatorTest.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2016/02/24 umjammer initial version <br>
@@ -28,7 +28,7 @@ public class InfoseekJapanTranslatorTest {
     //----
 
     /**
-     * @param args [0] Japanese sentence, [1] English sentence 
+     * @param args [0] Japanese sentence, [1] English sentence
      */
     public static void main(String[] args) throws IOException {
 

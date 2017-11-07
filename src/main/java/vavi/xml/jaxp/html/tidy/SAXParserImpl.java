@@ -14,7 +14,7 @@ import org.xml.sax.SAXException;
 
 /**
  * This implements JAXP parser interface for Tidy HTML parser.
- * 
+ *
  * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
  * @version 0.00 031103 nsano initial version <br>
  */
@@ -28,7 +28,7 @@ public class SAXParserImpl extends SAXParser {
     SAXParserImpl() throws SAXException, ParserConfigurationException {
         parser = new org.cyberneko.html.parsers.SAXParser(); // TODO use Tidy
     }
-    
+
     /** */
     public org.xml.sax.Parser getParser() throws SAXException {
         return parser;

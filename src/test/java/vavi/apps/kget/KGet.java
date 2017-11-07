@@ -32,7 +32,7 @@ import vavix.util.screenscrape.Scraper;
 
 /**
  * KGet Downloader.
- * 
+ *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 060922 nsano initial version <br>
  */
@@ -75,14 +75,14 @@ Debug.printStackTrace(e);
          * /kashi.swf?sn=27f8851e254bd313506f3ade935b3f3b/27574
          * /showKashi.asp?sn=27f8851e254bd313506f3ade935b3f3b/27574
          * </pre>
-         * @param args 
+         * @param args
          */
         public File scrape(String[] args) {
             try {
                 String artist = URLEncoder.encode(args[0], encoding);
                 String title = URLEncoder.encode(args[1], encoding);
 
-                // 1. 
+                // 1.
                 String searchUrl = String.format(searchUrlFormat, 0, artist, title, "", "");
 System.err.println("search: " + searchUrl);
 
@@ -109,12 +109,12 @@ System.err.println("lyricsUrl: " + lyricsUrl);
                     throw new IllegalArgumentException(args[0] + "/" + args[1] + " not found.");
                 }
 
-                // 2. 
+                // 2.
                 get = new GetMethod(lyricsUrl);
                 get.setRequestHeader("User-Agent", userAgent);
                 status = httpClient.executeMethod(get);
                 if (status == 302) {
-                    // 
+                    //
                     lyricsUrl = get.getResponseHeader("Location").getValue();
 System.err.println("redirectUrl: " + lyricsUrl);
                     get = new GetMethod(lyricsUrl);
@@ -135,7 +135,7 @@ System.err.println("target: " + target);
                     throw new IllegalArgumentException(args[0] + "/" + args[1] + " not found.");
                 }
 
-                // 
+                //
                 String sn = null;
                 String[] argsElements = target.substring(target.indexOf('?') + 1).split("&");
                 for (String argsElement : argsElements) {
@@ -176,13 +176,13 @@ System.err.println("target: " + tagetUrl);
                 }
 System.err.println("lyrics:\n" + lyrics);
 
-                // 
+                //
                 File file = File.createTempFile("kget", ".txt");
                 FileOutputStream out = new FileOutputStream(file);
                 out.write(lyrics.getBytes());
                 out.flush();
                 out.close();
-                
+
                 return file;
             } catch (Exception e) {
                 throw new IllegalStateException(e);
@@ -191,7 +191,7 @@ System.err.println("lyrics:\n" + lyrics);
     }
 
     /**
-     * @param args 0: Yahoo! url for lyrics 
+     * @param args 0: Yahoo! url for lyrics
      */
     public static void main(String[] args) throws Exception {
         String artist = args[0];

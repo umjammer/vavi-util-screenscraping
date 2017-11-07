@@ -22,7 +22,7 @@ import org.xml.sax.InputSource;
 
 
 /**
- * Test1. 
+ * Test1.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2011/02/10 umjammer initial version <br>
@@ -32,11 +32,11 @@ public class Test1 {
     /** */
     public static void main(String[] args) throws Exception {
 // これをやると下で xPath Exception @ Eclipse
-// System.setProperty("javax.xml.parsers.SAXParserFactory", "vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl");    
+// System.setProperty("javax.xml.parsers.SAXParserFactory", "vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl");
 
-        System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "net.sf.saxon.xpath.XPathFactoryImpl");    
+        System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "net.sf.saxon.xpath.XPathFactoryImpl");
         XPath xPath = XPathFactory.newInstance().newXPath();
-        
+
         URLConnection connection = new URL("file:///Users/nsano/Music/iTunes/iTunes%20Music%20Library.xml").openConnection();
         InputStream is = connection.getInputStream();
         Reader reader = new BufferedReader(new InputStreamReader(is));
@@ -54,7 +54,7 @@ System.err.println(c + " bytes");
         InputSource in = new InputSource(reader);
 
         String xpath = "/plist/dict/dict/dict";
-        
+
         @SuppressWarnings("unchecked")
         List<NodeInfo> nodeList = (List<NodeInfo>) xPath.evaluate(xpath, in, XPathConstants.NODESET);
 System.err.println("nodeList: " + nodeList.size());

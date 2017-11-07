@@ -13,7 +13,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
 
 
 /**
- * list blog by category and page no. 
+ * list blog by category and page no.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2016/03/12 umjammer initial version <br>

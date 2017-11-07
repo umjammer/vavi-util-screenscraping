@@ -66,8 +66,8 @@ Debug.printStackTrace(e);
         private HttpClient httpClient = new HttpClient();
 
         /**
-         * xpath <code>"//DIV[@ID='interactDiv']/SCRIPT"</code> 
-         * tag 
+         * xpath <code>"//DIV[@ID='interactDiv']/SCRIPT"</code>
+         * tag
          */
         StringSimpleXPathScraper myStreamXPathScraper = new StringSimpleXPathScraper(videoXpath) {
             Pattern pattern = Pattern.compile(videoTagRregex);
@@ -85,7 +85,7 @@ Debug.printStackTrace(e);
         };
 
         /**
-         * @param url YouTube  URL 
+         * @param url YouTube  URL
          */
         public File scrape(URL url) {
             try {
@@ -99,7 +99,7 @@ Debug.printStackTrace(e);
         File pattern1(URL url) throws IOException {
             String videoId;
 
-            // videoId 
+            // videoId
             Pattern pattern = Pattern.compile(urlVideoIdRegex);
             Matcher matcher = pattern.matcher(url.toString());
             if (matcher.find()) {
@@ -108,7 +108,7 @@ Debug.printStackTrace(e);
                 throw new IllegalArgumentException("no video id found");
             }
 
-            // tag 
+            // tag
             String watchUrl = String.format(watchUrlFormat, videoId);
 System.err.println("watch: " + watchUrl);
             GetMethod get = new GetMethod(watchUrl);
@@ -125,13 +125,13 @@ System.err.println("watch: " + watchUrl);
 
             get.releaseConnection();
 
-            // flv 
+            // flv
             String getUrl = String.format(getUrlFormat, videoId, tag);
 System.err.println("getUrl: " + getUrl);
             get = new GetMethod(getUrl);
             status = httpClient.executeMethod(get);
             if (status == 303) {
-                // 
+                //
                 getUrl = get.getResponseHeader("Location").getValue();
 System.err.println("redirectUrl: " + getUrl);
                 get = new GetMethod(getUrl);
@@ -145,10 +145,10 @@ System.err.println(header.getName() + "=" + header.getValue());
                 }
             }
 
-            // flv 
+            // flv
             InputStream is = get.getResponseBodyAsStream();
             int length = Integer.parseInt(get.getResponseHeader("Content-Length").getValue());
-            ReadableByteChannel inputChannel = Channels.newChannel(is); 
+            ReadableByteChannel inputChannel = Channels.newChannel(is);
 
             File file = File.createTempFile("youtube", ".flv");
             FileOutputStream out = new FileOutputStream(file);
@@ -166,7 +166,7 @@ System.err.println("downloading... size: " + length);
         File pattern2(URL url) throws IOException {
             String videoId;
 
-            // videoId 
+            // videoId
             Pattern pattern = Pattern.compile(urlVideoIdRegex);
             Matcher matcher = pattern.matcher(url.toString());
             if (matcher.find()) {
@@ -175,14 +175,14 @@ System.err.println("downloading... size: " + length);
                 throw new IllegalArgumentException("no video id found");
             }
 
-            // flv 
+            // flv
             String getUrl = String.format(getUrlFormat, videoId);
 System.err.println("getUrl: " + getUrl);
             GetMethod get = new GetMethod(getUrl);
             int status = httpClient.executeMethod(get);
             while (status == 302) {
 System.err.println("status2: " + status);
-                // 
+                //
                 getUrl = get.getResponseHeader("Location").getValue();
 System.err.println("redirectUrl: " + getUrl);
                 get = new GetMethod(getUrl);
@@ -199,7 +199,7 @@ System.err.println(header.getName() + "=" + header.getValue());
             // flv
             InputStream is = get.getResponseBodyAsStream();
             int length = Integer.parseInt(get.getResponseHeader("Content-Length").getValue());
-            ReadableByteChannel inputChannel = Channels.newChannel(is); 
+            ReadableByteChannel inputChannel = Channels.newChannel(is);
 
             File file = File.createTempFile("youtube", ".flv");
             FileOutputStream out = new FileOutputStream(file);

@@ -11,7 +11,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
 
 
 /**
- * GoogleSuggest. 
+ * GoogleSuggest.
  *
  * @see "http://so-zou.jp/web-app/tech/web-api/google/suggest/"
  * @see "http://blog.shuffleee.com/1352/"

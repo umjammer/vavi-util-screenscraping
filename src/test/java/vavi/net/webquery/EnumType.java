@@ -3,12 +3,12 @@
  *
  * Programmed by Naohide Sano
  */
- 
+
 package vavi.net.webquery;
 
 
 /**
- * EnumType. 
+ * EnumType.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 080212 nsano initial version <br>

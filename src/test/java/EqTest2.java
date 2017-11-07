@@ -22,7 +22,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
 
 
 /**
- * EqTest2. 
+ * EqTest2.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2015/11/06 umjammer initial version <br>
@@ -199,7 +199,7 @@ System.out.println("  \"url\": \"" + resultAnchor.getHrefAttribute() + "\", ");
         "00000000000000000020",
         "00000000000000000001",
         "00000000000000000002",
-        */      
+        */
     };
 
     /**

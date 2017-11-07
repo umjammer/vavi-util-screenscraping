@@ -63,7 +63,7 @@ public class MonexURLScraper extends ApacheURLScraper<String> {
             if (status != 200) {
                 throw new IllegalStateException("unexpected result: " + status);
             }
-            // Cookie: 
+            // Cookie:
             // MenuColor=0,80;
             // custom_num=11+22+0+49+31,clr;
             // loginmode=frm;

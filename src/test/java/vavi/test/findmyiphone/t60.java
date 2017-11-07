@@ -24,7 +24,7 @@ import org.codehaus.jackson.node.ObjectNode;
 
 /**
  * t60. find my iphone
- * 
+ *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2012/08/10 umjammer initial version <br>
  */
@@ -40,7 +40,7 @@ public class t60 {
     private String username;
     private String password;
 
-    /** 
+    /**
      * @param username iCloud account
      * @param password iCloud password
      */
@@ -124,7 +124,7 @@ System.err.println(this.partition);
             device.deviceClass = content.get("deviceClass").getTextValue();
             device.chargingStatus = content.get("batteryStatus").getTextValue();
             device.batteryLevel = content.get("batteryLevel").getDoubleValue();
-    
+
             devices.put(device.name, device);
             System.err.println(device);
         }

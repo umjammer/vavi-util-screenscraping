@@ -118,7 +118,7 @@ abstract class AbstractApacheHttpScraper<I, O> extends AbstractHttpScraper<I, O>
     }
 
     /** */
-    protected Cookie[] cookies; 
+    protected Cookie[] cookies;
 
     /** to application */
     public Cookie[] getCookies() {

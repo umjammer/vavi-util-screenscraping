@@ -17,7 +17,7 @@ import org.xml.sax.InputSource;
 
 /**
  * Java SE XPath で切り出す Scraper です。
- * 
+ *
  * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
  * @version 0.00 050909 nsano initial version <br>
  */
@@ -56,7 +56,7 @@ public class StringI18nSimpleXPathScraper extends SimpleXPathScraper<String> {
     // ----
 
     /**
-     * @param args 0: url, 1: xpath 
+     * @param args 0: url, 1: xpath
      */
     public static void main(String[] args) throws Exception {
         InputStream is = StringI18nSimpleXPathScraper.class.getResourceAsStream(args[0]);

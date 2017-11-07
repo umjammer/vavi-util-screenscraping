@@ -23,7 +23,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
 
 
 /**
- * CyberSyndromeProxyServerDao. 
+ * CyberSyndromeProxyServerDao.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 071004 nsano initial version <br>
@@ -58,7 +58,7 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
                 String[] data = address.split(":");
                 hostName = data[0];
             }
-            return hostName; 
+            return hostName;
         }
         public int getPort() {
             if (port == 0) {

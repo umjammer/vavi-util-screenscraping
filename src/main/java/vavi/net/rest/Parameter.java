@@ -16,7 +16,7 @@ import vavi.beans.BeanUtil;
 
 
 /**
- * Parameter. 
+ * Parameter.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 070224 nsano initial version <br>
@@ -39,7 +39,7 @@ public @interface Parameter {
     String name() default "";
 
     /**
-     * TODO アノテーションがメソッド指定の場合 
+     * TODO アノテーションがメソッド指定の場合
      */
     class Util {
 
@@ -47,7 +47,7 @@ public @interface Parameter {
         }
 
         /**
-         * 
+         *
          * @param field
          * @param bean
          * @param parameter
@@ -62,7 +62,7 @@ public @interface Parameter {
         }
 
         /**
-         * 
+         *
          * @param field
          * @param bean
          * @param parameter
@@ -73,7 +73,7 @@ public @interface Parameter {
             Class<?> fieldClass = field.getType();
             Object fieldValue = BeanUtil.getFieldValue(field, bean);
             if (Formatted.Util.isFormatted(field)) {
-                return Formatted.Util.getFieldValueAsString(field, fieldValue); 
+                return Formatted.Util.getFieldValueAsString(field, fieldValue);
             } else {
                 if (fieldClass.isEnum() && Enumerated.Util.isEnumetated(field)) {
                     return Enumerated.Util.getFieldValueAsString(field, Enum.class.cast(fieldValue));

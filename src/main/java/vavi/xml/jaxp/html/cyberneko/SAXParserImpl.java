@@ -27,8 +27,8 @@ import org.xml.sax.XMLReader;
 /**
  * This implements JAXP parser interface for cyberneko HTML parser.
  *
- * @author	<a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
- * @version	0.00	031103	nsano	initial version <br>
+ * @author    <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
+ * @version    0.00    031103    nsano    initial version <br>
  */
 @SuppressWarnings(value="deprecation")
 public class SAXParserImpl extends SAXParser {
@@ -40,7 +40,7 @@ public class SAXParserImpl extends SAXParser {
     SAXParserImpl() throws SAXException, ParserConfigurationException {
         parser = new org.cyberneko.html.parsers.SAXParser();
     }
-    
+
     /** */
     public org.xml.sax.Parser getParser() throws SAXException {
         return parser;

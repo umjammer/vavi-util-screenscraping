@@ -22,7 +22,7 @@ import vavi.beans.BeanUtil;
 
 
 /**
- * Ignored. 
+ * Ignored.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 070224 nsano initial version <br>
@@ -41,7 +41,7 @@ public @interface Ignored {
     String when() default "";
 
     /**
-     * TODO アノテーションがメソッド指定の場合 
+     * TODO アノテーションがメソッド指定の場合
      */
     static class Util {
 

@@ -34,7 +34,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
 
 
 /**
- * iTunes. 
+ * iTunes.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/04 nsano initial version <br>
@@ -68,7 +68,7 @@ public class iTunes {
             return sb.toString();
         }
     }
-    
+
     static WebClient client = new WebClient(BrowserVersion.FIREFOX_10);
 
     static {
@@ -111,7 +111,7 @@ public class iTunes {
             HtmlInput inputA = form1.getInputByName("IN_ARTIST_NAME1");
             inputA.setValueAttribute(artist);
             HtmlSelect selectA = form1.getSelectByName("IN_ARTIST_NAME_OPTION1");
-            selectA.setSelectedAttribute("3", true); // 0:前方一致, 1:後方一致, 2:中間一致 3:完全一致 
+            selectA.setSelectedAttribute("3", true); // 0:前方一致, 1:後方一致, 2:中間一致 3:完全一致
             HtmlInput button1 = form1.getInputByName("CMD_SEARCH");
 
             HtmlPage page3 = button1.click();
@@ -140,7 +140,7 @@ public class iTunes {
             return sb.toString();
         }
     }
-    
+
     /** 作詞、作曲詳細 (単品) */
     public static class MyInput2 implements InputHandler<Reader> {
         private String cache;
@@ -179,7 +179,7 @@ public class iTunes {
             return sb.toString();
         }
     }
-    
+
     /** 作品名で検索 */
     public static class MyInput3 implements InputHandler<Reader> {
         private String cache;
@@ -333,7 +333,7 @@ public class iTunes {
             return sb.toString();
         }
     }
-    
+
     public static String capitalize(String s) {
         if (s.length() == 0) {
             return s;
@@ -415,12 +415,12 @@ public class iTunes {
     }
 
     /**
-     * @param args 0: artist, 1: title 
+     * @param args 0: artist, 1: title
      */
     public static void main(String[] args) throws Exception {
         processByWebScraper(args);
     }
-    
+
     static void processByWebScraper(String[] args) throws Exception {
         WebScraper.Util.foreach(Title.class, (each) -> {
             try {
@@ -442,12 +442,12 @@ public class iTunes {
 
     // TODO la, un, los
     static final Pattern normalizeArticlePattern = Pattern.compile("(An|A|The) (.*)");
-    
+
     // TODO "...
     static final Pattern normalizeNamePattern = Pattern.compile("(.*)(feat.*|[~〜].+|[-ー].+|[\\/／].+|[\\(（].+)");
 
     /**
-     * main 
+     * main
      */
     static void doEach(Title each) throws IOException {
         // SPECIAL, exclude speed leaning
@@ -469,7 +469,7 @@ public class iTunes {
         // 2. re-scrape by album artist, name
         String normalizedArtist = each.artist;
         if (each.albumArtist != null && !each.albumArtist.isEmpty()) {
-            normalizedArtist = each.albumArtist; 
+            normalizedArtist = each.albumArtist;
             List<TitleUrl> urls2 = WebScraper.Util.scrape(TitleUrl.class, normalizedArtist, each.name);
             if (urls2.size() > 0) {
                 System.out.println("RESULTa\t" + each + getComposer(urls2.get(0).url));
@@ -511,7 +511,7 @@ public class iTunes {
                 }
             }
         }
-        
+
         // 5. by name only
         List<TitleUrl3> url3s = WebScraper.Util.scrape(TitleUrl3.class, normalizedName);
         int cn = 0;
@@ -530,7 +530,7 @@ public class iTunes {
             }
             return;
         }
-        
+
         // at last
         if (ca == 0) {
             System.out.println("NONE\t" + each);

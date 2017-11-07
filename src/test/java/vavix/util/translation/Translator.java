@@ -12,7 +12,7 @@ import java.util.Locale;
 
 /**
  * 双方向翻訳機のインターフェースです。
- * 
+ *
  * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
  * @version 0.00 030225 nsano initial version <br>
  *          0.01 030226 nsano be interface <br>

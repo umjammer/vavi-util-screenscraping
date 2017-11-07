@@ -13,7 +13,7 @@ import java.util.Map;
 
 
 /**
- * Query. 
+ * Query.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 080220 nsano initial version <br>
@@ -26,7 +26,7 @@ public class Query {
 
     /** */
     private Map<String,List<String>> headerFields;
-    
+
     /** */
     private Map<String,List<String>> requestProperties;
 

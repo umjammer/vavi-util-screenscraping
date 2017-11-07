@@ -28,8 +28,8 @@ import vavix.util.screenscrape.StringI18nSimpleXPathScraper;
 
 
 /**
- * Google の機械翻訳を利用する翻訳機です。 
- * 
+ * Google の機械翻訳を利用する翻訳機です。
+ *
  * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
  * @version 0.00 071002 nsano initial version <br>
  */
@@ -104,7 +104,7 @@ Debug.println("userAgent: " + userAgent);
     }
 
     /**
-     * @param word use {@link #encoding} when url encoding 
+     * @param word use {@link #encoding} when url encoding
      */
     public String toLocal(String word) throws IOException {
         return translate(word, TO_LOCAL);
@@ -127,7 +127,7 @@ Debug.println("url: " + url);
     }
 
     /**
-     * @param word use {@link #encoding} when url encoding 
+     * @param word use {@link #encoding} when url encoding
      */
     public String toGlobal(String word) throws IOException {
         return translate(word, TO_GLOBAL);
@@ -145,12 +145,12 @@ Debug.println("url: " + url);
         try {
             Properties props = new Properties();
             props.load(clazz.getResourceAsStream(path));
-            
+
             HOST = props.getProperty("host");
             PORT = Integer.parseInt(props.getProperty("port"));
             TO_LOCAL = props.getProperty("file.toLocal");
             TO_GLOBAL = props.getProperty("file.toGlobal");
-            
+
             encoding = props.getProperty("encoding");
 
             url1 = props.getProperty("url1");
@@ -160,7 +160,7 @@ Debug.printStackTrace(e);
             throw new IllegalStateException(e);
         }
     }
-    
+
     /** */
     public Locale getLocalLocale() {
         return Locale.JAPANESE;

@@ -19,7 +19,7 @@ import vavi.net.www.protocol.URLStreamHandlerUtil;
 
 
 /**
- * WebScraper. 
+ * WebScraper.
  * <p>
  * 入力は {@link #url()} を指定するか、 {@link #input()} を指定します。
  * {@link #url()} を指定した場合は {@link DefaultInputHandler} が暗黙的に使用されます。
@@ -31,7 +31,7 @@ import vavi.net.www.protocol.URLStreamHandlerUtil;
  * <p>
  * {@link #input()} がデフォルトの場合 {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
  * </p>
- * 
+ *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 2010/09/30 nsano initial version <br>
  */
@@ -150,7 +150,7 @@ public @interface WebScraper {
             }
 
             //
-            Set<Field> targetFields = new HashSet<>(); 
+            Set<Field> targetFields = new HashSet<>();
 
             for (Field field : type.getDeclaredFields()) {
                 Target target = field.getAnnotation(Target.class);
@@ -173,7 +173,7 @@ public @interface WebScraper {
          * <p>
          * {@link WebScraper#input()} がデフォルトの場合 {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
          * </p>
-         * 
+         *
          * @param type type annotated by {@link WebScraper}
          * @param args parameters for input handler
          * @return List of type objects.
@@ -191,7 +191,7 @@ public @interface WebScraper {
             Parser<I, T> parser = (Parser<I, T>) getParser(type);
             @SuppressWarnings("unchecked")
             InputHandler<I> inputHandler = (InputHandler<I>) getInputHandler(type);
-            
+
             // inputHandler がデフォルトの場合 url が設定されていれば
             // 自動的に url が InputHandler#getInput() の引数に採用される
             String url = WebScraper.Util.getUrl(type);
@@ -206,7 +206,7 @@ public @interface WebScraper {
          * <p>
          * {@link WebScraper#input()} がデフォルトの場合 {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
          * </p>
-         * 
+         *
          * @param type type annotated by {@link WebScraper}
          * @param args parameters for input handler
          * @return List of type objects.
@@ -224,7 +224,7 @@ public @interface WebScraper {
             Parser<I, T> parser = (Parser<I, T>) getParser(type);
             @SuppressWarnings("unchecked")
             InputHandler<I> inputHandler = (InputHandler<I>) getInputHandler(type);
-            
+
             // inputHandler がデフォルトの場合 url が設定されていれば
             // 自動的に url が InputHandler#getInput() の引数に採用される
             String url = WebScraper.Util.getUrl(type);

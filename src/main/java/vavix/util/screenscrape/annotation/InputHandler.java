@@ -10,7 +10,7 @@ import java.io.IOException;
 
 
 /**
- * InputHandler. 
+ * InputHandler.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>
@@ -24,7 +24,7 @@ public interface InputHandler<T> {
      *             の args
      */
     T getInput(String ... args) throws IOException;
-    
+
     /**
      * Converts args.
      * This default method does nothing.

@@ -64,7 +64,7 @@ public class SimpleURLScraper<O> extends AbstractHttpScraper<URL, O> {
     }
 
     /**
-     * @throws IllegalStateException when an error occurs 
+     * @throws IllegalStateException when an error occurs
      */
     public O scrape(URL url) {
         try {
@@ -76,7 +76,7 @@ public class SimpleURLScraper<O> extends AbstractHttpScraper<URL, O> {
 
             errorHandler.handle(connection);
 
-            applyResponseHeaders(connection); 
+            applyResponseHeaders(connection);
 
             O value = scraper.scrape(connection.getInputStream());
 
@@ -100,7 +100,7 @@ e.printStackTrace(System.err);
 
     /** */
     private void applyResponseHeaders(HttpURLConnection connection) {
-        responseHeaders = connection.getHeaderFields(); 
+        responseHeaders = connection.getHeaderFields();
     }
 
     /** */
@@ -113,16 +113,16 @@ e.printStackTrace(System.err);
 
     /** */
     public String getCookie() {
-        List<String> values = responseHeaders.get("Set-Cookie"); 
+        List<String> values = responseHeaders.get("Set-Cookie");
 
-        String cookieValue = null; 
+        String cookieValue = null;
         for (String value : values) {
              if (cookieValue == null) {
                  cookieValue = value;
              } else {
                  cookieValue = cookieValue + ";" + value;
              }
-        } 
+        }
 //Debug.println("cookie: " + cookieValue);
         return cookieValue;
     }

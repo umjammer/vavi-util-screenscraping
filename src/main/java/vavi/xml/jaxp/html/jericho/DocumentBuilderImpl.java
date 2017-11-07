@@ -27,7 +27,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 
 /**
- * DocumentBuilderImpl. 
+ * DocumentBuilderImpl.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 060926 nsano initial version <br>
@@ -66,7 +66,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
             // TODO Auto-generated method stub
             return false;
         }
-        
+
     };
 
     /** */

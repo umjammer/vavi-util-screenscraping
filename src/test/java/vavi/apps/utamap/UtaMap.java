@@ -23,7 +23,7 @@ import vavix.util.screenscrape.Scraper;
 
 /**
  * UtaMap Downloader.
- * 
+ *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 060922 nsano initial version <br>
  */
@@ -60,14 +60,14 @@ Debug.printStackTrace(e);
          * UtaMap
          * "http://music.yimg.jp/bin/sendlyricstext?ArtistId=248066&Id=Y013506"
          * </pre>
-         * @param url UtaMap Yahoo! URL 
+         * @param url UtaMap Yahoo! URL
          */
         public File scrape(URL url) {
             try {
                 String artistId;
                 String lyricsId;
 
-                // videoId 
+                // videoId
                 Pattern pattern = Pattern.compile(urlIdsRegex);
                 Matcher matcher = pattern.matcher(url.toString());
                 if (matcher.find()) {
@@ -77,7 +77,7 @@ Debug.printStackTrace(e);
                     throw new IllegalArgumentException("no suitable url");
                 }
 
-                // tag 
+                // tag
                 String utamapUrl = String.format(utamapUrlFormat, artistId, lyricsId);
 
 System.err.println("utamap: " + utamapUrl);
@@ -88,7 +88,7 @@ System.err.println("utamap: " + utamapUrl);
                     throw new IllegalStateException("unexpected result getting 'utamap': " + status);
                 }
 
-                // 
+                //
                 String result = new String(get.getResponseBody(), "UTF-8").substring(7);
 System.err.println("downloading... size: " + result);
 
@@ -99,7 +99,7 @@ System.err.println("downloading... size: " + result);
                 out.write(result.getBytes());
                 out.flush();
                 out.close();
-                
+
                 return file;
             } catch (IOException e) {
                 throw new IllegalStateException(e);
@@ -108,7 +108,7 @@ System.err.println("downloading... size: " + result);
     }
 
     /**
-     * @param args 0: Yahoo! url for lyrics 
+     * @param args 0: Yahoo! url for lyrics
      */
     public static void main(String[] args) throws Exception {
         String url = args[0];

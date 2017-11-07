@@ -14,13 +14,13 @@ import org.w3c.dom.Element;
 
 
 /**
- * t108_2. 
+ * t108_2.
  *
  * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
  * @version 0.00 050604 nsano initial version <br>
  */
 public class t108_2 {
-    
+
     /** */
     @SuppressWarnings("deprecation")
     public static void main(String[] args) {
@@ -29,28 +29,28 @@ public class t108_2 {
         JXPathContext context = JXPathContext.newContext(docCtr);
 System.out.println("-->" + context.getValue("/a/b/c[@id='0001']")); //「aaa」と表示
         context.setValue("/a/b/c[@id='0006']", "test"); //正常に更新
-        
+
         Document doc1 = (Document) docCtr.getValue();
 System.out.println("### Word doc -- \n" + doc1.getDocumentElement());
-        
+
         // 失敗
-//  	context.createPathAndSetValue("/a/b/c[1]/e", "bbb");
-        
+//      context.createPathAndSetValue("/a/b/c[1]/e", "bbb");
+
         // 成功(1)
         context.createPathAndSetValue("/a/b/c[1]/d", "abcd");
         // 成功(2)
-//  	context.createPathAndSetValue("/a/b/c[@id='0001']/d", "abcd");
-        
+//      context.createPathAndSetValue("/a/b/c[@id='0001']/d", "abcd");
+
         // 成功(3)
         context.setFactory(new DOMFactory());
         context.createPathAndSetValue("/a/b/c[1]/e", "bbb");
-        
+
         Document doc2 = (Document) docCtr.getValue();
 System.out.println("### Word doc -- \n" + doc2.getDocumentElement());
     }
-    
+
     private static class DOMFactory extends AbstractFactory {
-        
+
         public boolean createObject(JXPathContext context,
                                     Pointer pointer,
                                     Object parent,
