@@ -40,7 +40,7 @@ public class Hatena {
             StringBuilder sb = new StringBuilder();
             sb.append(title);
             sb.append(",");
-            sb.append(date);
+            sb.append(date.replaceAll("\\s", ""));
             sb.append(",");
             sb.append(desc);
             return sb.toString();

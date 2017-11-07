@@ -1,3 +1,5 @@
+[![Release](https://jitpack.io/v/umjammer/vavi-util-screenscraping.svg)](https://jitpack.io/#umjammer/vavi-util-screenscraping)
+
 # Screen Scraping Library for Java
 
 ## Introduction
@@ -12,7 +14,6 @@
         @Target(value = "//TABLE//TR/TD[4]/A/text()")
         String title;
         @Target(value = "//TABLE//TR/TD[4]/A/@href")
-
         String url;
     }
     
@@ -33,14 +34,14 @@
  一般化できそう
 
  * [javax.persistence](http://ja.wikipedia.org/wiki/Java_Persistence_API)
- * [CLI](http://code.google.com/p/klab-commons-cli/)
- * [CSV](http://code.google.com/p/klab-commons-csv/)
- * [Properties](http://code.google.com/p/vavi-commons/source/browse/#svn%2Ftrunk%2Fvavi-commons%2Fsrc%2Fmain%2Fjava%2Fvavi%2Futil%2Fproperties%2Fannotation)
+ * [CLI](https://github.com/umjammer/klab-commons-cli/)
+ * [CSV](https://github.com/umjammer/klab-commons-csv/)
+ * [Properties](http://code.google.com/p/vavi-commons/blob/master/src/src/main/java/vavi/util/properties/annotation)
 
  * [Rest]
  * [WebQuery]
 
- * [UPnP](http://code.google.com/p/cyberlink4java2/)
+ * [UPnP](https://github.com/umjammer/cyberlink4java2/)
  
 ## 紆余曲折
 
@@ -48,7 +49,7 @@
 
 まず何も考えずにスクレイピングするプログラムを書いて、リファクタリングをし続けた結果
 
-https://github.com/umjammer/vavi-util-screenscraping/blob/master/src/main/java/vavix/util/screenscrape/Scraper.java
+https://github.com/umjammer/vavi-util-screenscraping/blob/master/src/test/java/vavix/util/screenscrape/Scraper.java
 
 ```java
 public interface Scraper<I, O> {

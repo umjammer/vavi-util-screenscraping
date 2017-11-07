@@ -21,6 +21,7 @@ import vavix.util.screenscrape.annotation.HtmlXPathParser;
 import vavix.util.screenscrape.annotation.Target;
 import vavix.util.screenscrape.annotation.WebScraper;
 
+
 /**
  * Amazon. 
  *
