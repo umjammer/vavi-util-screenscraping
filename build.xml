@@ -16,8 +16,8 @@
          xmlns:artifact="urn:maven-artifact-ant">
 
   <path id="maven-ant-tasks.classpath">
-    <fileset dir="${user.home}/lib/java/maven-ant-tasks">
-      <include name="*.jar" />
+    <fileset dir="${user.home}/lib/java">
+      <include name="maven-ant-tasks*.jar" />
     </fileset>
   </path>
   <typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="urn:maven-artifact-ant"
@@ -25,7 +25,6 @@
 
   <property environment="env"/>
   <property file="local.properties" />
-
   <xmlproperty file="pom.xml" />
 
   <!-- Path Definitions -->
@@ -42,9 +41,10 @@
       <pom refid="maven.project"/>
     </artifact:dependencies>
     <artifact:mvn pom="pom.xml">
-      <arg value="clean"/>
-      <arg value="package"/>
-      <arg value="-Dmaven.test.skip=true"/>
+      <arg value="-q" />
+      <arg value="clean" />
+      <arg value="package" />
+      <arg value="-DskipTests=true" />
     </artifact:mvn>
   </target>
 
@@ -179,7 +179,7 @@
   </target>
 
   <!-- wsdl2java -->
-  <target name="wsdl2java" depends="" description="wsdl2java">
+  <target name="wsdl2java" description="wsdl2java">
     <wsdl2java url="http://www.webservicex.net/TranslateService.asmx?wsdl"
                wsdl="tmp/webservicex-TranslateService.wsdl"
                package="vavi.net.ws.webservicex.translation" />
@@ -194,25 +194,29 @@
                package="vavi.net.ws.webservicex.sendfax" />
   </target>
 
-  <!-- javac -->
-  <target name="compile.ws" depends="prepare" description="コンパイル">
-    <javac debug="on" destdir="${javac.dest}">
-      <classpath refid="cxf.class.path" />
-      <include name="vavi/net/**/*.java" />
-      <include name="TestWS.java" />
-      <include name="SendSMS.java" />
-      <include name="SendFax.java" />
-      <include name="GeoIP.java" />
-      <include name="Translation.java" />
-      <include name="WebserviceXTranslator.java" />
-      <src path="src" />
-    </javac>
-    <copy file="src/ApplicationContext.xml" toDir="${javac.dest}" />
-    <copy file="src/log4j.properties" toDir="${javac.dest}" />
-  </target>
+  <!-- wsdl2java -->
+  <macrodef name="wsdl2java">
+    <attribute name="url" />
+    <attribute name="wsdl" />
+    <attribute name="package" />
+    <sequential>
+      <get src="@{url}" dest="@{wsdl}" />
+      <java classname="org.apache.cxf.tools.wsdlto.WSDLToJava" fork="true">
+        <arg value="-client"/>
+        <arg value="-p"/>
+        <arg value="@{package}"/>
+        <arg value="-d"/>
+        <arg value="${project.build.plugins.plugin.configuration.generatedSourcesDirectory}x"/>
+        <arg value="@{wsdl}"/>
+        <classpath>
+          <path refid="maven.test.classpath"/>
+        </classpath>
+      </java>
+    </sequential>
+  </macrodef>
 
   <!-- WS translate -->
-  <target name="ws.translate" depends="compile.ws" description="Run program">
+  <target name="ws.translate" depends="prepare" description="Run program">
     <java classname="TestWS" fork="yes">
       <classpath>
         <path refid="project.class.path" />
@@ -223,7 +227,7 @@
   </target>
 
   <!-- WS translate 2 -->
-  <target name="ws.translate2" depends="compile.ws" description="Run program">
+  <target name="ws.translate2" depends="prepare" description="Run program">
     <java classname="WebserviceXTranslator" fork="yes">
       <classpath>
         <path refid="project.class.path" />
@@ -234,7 +238,7 @@
   </target>
 
   <!-- translate srt google -->
-  <target name="translate2" depends="compile.ws" description="Run program">
+  <target name="translate2" depends="prepare" description="Run program">
     <java classname="Translation" fork="yes">
       <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
       <classpath>
@@ -248,7 +252,7 @@
   </target>
 
   <!-- translate srt webservicex -->
-  <target name="translate" depends="compile.ws" description="Run program">
+  <target name="translate" depends="prepare" description="Run program">
     <java classname="Translation" fork="yes">
       <classpath>
         <path refid="project.class.path" />
@@ -263,7 +267,7 @@
   </target>
 
   <!-- WS sms -->
-  <target name="ws.sms" depends="compile.ws" description="Run program">
+  <target name="ws.sms" depends="prepare" description="Run program">
     <java classname="SendSMS" fork="yes">
       <classpath>
         <path refid="project.class.path" />
@@ -276,7 +280,7 @@
   </target>
 
   <!-- WS fax -->
-  <target name="ws.fax" depends="compile.ws" description="Run program">
+  <target name="ws.fax" depends="prepare" description="Run program">
     <java classname="SendFax" fork="yes">
       <classpath>
         <path refid="project.class.path" />
@@ -290,7 +294,7 @@
   </target>
 
   <!-- WS geoip -->
-  <target name="ws.geoip" depends="compile.ws" description="Run program">
+  <target name="ws.geoip" depends="prepare" description="Run program">
     <java classname="GeoIP" fork="yes">
       <classpath>
         <pathelement location="${javac.dest}" />
@@ -300,36 +304,15 @@
     </java>
   </target>
 
-  <!-- wsdl2java -->
-  <macrodef name="wsdl2java">
-    <attribute name="url" />
-    <attribute name="wsdl" />
-    <attribute name="package" />
-    <sequential>
-      <get src="@{url}" dest="@{wsdl}" />
-      <java classname="org.apache.cxf.tools.wsdlto.WSDLToJava" fork="true">
-        <arg value="-client"/>
-        <arg value="-p"/>
-        <arg value="@{package}"/>
-        <arg value="-d"/>
-        <arg value="src"/>
-        <arg value="@{wsdl}"/>
-        <classpath>
-          <path refid="project.class.path"/>
-        </classpath>
-      </java>
-    </sequential>
-  </macrodef>
-
   <!-- itunes -->
   <target name="itunes" depends="prepare" description="iTunes">
     <java classname="iTunes" fork="yes" jvm="${jvm}" output="tmp/composers.tsv" error="${stderr}">
       <jvmarg value="-Xmx256m" />    
-      <jvmarg value="-Dfile.encoding=${project.build.plugins.plugin.configuration.encoding}" />    
+      <jvmarg value="-Dfile.encoding=${project.build.plugins.plugin.configuration.encoding}" />
 <!--
-      <jvmarg value="-verbose" />    
+      <jvmarg value="-verbose" />
       <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
-      <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl" />    
+      <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl" />
 -->
       <classpath>
         <path refid="project.class.path" />
@@ -340,11 +323,11 @@
   <!-- test2 -->
   <target name="test2" depends="prepare" description="pronunciation">
     <java classname="Test2" fork="yes" output="tmp/pronunciation.txt">
-      <jvmarg value="-Xmx256m" />    
-      <jvmarg value="-Dfile.encoding=${project.build.plugins.plugin.configuration.encoding}" />    
-      <arg value="/Users/nsano/tmp/11/NNN2" />    
+      <jvmarg value="-Xmx256m" />
+      <jvmarg value="-Dfile.encoding=${project.build.plugins.plugin.configuration.encoding}" />
+      <arg value="/Users/nsano/tmp/11/NNN2" />
 <!--
-      <jvmarg value="-verbose" />    
+      <jvmarg value="-verbose" />
       <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
       <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl" />    
 -->
@@ -357,10 +340,10 @@
   <!-- test7 -->
   <target name="test7" depends="prepare" description="pronunciation">
     <java classname="Test7" fork="yes">
-      <jvmarg value="-Xmx256m" />    
-      <arg value="/Users/nsano/tmp/11/NNN2" />    
+      <jvmarg value="-Xmx256m" />
+      <arg value="/Users/nsano/tmp/11/NNN2" />
 <!--
-      <jvmarg value="-verbose" />    
+      <jvmarg value="-verbose" />
       <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
       <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl" />    
 -->
@@ -373,7 +356,7 @@
   <!-- handwrite -->
   <target name="t4" depends="prepare" description="手入力">
     <java classname="UnitTest1" fork="yes">
-      <jvmarg value="-Xmx256m" />    
+      <jvmarg value="-Xmx256m" />
       <classpath>
         <path refid="project.class.path" />
       </classpath>
@@ -383,7 +366,7 @@
   <!-- hatena -->
   <target name="hatena" depends="prepare" description="list Hatena blog">
     <java classname="Hatena" fork="yes">
-      <jvmarg value="-Xmx256m" />    
+      <jvmarg value="-Xmx256m" />
       <classpath>
         <path refid="project.class.path" />
       </classpath>
@@ -393,7 +376,7 @@
   <!-- google suggest -->
   <target name="suggest" depends="prepare" description="google suggest test">
     <java classname="GoogleSuggest" fork="yes">
-      <jvmarg value="-Xmx256m" />    
+      <jvmarg value="-Xmx256m" />
       <classpath>
         <path refid="project.class.path" />
       </classpath>
@@ -404,8 +387,8 @@
   <!-- amazon -->
   <target name="amazon" depends="prepare" description="amazon purchase history">
     <java classname="AmazonPurchaseHistory" fork="yes">
-      <jvmarg value="-Xmx256m" />    
-      <jvmarg value="-Dvavi.util.logging.excludes=${amazon.log.excludes}" />    
+      <jvmarg value="-Xmx256m" />
+      <jvmarg value="-Dvavi.util.logging.excludes=${amazon.log.excludes}" />
       <classpath>
         <path refid="project.class.path" />
       </classpath>
@@ -415,7 +398,7 @@
   <!-- it -->
   <target name="it" depends="prepare" description="iTunes test">
     <java classname="Test1" fork="yes">
-      <jvmarg value="-Xmx256m" />    
+      <jvmarg value="-Xmx256m" />
       <classpath>
         <path refid="project.class.path" />
       </classpath>
@@ -425,7 +408,7 @@
   <!-- eqtest -->
   <target name="eqtest" depends="prepare" description="EQ Test">
     <java classname="EqTest" fork="yes" output="tmp/eqtest.json">
-      <jvmarg value="-Xmx256m" />    
+      <jvmarg value="-Xmx256m" />
       <classpath>
         <path refid="project.class.path" />
       </classpath>
