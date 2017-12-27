@@ -18,7 +18,7 @@ import java.net.URLConnection;
  * 
  * not used currently. for ascii only documents.
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>
  */
 @Deprecated

@@ -32,7 +32,7 @@ import vavi.net.www.protocol.URLStreamHandlerUtil;
  * {@link #input()} がデフォルトの場合 {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
  * </p>
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/09/30 nsano initial version <br>
  */
 @java.lang.annotation.Target(ElementType.TYPE)

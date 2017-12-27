@@ -13,7 +13,7 @@ import vavi.net.rest.Rest;
 /**
  * YahooJapanParse. 
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 080319 nsano initial version <br>
  * @see "http://developer.yahoo.co.jp/jlp/MAService/V1/parse.html"
  */

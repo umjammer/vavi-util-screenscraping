@@ -14,7 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * DocumentBuilderFactoryImpl.
  *
- * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
+ * @author <a href=mailto:umjammer@gmail.com>nsano</a>
  * @version 0.00 031103 nsano initial version <br>
  *          0.01 040312 nsano i18n <br>
  */

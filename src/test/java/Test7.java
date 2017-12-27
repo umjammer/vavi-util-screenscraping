@@ -12,6 +12,8 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Scanner;
 
+import org.junit.Ignore;
+
 import vavi.net.rest.Rest;
 import vavi.util.properties.annotation.Property;
 import vavi.util.properties.annotation.PropsEntity;
@@ -24,9 +26,10 @@ import vavix.util.screenscrape.annotation.WebScraper;
 /**
  * Test7. YahooJapanParse
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 080319 nsano initial version <br>
  */
+@Ignore
 @PropsEntity(url = "classpath:yahoo.properties")
 public class Test7 {
 

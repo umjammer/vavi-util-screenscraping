@@ -25,7 +25,7 @@ import javax.script.ScriptEngineManager;
 /**
  * WebQuery. 
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 070224 nsano initial version <br>
  */
 @Deprecated

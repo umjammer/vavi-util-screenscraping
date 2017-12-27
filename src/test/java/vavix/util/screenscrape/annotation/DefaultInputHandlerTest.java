@@ -25,7 +25,7 @@ public class DefaultInputHandlerTest {
         String bar = "VAVI";
         String buz = "UMJAMMER";
         String[] result = dih.dealUrlAndArgs("http://foo.com?bar={0}&buz={1}", bar, buz);
-        assertEquals(1, result.length);
+        assertEquals(3, result.length);
         assertEquals("http://foo.com?bar=VAVI&buz=UMJAMMER", result[0]);
     }
 

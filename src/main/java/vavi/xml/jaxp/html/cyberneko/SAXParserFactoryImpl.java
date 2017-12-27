@@ -35,7 +35,7 @@ import org.xml.sax.SAXException;
  * </pre></code>
  * </p>
  *
- * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
+ * @author <a href=mailto:umjammer@gmail.com>nsano</a>
  * @version 0.00 031103 nsano initial version <br>
  */
 public class SAXParserFactoryImpl extends SAXParserFactory {

@@ -12,7 +12,7 @@ package vavix.util.screenscrape;
  *
  * @param <I> 入力するデータの型
  * @param <O> 切り出されるデータの型
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */
 @Deprecated

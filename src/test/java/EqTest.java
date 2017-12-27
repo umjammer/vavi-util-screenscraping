@@ -9,6 +9,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
 
+import org.junit.Ignore;
+
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
@@ -29,6 +31,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2015/11/06 umjammer initial version <br>
  */
+@Ignore
 public class EqTest {
 
     static WebClient client = new WebClient(BrowserVersion.FIREFOX_10);

@@ -36,7 +36,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
 /**
  * iTunes.
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/04 nsano initial version <br>
  */
 public class iTunes {
@@ -69,7 +69,7 @@ public class iTunes {
         }
     }
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_10);
+    static WebClient client = new WebClient(BrowserVersion.FIREFOX_3_6);
 
     static {
         client.setJavaScriptEnabled(false);
@@ -97,6 +97,7 @@ public class iTunes {
 //System.err.println("ARGS: " + artist + ", " + title);
             HtmlPage page0 = client.getPage("http://www2.jasrac.or.jp/eJwid/");
             HtmlInput button0 = page0.getForms().get(1).getInputByName("input");
+//System.err.println("@@@: " + button0.getTypeAttribute());
 
             HtmlPage page1 = button0.click();
 
@@ -215,6 +216,7 @@ public class iTunes {
                 HtmlPage nextPage = page3;
                 while (true) {
                     HtmlAnchor nextAnchor = nextAnchor(nextPage.getAnchors());
+System.err.println("nextAnchor: " + nextAnchor);
                     nextPage = (HtmlPage) nextAnchor.click();
                     sb.append(nextPage.asXml());
                 }
@@ -421,6 +423,8 @@ public class iTunes {
         processByWebScraper(args);
     }
 
+    static int errorCount = 0;
+
     static void processByWebScraper(String[] args) throws Exception {
         WebScraper.Util.foreach(Title.class, (each) -> {
             try {
@@ -436,6 +440,11 @@ public class iTunes {
             } catch (Exception e) {
                 e.printStackTrace(System.err);
                 System.err.println("error: " + each);
+                errorCount++;
+                if (errorCount > 2) {
+System.err.println("too many errors: " + errorCount);
+                    System.exit(1);
+                }
             }
         }, args);
     }
@@ -458,6 +467,7 @@ public class iTunes {
         if (!each.composer.isEmpty()) {
             return;
         }
+System.err.println(each);
 
         // 1. plain artist, name
         List<TitleUrl> urls = WebScraper.Util.scrape(TitleUrl.class, each.artist, each.name);

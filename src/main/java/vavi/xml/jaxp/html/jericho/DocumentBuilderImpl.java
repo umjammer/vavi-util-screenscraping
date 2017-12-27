@@ -29,7 +29,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * DocumentBuilderImpl.
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 060926 nsano initial version <br>
  */
 public class DocumentBuilderImpl extends DocumentBuilder {

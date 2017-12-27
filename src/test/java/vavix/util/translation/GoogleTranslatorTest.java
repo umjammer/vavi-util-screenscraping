@@ -8,9 +8,10 @@ package vavix.util.translation;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 
 /**
@@ -19,6 +20,7 @@ import static org.junit.Assert.*;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2016/02/24 umjammer initial version <br>
  */
+@Ignore
 public class GoogleTranslatorTest {
 
     @Test

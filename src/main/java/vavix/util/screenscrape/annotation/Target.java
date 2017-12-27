@@ -15,7 +15,7 @@ import java.lang.reflect.Field;
 /**
  * Target. 
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/09/30 nsano initial version <br>
  */
 @java.lang.annotation.Target({ ElementType.FIELD, ElementType.METHOD })

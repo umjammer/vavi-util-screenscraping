@@ -30,7 +30,7 @@ import vavix.util.screenscrape.StringSimpleXPathScraper;
 /**
  * Infoseek Japan の機械翻訳を利用する翻訳機です。
  * 
- * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
+ * @author <a href=mailto:umjammer@gmail.com>nsano</a>
  * @version 0.00 030225 nsano initial version <br>
  *          0.01 030226 nsano be one of service provider <br>
  *          0.02 030309 nsano repackage <br>

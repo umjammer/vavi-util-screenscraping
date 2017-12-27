@@ -40,7 +40,7 @@ import vavi.xml.util.PrettyPrinter;
  * xpath should be capitalized.
  * </p>
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>
  */
 public class HtmlXPathParser<T> implements Parser<Reader, T> {

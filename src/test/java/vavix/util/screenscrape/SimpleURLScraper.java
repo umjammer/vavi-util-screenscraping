@@ -19,7 +19,7 @@ import java.util.Properties;
 /**
  * Java SE HttpUrlConnection GET method.
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */
 @Deprecated

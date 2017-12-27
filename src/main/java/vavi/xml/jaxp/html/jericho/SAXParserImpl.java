@@ -15,7 +15,7 @@ import org.xml.sax.SAXException;
 /**
  * This implements JAXP parser interface for Tidy HTML parser.
  *
- * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
+ * @author <a href=mailto:umjammer@gmail.com>nsano</a>
  * @version 0.00 060926 nsano initial version <br>
  */
 @SuppressWarnings(value="deprecation")

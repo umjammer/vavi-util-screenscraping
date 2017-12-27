@@ -7,7 +7,8 @@
 import java.net.URL;
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import vavix.util.screenscrape.ApacheURLScraper;
 import vavix.util.screenscrape.Scraper;
@@ -15,14 +16,17 @@ import vavix.util.screenscrape.SimpleURLScraper;
 import vavix.util.screenscrape.StringApacheXPathScraper;
 import vavix.util.screenscrape.StringSimpleXPathScraper;
 
+import static org.junit.Assert.fail; 
+
 
 /**
  * getGlobalIpTest.
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */
-public class getGlobalIpTest extends TestCase {
+@Ignore
+public class getGlobalIpTest {
 
     String url = "http://x68000.q-e-d.net/~68user/net/sample/http-auth/secret.html";
     String realm = "Secret File";
@@ -31,6 +35,7 @@ public class getGlobalIpTest extends TestCase {
     String password = "fuga";
 
     /** */
+    @Test
     public void test01() {
         try {
             Properties props = new Properties();
@@ -49,6 +54,7 @@ e.printStackTrace();
     }
 
     /** */
+    @Test
     public void test02() {
         try {
             Properties props = new Properties();

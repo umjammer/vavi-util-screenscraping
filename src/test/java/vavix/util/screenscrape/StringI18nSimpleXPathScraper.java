@@ -18,7 +18,7 @@ import org.xml.sax.InputSource;
 /**
  * Java SE XPath で切り出す Scraper です。
  *
- * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
+ * @author <a href=mailto:umjammer@gmail.com>nsano</a>
  * @version 0.00 050909 nsano initial version <br>
  */
 @Deprecated

@@ -30,7 +30,7 @@ import vavix.util.screenscrape.StringI18nSimpleXPathScraper;
 /**
  * Google の機械翻訳を利用する翻訳機です。
  *
- * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
+ * @author <a href=mailto:umjammer@gmail.com>nsano</a>
  * @version 0.00 071002 nsano initial version <br>
  */
 public class GoogleTranslator implements Translator {

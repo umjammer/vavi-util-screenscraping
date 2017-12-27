@@ -33,7 +33,7 @@ import vavix.util.screenscrape.XPathScraper;
 /**
  * 、jaxen で切り出す機です。
  *
- * @author <a href=mailto:vavivavi@yahoo.co.jp>nsano</a>
+ * @author <a href=mailto:umjammer@gmail.com>nsano</a>
  * @version 0.00 031103 nsano initial version <br>
  *          0.01 031228 nsano outsource xpath <br>
  */

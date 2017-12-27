@@ -27,7 +27,7 @@ import vavi.beans.BeanUtil;
  * When the "when" field does not set, ignored when field value is null.
  * </p>
  *
- * @author <a href="mailto:vavivavi@yahoo.co.jp">Naohide Sano</a> (nsano)
+ * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 070224 nsano initial version <br>
  */
 @Target({ ElementType.FIELD, ElementType.METHOD })

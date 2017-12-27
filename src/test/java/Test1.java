@@ -20,6 +20,8 @@ import net.sf.saxon.om.NodeInfo;
 
 import org.xml.sax.InputSource;
 
+import org.junit.Ignore;
+
 
 /**
  * Test1.
@@ -27,6 +29,7 @@ import org.xml.sax.InputSource;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2011/02/10 umjammer initial version <br>
  */
+@Ignore
 public class Test1 {
 
     /** */
