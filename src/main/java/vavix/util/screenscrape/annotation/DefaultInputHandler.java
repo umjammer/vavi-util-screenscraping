@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -34,8 +35,11 @@ public class DefaultInputHandler implements InputHandler<Reader> {
      */
     public Reader getInput(String ... args) throws IOException {
         String url = args[0];
-//System.err.println("url: " + url);
+System.err.println("url: " + url);
         URLConnection connection = new URL(url).openConnection();
+if (HttpURLConnection.class.isInstance(connection)) {
+ System.err.println("responseCode: " + HttpURLConnection.class.cast(connection).getResponseCode());
+}
         InputStream is = connection.getInputStream();
 //System.err.println(StringUtil.getDump(baos.toByteArray()));
         // CAUTION!!! InputStreamReader が -Dfile.encoding に依存しているので注意
@@ -43,32 +47,10 @@ public class DefaultInputHandler implements InputHandler<Reader> {
     }
 
     /**
-     * replaces "{args_index}" in url.
-     *
-     * <pre>
-     *  ex. url: "http://foo.com?bar={0}&buz={1}"
-     *      args: { "VAVI", "UMJAMMER" }
-     *
-     *      result: "http://foo.com?bar=VAVI&buz=UMJAMMER"
-     * </pre>
-     * @return [ url, args... ]
-     * @throws IllegalArgumentException when url is null.
+     * args will be embedded in url.
      */
-    public String[] dealUrlAndArgs(String url, String... args) {
-        String[] newArgs = new String[args.length + 1];
-        if (url != null && !url.isEmpty()) {
-            int c = 0;
-            for (String arg : args) {
-                url = url.replace("{" + c + "}", arg);
-                //System.err.println(url + ", " + arg);
-                newArgs[c + 1] = arg;
-                c++;
-            }
-            newArgs[0] = url;
-            return newArgs;
-        } else {
-            throw new IllegalArgumentException("url should not be null or empty");
-        }
+    public String[] dealUrlAndArgs(String url, String ... args) {
+        return InputHandler._dealUrlAndArgs(url, args);
     }
 }
 

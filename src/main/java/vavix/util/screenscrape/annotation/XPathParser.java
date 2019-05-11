@@ -16,15 +16,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import vavi.beans.BeanUtil;
 import vavi.util.Debug;
@@ -42,11 +47,19 @@ public class XPathParser<T> implements Parser<Reader, T> {
     /** */
     protected XPath xPath;
 
+    /** */
+    protected DocumentBuilder db;
+
     {
 //System.err.println(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI);
 //        System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "org.apache.xpath.jaxp.XPathFactoryImpl");
         xPath = XPathFactory.newInstance().newXPath();
 //System.err.println(XPathFactory.newInstance().getClass());
+        try {
+            db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     /**
@@ -58,24 +71,26 @@ public class XPathParser<T> implements Parser<Reader, T> {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
 //System.err.println("encoding: " + encoding);
+            Reader reader = handler.getInput(args);
+
+            InputSource in = new InputSource(reader);
+            in.setEncoding(encoding);
+
+            Document document = db.parse(in);
+PrettyPrinter pp = new PrettyPrinter(System.err);
+pp.print(document);
 
             List<T> results = new ArrayList<>();
 
             Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
             for (Field field : targetFields) {
-                Reader reader = handler.getInput(args);
-
-                InputSource in = new InputSource(reader);
-                in.setEncoding(encoding);
 
                 String xpath = Target.Util.getValue(field);
 //System.err.println("xpath: " + xpath);
-//PrettyPrinter pp = new PrettyPrinter(System.err);
-//pp.print(in);
 
                 if (WebScraper.Util.isCollection(type)) {
 
-                    NodeList nodeList = (NodeList) xPath.evaluate(xpath, in, XPathConstants.NODESET);
+                    NodeList nodeList = (NodeList) xPath.evaluate(xpath, document, XPathConstants.NODESET);
 //System.err.println("nodeList: " + nodeList.getLength());
                     for (int i = 0; i < nodeList.getLength(); i++) {
                         // because loops for each fields, instantiation should be done once
@@ -109,13 +124,9 @@ public class XPathParser<T> implements Parser<Reader, T> {
 
             return results;
 
-        } catch (XPathExpressionException e) {
+        } catch (XPathExpressionException | SAXException e) {
             throw new IllegalArgumentException(e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
-        } catch (IOException e) {
+        } catch (IllegalAccessException | InstantiationException | IOException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -157,25 +168,24 @@ if (nodeList.getLength() == 0) {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 new PrettyPrinter(new PrintWriter(baos)).print(node);
 
+                InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
+                is.setEncoding(encoding);
+
+                Document document = db.parse(is);
+
                 Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
                 for (Field field : targetFields) {
                     String subXpath = Target.Util.getValue(field);
-                    InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
-                    in.setEncoding(encoding);
-                    String text = (String) xPath.evaluate(subXpath, is, XPathConstants.STRING);
+                    String text = (String) xPath.evaluate(subXpath, document, XPathConstants.STRING);
                     BeanUtil.setFieldValue(field, bean, text);
                 }
 
                 eachHandler.exec(bean);
             }
 
-        } catch (XPathExpressionException e) {
+        } catch (XPathExpressionException | SAXException e) {
             throw new IllegalArgumentException(e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
-        } catch (IOException e) {
+        } catch (IllegalAccessException | InstantiationException | IOException e) {
             throw new IllegalStateException(e);
         }
     }

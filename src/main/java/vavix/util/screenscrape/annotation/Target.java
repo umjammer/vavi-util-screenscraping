@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
 
 
 /**
- * Target. 
+ * Target.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/09/30 nsano initial version <br>
@@ -23,10 +23,13 @@ import java.lang.reflect.Field;
 public @interface Target {
 
     /** depends on {@link Parser} */
-    String value();
+    String value() default "";
+
+    /** depends on {@link Parser} */
+    boolean optional() default false;
 
     /**
-     * TODO アノテーションがメソッド指定の場合 
+     * TODO アノテーションがメソッド指定の場合
      */
     class Util {
 
@@ -42,6 +45,17 @@ public @interface Target {
                 throw new IllegalArgumentException("bean is not annotated with @Target");
             }
             return target.value();
+        }
+
+        /**
+         * @param field {@link @Target} annotated
+         */
+        public static boolean getOptional(Field field) {
+            Target target = field.getAnnotation(Target.class);
+            if (target == null) {
+                throw new IllegalArgumentException("bean is not annotated with @Target");
+            }
+            return target.optional();
         }
     }
 }

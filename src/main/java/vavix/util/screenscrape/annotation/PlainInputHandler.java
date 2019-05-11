@@ -14,18 +14,17 @@ import java.net.URLConnection;
 
 
 /**
- * PlainInputHandler. 
- * 
+ * PlainInputHandler.
+ *
  * not used currently. for ascii only documents.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>
  */
-@Deprecated
 public class PlainInputHandler implements InputHandler<InputStream> {
 
     /**
-     * @param args 0: url 
+     * @param args 0: url
      */
     public InputStream getInput(String ... args) throws IOException {
         String url = args[0];
@@ -35,17 +34,10 @@ public class PlainInputHandler implements InputHandler<InputStream> {
     }
 
     /**
-     * TODO
+     * args will be embedded in url.
      */
     public String[] dealUrlAndArgs(String url, String ... args) {
-        if (url != null && !url.isEmpty()) {
-            if (args != null && args.length > 0) {
-                args[0] = url;
-            } else {
-                args = new String[] { url };
-            }
-        }
-        return args;
+        return InputHandler._dealUrlAndArgs(url, args);
     }
 }
 
