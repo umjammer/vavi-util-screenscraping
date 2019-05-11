@@ -7,6 +7,8 @@
 package vavix.net.proxy;
 
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -15,9 +17,19 @@ import java.util.concurrent.Executors;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.HeadMethod;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import vavi.util.Debug;
+
 import vavix.net.proxy.ProxyChanger.InternetAddress;
+import vavix.util.screenscrape.annotation.HtmlXPathParser;
+import vavix.util.screenscrape.annotation.InputHandler;
 import vavix.util.screenscrape.annotation.Target;
 import vavix.util.screenscrape.annotation.WebScraper;
 
@@ -47,22 +59,57 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
         return proxyAddresses;
     }
 
-    @WebScraper(url = "http://www.cybersyndrome.net/pla5.html",
+    public static class MyInput implements InputHandler<Reader> {
+        WebDriver driver;
+        {
+            String pwd = System.getProperty("user.dir");
+            System.setProperty("webdriver.chrome.driver", pwd + "/bin/chromedriver");
+
+            ChromeOptions chromeOptions = new ChromeOptions();
+            String app = System.getProperty("com.google.chrome.app");
+            chromeOptions.setBinary(app);
+            chromeOptions.addArguments("--headless"/*, "--disable-gpu"*/);
+
+            driver = new ChromeDriver(chromeOptions);
+        }
+        static class SeleniumUtil {
+            static void waitFor(WebDriver driver) {
+                new WebDriverWait(driver, 10).until(
+                    d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete"));
+            }
+
+            static void setAttribute(WebDriver driver, WebElement element, String name, String value) {
+                ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);", element, name, value);
+            }
+        }
+
+        /** */
+        public Reader getInput(String ... args) throws IOException {
+            driver.navigate().to("http://www.cybersyndrome.net/plr6.html");
+            SeleniumUtil.waitFor(driver);
+
+            return new StringReader(driver.findElement(By.tagName("html")).getAttribute("innerHTML"));
+        }
+    }
+
+    @WebScraper(input = MyInput.class,
+                value = "//TABLE/TBODY/TR",
+                parser = HtmlXPathParser.class,
                 encoding = "ISO_8859-1")
     public static class ProxyInternetAddress extends InternetAddress {
         /** */
-        @Target("//A[@class='B']/text()")
+        @Target("/TR/TD[2]/text()")
         private String address;
         public String getHostName() {
             if (hostName == null) {
-                String[] data = address.split(":");
+                String[] data = address.trim().split(":");
                 hostName = data[0];
             }
             return hostName;
         }
         public int getPort() {
             if (port == 0) {
-                String[] data = address.split(":");
+                String[] data = address.trim().split(":");
                 port = Integer.parseInt(data[1]);
             }
             return port;
@@ -82,15 +129,19 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
 
         ExecutorService executorService = Executors.newCachedThreadPool();
 
-        List<ProxyInternetAddress> addresses = WebScraper.Util.scrape(ProxyInternetAddress.class);
-        for (ProxyInternetAddress address : addresses) {
+        WebScraper.Util.foreach(ProxyInternetAddress.class, address -> {
             try {
-                executorService.submit(new ProxyChecker(address));
-                Thread.sleep(300);
+//System.err.println("SUBMIT: " + address.address);
+                if (!address.address.isEmpty()) {
+                    executorService.submit(new ProxyChecker(address));
+                    Thread.sleep(300);
+                }
             } catch (Exception e) {
+System.err.println("ERROR: " + address.address);
+//e.printStackTrace();
                 Debug.println(e);
             }
-        }
+        });
     }
 
     class ProxyChecker implements Runnable {
@@ -101,8 +152,9 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
         /** */
         public void run() {
             try {
+System.err.println("TRY: " + address.address);
                 HttpClient client = new HttpClient();
-//System.err.println("TRY: " + address);
+
                 client.getHostConfiguration().setProxy(address.getHostName(), address.getPort());
 
                 HeadMethod head = new HeadMethod("http://www.yahoo.co.jp/");
@@ -112,20 +164,11 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
                 boolean alive = status == HttpStatus.SC_OK;
                 address.setAlive(alive);
             } catch (Exception e) {
-//System.err.println("ERR: " + e);
+System.err.println("ERR: " + e);
                 address.setAlive(false);
             } finally {
 System.err.println("ADD: " + address);
             }
-        }
-    }
-
-    /** */
-    public static void main(String[] args) throws Exception {
-        CyberSyndromeProxyServerDao proxyServerDao = new CyberSyndromeProxyServerDao();
-        proxyServerDao.proxyAddresses = proxyServerDao.getProxyInetSocketAddresses();
-        for (InternetAddress proxyAddress : proxyServerDao.proxyAddresses) {
-            System.err.println("proxy: " + proxyAddress);
         }
     }
 }
