@@ -11,7 +11,7 @@ import vavi.net.rest.Rest;
 
 
 /**
- * YahooJapanParse. 
+ * YahooJapanParse.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 080319 nsano initial version <br>
@@ -22,11 +22,11 @@ import vavi.net.rest.Rest;
       url="http://jlp.yahooapis.jp/JIMService/V1/conversion")
 public class YahooJapanParse {
 
-    /** アプリケーションID。 */ 
+    /** アプリケーションID。 */
     @Parameter(required = true)
     String appid;
 
-    /** 解析対象のテキストです。 */ 
+    /** 解析対象のテキストです。 */
     @Parameter(required = true)
     String sentence;
 
@@ -39,7 +39,7 @@ public class YahooJapanParse {
     }
 
     /**
-     * 解析結果の種類をコンマで区切って指定します。   
+     * 解析結果の種類をコンマで区切って指定します。
      * "ma": 形態素解析の結果を ma_result に返します。
      * "uniq": 出現頻度情報を uniq_result に返します。
      * 無指定の場合は "ma" になります。
@@ -57,19 +57,19 @@ public class YahooJapanParse {
         ma_response,
         uniq_response
     }
-     
+
     /**
      * surface, reading, pos, baseform, feature ma_response, uniq_response のデフォルト設定です。
-     * word に返される形態素情報をコンマで区切って指定します。 
+     * word に返される形態素情報をコンマで区切って指定します。
      * 無指定の場合は "surface,reading,pos" になります。
-     */ 
+     */
     @Parameter
     @Formatted(formatter = ResponseFormatter.class)
     String response;
 
     /** */
     public enum Filter {
-        形容詞, 
+        形容詞,
         形容動詞,
         感動詞,
         副詞 ,
@@ -86,22 +86,22 @@ public class YahooJapanParse {
     }
 
     /**
-     * ma_filter, uniq_filter のデフォルト設定です。 
+     * ma_filter, uniq_filter のデフォルト設定です。
      * 解析結果として出力する品詞番号を "｜" で区切って指定します。
      * <pre>
-     * filterに指定可能な品詞番号: 
-     *   1 : 形容詞 
-     *   2 : 形容動詞 
-     *   3 : 感動詞 
-     *   4 : 副詞 
-     *   5 : 連体詞 
-     *   6 : 接続詞 
-     *   7 : 接頭辞 
-     *   8 : 接尾辞 
-     *   9 : 名詞 
-     *  10 : 動詞 
-     *  11 : 助詞 
-     *  12 : 助動詞 
+     * filterに指定可能な品詞番号:
+     *   1 : 形容詞
+     *   2 : 形容動詞
+     *   3 : 感動詞
+     *   4 : 副詞
+     *   5 : 連体詞
+     *   6 : 接続詞
+     *   7 : 接頭辞
+     *   8 : 接尾辞
+     *   9 : 名詞
+     *  10 : 動詞
+     *  11 : 助詞
+     *  12 : 助動詞
      *  13 : 特殊（句読点、カッコ、記号など）
      * </pre>
      */
@@ -112,7 +112,7 @@ public class YahooJapanParse {
     /**
      * ma_result 内の word に返される形態素情報をコンマで区切って指定します。
      * 無指定の場合 response の指定が用いられます。
-     */ 
+     */
     @Parameter
     @Formatted(formatter = ResponseFormatter.class)
     Response[] ma_response;
@@ -120,7 +120,7 @@ public class YahooJapanParse {
     /**
      * ma_result 内に解析結果として出力する品詞番号を "｜" で区切って指定します。
      * 無指定の場合 filter の指定が用いられます。
-     */ 
+     */
     @Parameter
     @Formatted(formatter = FilterFormatter.class)
     Filter[] ma_filter;
@@ -136,7 +136,7 @@ public class YahooJapanParse {
     /**
      * uniq_result 内に解析結果として出力する品詞番号を "｜" で区切って指定します。
      * 無指定の場合 filter の指定が用いられます。
-     */ 
+     */
     @Parameter
     @Formatted(formatter = FilterFormatter.class)
     Filter[] uniq_filter;
@@ -144,7 +144,7 @@ public class YahooJapanParse {
     /**
      * このパラメータが true ならば、基本形の同一性により、
      * uniq_result の結果を求めます。
-     */ 
+     */
     @Parameter
     Boolean uniq_by_baseform;
 

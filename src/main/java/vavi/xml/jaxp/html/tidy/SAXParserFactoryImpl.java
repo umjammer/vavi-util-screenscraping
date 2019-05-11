@@ -11,12 +11,13 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
+
 /**
  * This implements JAXP parser factory interface for Tidy HTML parser.
  * <p>
- * To use cyberneko HTML parser via JAXP, set system property
+ * To use Tidy HTML parser via JAXP, set system property
  * "javax.xml.parsers.SAXParserFactory" to
- * "org.cyberneko.parsers.SAXParserFactoryImpl" before invoking
+ * "vavi.xml.jaxp.html.tidy.SAXParserFactoryImpl" before invoking
  * <code>javax.xml.parsers.SAXParserFactory.newInstance</code>.
  * </p>
  * <p>

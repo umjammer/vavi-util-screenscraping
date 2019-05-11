@@ -16,20 +16,20 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import net.sf.saxon.om.NodeInfo;
-
 import org.xml.sax.InputSource;
 
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
+
+import net.sf.saxon.om.NodeInfo;
 
 
 /**
- * Test1.
+ * xpath.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2011/02/10 umjammer initial version <br>
  */
-@Ignore
+@Disabled
 public class Test1 {
 
     /** */

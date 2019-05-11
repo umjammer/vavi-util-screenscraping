@@ -22,7 +22,7 @@ import vavi.beans.BeanUtil;
 
 
 /**
- * Ignored. 
+ * Ignored.
  * <p>
  * When the "when" field does not set, ignored when field value is null.
  * </p>
@@ -43,9 +43,9 @@ public @interface Ignored {
     String when() default "";
 
     /**
-     * TODO アノテーションがメソッド指定の場合 
+     * TODO アノテーションがメソッド指定の場合
      */
-    static class Util {
+    class Util {
 
         private Util() {
         }

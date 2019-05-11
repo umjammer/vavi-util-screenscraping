@@ -24,7 +24,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
     private String encoding;
 
     /**
-     * 
+     *
      */
     public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
         return new DocumentBuilderImpl(this);

@@ -11,7 +11,7 @@ import java.util.Random;
 
 
 /**
- * UserAgentSwitcher. 
+ * UserAgentSwitcher.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 071004 nsano initial version <br>
@@ -27,7 +27,7 @@ public class UserAgentSwitcher {
     }
 
     /** */
-    private Random random = new Random(System.currentTimeMillis()); 
+    private Random random = new Random(System.currentTimeMillis());
 
     /** */
     public String getUserAgent() {

@@ -11,7 +11,7 @@ import java.util.Random;
 
 
 /**
- * ProxyChanger. 
+ * ProxyChanger.
  * <li> TODO {@link java.net.ProxySelector}
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
@@ -28,7 +28,7 @@ public class ProxyChanger {
     }
 
     /** */
-    private Random random = new Random(System.currentTimeMillis()); 
+    private Random random = new Random(System.currentTimeMillis());
 
     /** TODO ProxyInternetAddress で bad or quality */
     public static class InternetAddress {
@@ -72,24 +72,6 @@ public class ProxyChanger {
         InternetAddress proxyAddress = proxyAddresses.get(current);
 //Debug.println("proxyAddress: " + proxyAddress + " (" + current + "/" + max + ")");
         return proxyAddress;
-    }
-
-    /** */
-    public static void main(String[] args) throws Exception {
-//        ProxyChanger proxyChanger = new ProxyChanger();
-        ProxyServerDao proxyServerDao = new CyberSyndromeProxyServerDao();
-//        proxyChanger.setProxyServerDao(proxyServerDao);
-        while (proxyServerDao.getProxyInetSocketAddresses().size() < 5) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                System.err.println(e);
-            }
-        }
-        List<InternetAddress> proxyAddresses = proxyServerDao.getProxyInetSocketAddresses();
-        for (InternetAddress proxyAddress : proxyAddresses) {
-            System.err.println("proxy: " + proxyAddress);
-        }
     }
 }
 

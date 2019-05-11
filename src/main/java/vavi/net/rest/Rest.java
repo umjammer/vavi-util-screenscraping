@@ -28,7 +28,7 @@ import javax.script.ScriptEngineManager;
 
 
 /**
- * Rest. 
+ * Rest.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 070224 nsano initial version <br>
@@ -98,7 +98,7 @@ public @interface Rest {
             }
 
             //
-            Set<Field> parameterFields = new HashSet<>(); 
+            Set<Field> parameterFields = new HashSet<>();
 
             for (Field field : bean.getClass().getDeclaredFields()) {
                 Parameter parameter = field.getAnnotation(Parameter.class);
@@ -111,7 +111,7 @@ public @interface Rest {
         }
 
         /**
-         * @return UTF-8 URL encoded 
+         * @return UTF-8 URL encoded
          */
         public static String getUrl(Object bean) {
             //
@@ -124,7 +124,7 @@ public @interface Rest {
             String url = rest.url();
 
             //
-            Map<String, String> parameters = new HashMap<>(); 
+            Map<String, String> parameters = new HashMap<>();
 
             //
             for (Field field : bean.getClass().getDeclaredFields()) {
@@ -172,7 +172,7 @@ System.err.println("use: " + name + ", " + value);
 
             return url + sb.toString();
         }
-        
+
         public static byte[] getContent(Object bean) throws IOException {
             String url = getUrl(bean);
 System.err.println("url: " + url);

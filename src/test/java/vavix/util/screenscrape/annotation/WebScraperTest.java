@@ -6,7 +6,7 @@
 
 package vavix.util.screenscrape.annotation;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 /**

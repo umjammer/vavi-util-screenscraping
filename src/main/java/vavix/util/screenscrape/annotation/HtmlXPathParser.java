@@ -37,7 +37,7 @@ import vavi.xml.util.PrettyPrinter;
  * parse HTML using cyberneko.
  * </p>
  * <p>
- * xpath should be capitalized.
+ * xpath should be upper cased.
  * </p>
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
@@ -120,11 +120,7 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
 
         } catch (XPathExpressionException e) {
             throw new IllegalArgumentException(e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
-        } catch (IOException e) {
+        } catch (IllegalAccessException | InstantiationException | IOException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -141,10 +137,10 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
      * <li> TODO now 2 step XPath only
      * <li> TODO {@link WebScraper#value()} が存在すれば 2 step とか
      */
-    public void foreach(Class<T> type, EachHandler<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
+    public void foreach(Class<T> type, EachHandler<T> eachHandler, InputHandler<Reader> inputHandler, String... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-//System.err.println("encoding: " + encoding);
+System.err.println("encoding: " + encoding);
 
             System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");
 
@@ -169,14 +165,14 @@ if (nodeList.getLength() == 0) {
 
                 Node node = nodeList.item(i);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                new PrettyPrinter(new PrintWriter(baos)).print(node);
-//System.err.println(baos.toString(encoding));
+                new PrettyPrinter(new PrintWriter(baos)).print(node); // TODO use constructor w/ encoding
+//System.err.println(baos.toString()); // TODO use encoding
 
                 Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
                 for (Field field : targetFields) {
                     String subXpath = Target.Util.getValue(field);
                     InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
-                    in.setEncoding(encoding);
+                    in.setEncoding(System.getProperty("file.encoding")); // TODO use encoding
                     String text = (String) xPath.evaluate(subXpath, is, XPathConstants.STRING);
                     BeanUtil.setFieldValue(field, bean, text.trim());
                 }
@@ -186,11 +182,7 @@ if (nodeList.getLength() == 0) {
 
         } catch (XPathExpressionException e) {
             throw new IllegalArgumentException(e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
-        } catch (IOException e) {
+        } catch (IllegalAccessException | InstantiationException | IOException e) {
             throw new IllegalStateException(e);
         }
     }

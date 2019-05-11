@@ -3,12 +3,12 @@
  *
  * Programmed by Naohide Sano
  */
- 
+
 package vavi.net.rest;
 
 
 /**
- * EnumType. 
+ * EnumType.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 080212 nsano initial version <br>

@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
 
 
 /**
- * Formatted. 
+ * Formatted.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 070224 nsano initial version <br>
@@ -24,17 +24,17 @@ import java.lang.reflect.Field;
 public @interface Formatted {
 
     /**
-     * パラメータのフォーマットタイプ 
+     * パラメータのフォーマットタイプ
      */
     Class<? extends Formatter> formatter();
 
     /**
-     * フォーマットする場合の値 
+     * フォーマットする場合の値
      */
     String value() default "";
 
     /**
-     * TODO アノテーションがメソッド指定の場合 
+     * TODO アノテーションがメソッド指定の場合
      */
     static class Util {
 
@@ -47,7 +47,7 @@ public @interface Formatted {
         }
 
         /**
-         * 
+         *
          * @param field @{@link Parameter} annotated field.
          * @param fieldValue field value
          * @throws NullPointerException when field is not annotated by {@link Formatted}
@@ -58,7 +58,7 @@ public @interface Formatted {
                 Formatter formatter = formatted.formatter().newInstance();
                 String format = formatted.value();
 //System.err.println("formatter: " + formatter + ", " + format);
-                return fieldValue == null ? "null" : formatter.format(format, fieldValue); 
+                return fieldValue == null ? "null" : formatter.format(format, fieldValue);
             } catch (Exception e) {
                 throw new IllegalStateException(e);
             }

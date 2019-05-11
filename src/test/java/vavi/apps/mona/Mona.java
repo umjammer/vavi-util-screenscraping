@@ -27,7 +27,7 @@ import vavix.util.screenscrape.SimpleXPathScraper;
 
 /**
  * 2ch.
- * 
+ *
  * @see "http://www.monazilla.org/"
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 060922 nsano initial version <br>
@@ -89,7 +89,7 @@ Debug.printStackTrace(e);
      *  @XPath("/html/body/form/font/a[3]")
      *  URL url;
      * }
-     * Iterable i = url_xpath(, 
+     * Iterable i = url_xpath(,
      * <pre>
      */
     static class MenuScraper implements Scraper<URL, List<Menu>> {
@@ -113,7 +113,7 @@ Debug.printStackTrace(e);
          * <pre>
          * /html/body/form/font/b
          * </pre>
-         * @param url UtaMap  Yahoo! URL 
+         * @param url UtaMap  Yahoo! URL
          */
         public List<Menu> scrape(URL url) {
             try {

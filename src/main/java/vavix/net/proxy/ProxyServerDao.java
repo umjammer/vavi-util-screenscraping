@@ -12,7 +12,7 @@ import vavix.net.proxy.ProxyChanger.InternetAddress;
 
 
 /**
- * ProxyServerDao. 
+ * ProxyServerDao.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 071004 nsano initial version <br>

@@ -23,7 +23,7 @@ import javax.script.ScriptEngineManager;
 
 
 /**
- * WebQuery. 
+ * WebQuery.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 070224 nsano initial version <br>
@@ -34,7 +34,7 @@ import javax.script.ScriptEngineManager;
 public @interface WebQuery {
 
     /**
-     * 
+     *
      */
     String url() default "";
 
@@ -86,7 +86,7 @@ public @interface WebQuery {
             }
 
             //
-            Set<Field> parameterFields = new HashSet<>(); 
+            Set<Field> parameterFields = new HashSet<>();
 
             for (Field field : bean.getClass().getDeclaredFields()) {
                 Parameter parameter = field.getAnnotation(Parameter.class);
@@ -99,7 +99,7 @@ public @interface WebQuery {
         }
 
         /**
-         * @return UTF-8 URL encoded 
+         * @return UTF-8 URL encoded
          */
         public static Query getQuery(Object bean) {
             //
@@ -113,7 +113,7 @@ public @interface WebQuery {
             QueryHandler queryHandler = WebQuery.Util.getQueryHandler(bean);
 
             //
-            Map<String, String> parameters = new HashMap<>(); 
+            Map<String, String> parameters = new HashMap<>();
 
             //
             for (Field field : bean.getClass().getDeclaredFields()) {

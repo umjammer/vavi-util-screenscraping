@@ -7,6 +7,8 @@
 package vavix.util.screenscrape.annotation;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 /**
@@ -32,6 +34,39 @@ public interface InputHandler<T> {
      */
     default String[] dealUrlAndArgs(String url, String ... args) {
         return args;
+    }
+
+    /**
+     * replaces "{args_index}" in url.
+     *
+     * <pre>
+     *  ex. url: "http://foo.com?bar={0}&buz={1}"
+     *      args: { "VAVI", "UMJAMMER" }
+     *
+     *      result: "http://foo.com?bar=VAVI&buz=UMJAMMER"
+     * </pre>
+     * @return [ url, args... ]
+     * @throws IllegalArgumentException when url is null.
+     */
+    static String[] _dealUrlAndArgs(String url, String... args) {
+        try {
+            String[] newArgs = new String[args.length + 1];
+            if (url != null && !url.isEmpty()) {
+                int c = 0;
+                for (String arg : args) {
+                    url = url.replace("{" + c + "}", URLEncoder.encode(arg, "utf-8"));
+//System.err.println(url + ", " + arg);
+                    newArgs[c + 1] = arg;
+                    c++;
+                }
+                newArgs[0] = url;
+                return newArgs;
+            } else {
+                throw new IllegalArgumentException("url should not be null or empty");
+            }
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
 

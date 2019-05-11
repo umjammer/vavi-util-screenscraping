@@ -57,7 +57,7 @@ public class t59 {
     }
 
     private static List<JsonNode> getDeviceLocations(String username, String password) throws IOException {
-        // Initialize the HTTP client
+        // Initialize the HTTP driver
         DefaultHttpClient hc = new DefaultHttpClient();
 
         // Authorize with Apple's mobile me service

@@ -29,7 +29,7 @@ import vavix.util.screenscrape.StringSimpleXPathScraper;
 
 /**
  * Infoseek Japan の機械翻訳を利用する翻訳機です。
- * 
+ *
  * @author <a href=mailto:umjammer@gmail.com>nsano</a>
  * @version 0.00 030225 nsano initial version <br>
  *          0.01 030226 nsano be one of service provider <br>
@@ -50,7 +50,7 @@ public class InfoseekJapanTranslator implements Translator {
     private static String encoding;
 
     /**
-     * Commons HttpClient, POST method 
+     * Commons HttpClient, POST method
      */
     private static class MyScraper extends ApacheHttpScraper<String> {
         /** */
@@ -122,7 +122,7 @@ public class InfoseekJapanTranslator implements Translator {
     }
 
     /**
-     * @param word use {@link #encoding} when url encoding 
+     * @param word use {@link #encoding} when url encoding
      */
     public String toLocal(String word) throws IOException {
         return translate(word, TO_LOCAL, "0");
@@ -178,7 +178,7 @@ Debug.println("url: " + url);
     }
 
     /**
-     * @param word use {@link #encoding} when url encoding 
+     * @param word use {@link #encoding} when url encoding
      */
     public String toGlobal(String word) throws IOException {
         return translate2(word, TO_GLOBAL, "1");
@@ -198,12 +198,12 @@ Debug.println("url: " + url);
         try {
             Properties props = new Properties();
             props.load(clazz.getResourceAsStream(path));
-            
+
             HOST = props.getProperty("host");
             PORT = Integer.parseInt(props.getProperty("port"));
             TO_LOCAL = props.getProperty("file.toLocal");
             TO_GLOBAL = props.getProperty("file.toGlobal");
-            
+
             encoding = props.getProperty("encoding");
 
             xpath1 = props.getProperty("xpath1");
@@ -214,7 +214,7 @@ Debug.printStackTrace(e);
             throw new IllegalStateException(e);
         }
     }
-    
+
     /** */
     public Locale getLocalLocale() {
         return Locale.JAPANESE;

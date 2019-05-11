@@ -170,7 +170,7 @@
 
   <!-- proxy -->
   <target name="proxy" depends="prepare" description="proxy">
-    <java classname="vavi.util.screenscrape.ProxyChanger" fork="yes">
+    <java classname="vavix.net.proxy.ProxyChangerTest" fork="yes">
       <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
       <classpath>
         <path refid="project.class.path" />
@@ -307,13 +307,25 @@
   <!-- itunes -->
   <target name="itunes" depends="prepare" description="iTunes">
     <java classname="iTunes" fork="yes" jvm="${jvm}" output="tmp/composers.tsv" error="${stderr}">
-      <jvmarg value="-Xmx256m" />    
+      <jvmarg value="-Xmx256m" />
       <jvmarg value="-Dfile.encoding=${project.build.plugins.plugin.configuration.encoding}" />
 <!--
       <jvmarg value="-verbose" />
       <jvmarg value="-Djavax.xml.parsers.DocumentBuilderFactory=vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl" />
       <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=vavi.xml.jaxp.html.cyberneko.SAXParserFactoryImpl" />
 -->
+      <classpath>
+        <path refid="project.class.path" />
+      </classpath>
+    </java>
+  </target>
+
+  <!-- itunes 2 -->
+  <target name="itunes2" depends="prepare" description="iTunes">
+    <java classname="iTunes2" fork="yes" jvm="${jvm}" output="tmp/composers.tsv" error="${stderr}">
+      <jvmarg value="-Xmx256m" />
+      <jvmarg value="-Dfile.encoding=${project.build.plugins.plugin.configuration.encoding}" />
+      <jvmarg value="-Dcom.google.chrome.app=/Applications/Local/Google Chrome.app/Contents/MacOS/Google Chrome" />
       <classpath>
         <path refid="project.class.path" />
       </classpath>

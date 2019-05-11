@@ -7,22 +7,22 @@
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import vavi.util.CharNormalizerJa;
 
 
 /**
- * UnitTest1. 
- * 
+ * UnitTest1.
+ *
  * <h3>vavi style</h3>
  * <p>
  * <pre>
  * music [ / lyrics (omit when same as music) ] [ / arrange (omit almost) ]
  * </pre>
  * all part are separated by ", "
- * 
+ *
  * <h4>ex.</h4>
  * <pre>
  * Naohide Sano, Showji Kumi / azumi / so-to
@@ -73,7 +73,7 @@ System.err.println("A: " + title + " -> " + normalizedName);
             if (matcher.matches()) {
                 normalizedName = matcher.group(1).trim();
 System.err.println("N: " + title + " -> " + normalizedName);
-                Assert.assertEquals("test", normalizedName);
+                Assertions.assertEquals("test", normalizedName);
             } else {
                 throw new IllegalArgumentException(title);
             }
@@ -96,7 +96,7 @@ System.err.println("N: " + title + " -> " + normalizedName);
             System.err.println(title);
             Matcher matcher = iTunes.normalizeComposerPattern.matcher(title);
             if (matcher.matches()) {
-                Assert.assertFalse(true);
+                Assertions.assertFalse(true);
             }
         }
         titles = new String[] {
@@ -113,7 +113,7 @@ System.err.println("N: " + title + " -> " + normalizedName);
             System.err.println(title);
             Matcher matcher = iTunes.normalizeComposerPattern.matcher(title);
             if (!matcher.matches()) {
-                Assert.assertFalse(true);
+                Assertions.assertFalse(true);
             }
         }
     }

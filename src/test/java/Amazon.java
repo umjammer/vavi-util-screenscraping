@@ -23,7 +23,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
 
 
 /**
- * Amazon. 
+ * Amazon.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2016/03/12 umjammer initial version <br>
@@ -68,7 +68,7 @@ System.err.println(page0.getUrl());
                 HtmlInput input2 = (HtmlInput) page0.getHtmlElementById("ap_password");
                 input2.setValueAttribute(password);
                 HtmlInput input3 = (HtmlInput) page0.getHtmlElementById("signInSubmit");
-                
+
                 page0 = input3.click();
 System.err.println("-----------------------------------------------------------------------------------");
             }

@@ -12,7 +12,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Scanner;
 
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 
 import vavi.net.rest.Rest;
 import vavi.util.properties.annotation.Property;
@@ -24,16 +24,16 @@ import vavix.util.screenscrape.annotation.WebScraper;
 
 
 /**
- * Test7. YahooJapanParse
+ * YahooJapanParse.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 080319 nsano initial version <br>
  */
-@Ignore
-@PropsEntity(url = "classpath:yahoo.properties")
+@Disabled
+@PropsEntity(url = "file://${user.dir}/local.properties")
 public class Test7 {
 
-    @Property
+    @Property(name = "java.test.yahooJapan.apiKey")
     String appid;
 
     /** */

@@ -14,8 +14,8 @@ import vavix.util.screenscrape.StringSimpleXPathScraper;
 
 
 /**
- * XPath 
- * xpath.properties  HTML  xpath 
+ * XPath
+ * xpath.properties  HTML  xpath
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 040311 nsano initial version <br>
@@ -41,9 +41,9 @@ Debug.printStackTrace(e);
     }
 
     /**
-     * 
+     *
      * @param args url realm host account password
-     * realm 
+     * realm
      */
     public static void main(String[] args) throws Exception {
         String url = args[0];

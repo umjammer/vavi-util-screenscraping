@@ -74,7 +74,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
 
         } catch (SAXException e) {
             // Handles both SAXNotSupportedException, SAXNotRecognizedException
-            throw new ParserConfigurationException(e.getMessage());
+            throw (ParserConfigurationException) new ParserConfigurationException(e.getMessage()).initCause(e);
         }
     }
 

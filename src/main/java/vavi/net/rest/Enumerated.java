@@ -15,7 +15,7 @@ import java.lang.reflect.Field;
 
 /**
  * Enumerated.
- * 
+ *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 080212 nsano initial version <br>
  */
@@ -27,7 +27,7 @@ public @interface Enumerated {
     EnumType value();
 
     /**
-     * TODO アノテーションがメソッド指定の場合 
+     * TODO アノテーションがメソッド指定の場合
      */
     static class Util {
 
@@ -40,7 +40,7 @@ public @interface Enumerated {
         }
 
         /**
-         * 
+         *
          * @param field @{@link Parameter} annotated field.
          * @param fieldValue enum value
          * @throws NullPointerException when field is not annotated by {@link Enumerated}
@@ -52,7 +52,7 @@ public @interface Enumerated {
                 return fieldValue == null ? "null" : String.valueOf(fieldValue.ordinal());
             case STRING:
             default:
-                return fieldValue == null ? "null" : fieldValue.name(); 
+                return fieldValue == null ? "null" : fieldValue.name();
             }
         }
     }

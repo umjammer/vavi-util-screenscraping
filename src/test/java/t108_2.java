@@ -14,7 +14,7 @@ import org.w3c.dom.Element;
 
 
 /**
- * t108_2.
+ * xpath (JXPath).
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 050604 nsano initial version <br>

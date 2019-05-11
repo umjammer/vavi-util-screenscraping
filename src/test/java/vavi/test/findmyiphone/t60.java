@@ -163,7 +163,7 @@ System.err.println("body: " + body);
         if (code == 330) {
             code = 204;
         }
-        // According to RFC 2616, "2xx" code indicates that the client"s
+        // According to RFC 2616, "2xx" code indicates that the driver"s
         // request was successfully received, understood, and accepted.
         if (200 > code || code >= 300) {
             throw new IOException(response.getStatusLine().toString());

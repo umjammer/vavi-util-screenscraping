@@ -8,19 +8,19 @@ package vavix.util.translation;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
- * GoogleTranslatorTest. 
+ * GoogleTranslatorTest.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2016/02/24 umjammer initial version <br>
  */
-@Ignore
+@Disabled
 public class GoogleTranslatorTest {
 
     @Test
@@ -31,7 +31,7 @@ public class GoogleTranslatorTest {
     //----
 
     /**
-     * @param args [0] japanese sentence, [1] english sentence 
+     * @param args [0] japanese sentence, [1] english sentence
      */
     public static void main(String[] args) throws IOException {
 
