@@ -12,9 +12,13 @@
   <organization>
     <name></name>
   </organization>
-  <version>1.0.6</version>
+  <version>1.0.5</version>
   <url>https://github.com/umjammer/vavi-util-screenscraping</url>
-  <description>1.0.6
+  <description>1.0.7
+
+    fix a security vulnerability pointed out by github
+
+1.0.6
 
     json path
 
@@ -58,8 +62,9 @@ TODO
           <generatedSourcesDirectory>target/generated-sources/cxf</generatedSourcesDirectory>
         </configuration>
       </plugin>
-      <plugin>
         <!-- exec:exec -->
+<!--
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.6.0</version>
@@ -77,6 +82,7 @@ TODO
           </arguments>
         </configuration>
       </plugin>
+-->
     </plugins>
   </build>
 
@@ -228,7 +234,7 @@ TODO
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.3.5</version>
+      <version>4.3.6</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
