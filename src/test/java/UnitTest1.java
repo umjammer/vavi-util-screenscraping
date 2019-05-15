@@ -36,7 +36,7 @@ import vavi.util.CharNormalizerJa;
  */
 public class UnitTest1 {
 
-//    @Test
+    @Test
     public void test01() throws Exception {
         String[] titles = {
             "test -XXX",
@@ -80,7 +80,7 @@ System.err.println("N: " + title + " -> " + normalizedName);
         }
     }
 
-//    @Test
+    @Test
     public void test03() throws Exception {
         String[] titles = {
             "ひらがな",
@@ -118,7 +118,6 @@ System.err.println("N: " + title + " -> " + normalizedName);
         }
     }
 
-//    @Test
     public void test02() throws Exception {
         iTunes.Title each = new iTunes.Title();
         each.artist = "モダーン今夜";
@@ -129,7 +128,6 @@ System.err.println("N: " + title + " -> " + normalizedName);
         iTunes.doEach(each);
     }
 
-    @Test
     public void test07() throws Exception {
         String[][] titles = new String[][] {
             { "R.E.M.", "Disturbance At The Heron House" },
@@ -151,7 +149,6 @@ System.err.println("N: " + title + " -> " + normalizedName);
     }
 
     /** jasrac composer format to vavi style */
-//    @Test
     public void test04() throws Exception {
 
       String[] us = {
@@ -175,7 +172,6 @@ System.err.println("N: " + title + " -> " + normalizedName);
     }
 
     /** allmusic.com composer format to vavi style */
-//    @Test
     public void test05() throws Exception {
 
       String[] csx = {
@@ -206,7 +202,6 @@ System.err.println("N: " + title + " -> " + normalizedName);
     }
 
     /** tutaya composer format to vavi style */
-//    @Test
     public void test06() throws Exception {
 
         String[] csx = {

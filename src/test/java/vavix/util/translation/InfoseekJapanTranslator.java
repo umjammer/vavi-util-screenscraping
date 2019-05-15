@@ -35,6 +35,7 @@ import vavix.util.screenscrape.StringSimpleXPathScraper;
  *          0.01 030226 nsano be one of service provider <br>
  *          0.02 030309 nsano repackage <br>
  */
+@SuppressWarnings("deprecation")
 public class InfoseekJapanTranslator implements Translator {
 
     /** url host */

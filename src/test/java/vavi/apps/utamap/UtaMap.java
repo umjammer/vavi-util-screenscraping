@@ -27,6 +27,7 @@ import vavix.util.screenscrape.Scraper;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 060922 nsano initial version <br>
  */
+@SuppressWarnings("deprecation")
 class UtaMap {
 
     static String urlIdsRegex;

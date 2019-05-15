@@ -20,6 +20,7 @@ import vavix.util.screenscrape.StringSimpleXPathScraper;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 040311 nsano initial version <br>
  */
+@SuppressWarnings("deprecation")
 public class getGlobalIp {
 
     /** @see "xpath.properties" */

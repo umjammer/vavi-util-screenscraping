@@ -25,6 +25,7 @@ import vavix.util.screenscrape.StringSimpleXPathScraper;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */
+@SuppressWarnings("deprecation")
 @Disabled
 public class getGlobalIpTest {
 

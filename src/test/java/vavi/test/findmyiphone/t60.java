@@ -7,16 +7,16 @@
 package vavi.test.findmyiphone;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
@@ -138,7 +138,7 @@ System.err.println(this.partition);
             url = "https://fmipmobile.icloud.com" + url;
         }
 
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(url);
 
         post.addHeader("Content-type", "application/json; charset=utf-8");
@@ -150,7 +150,7 @@ System.err.println(this.partition);
         post.addHeader("X-Client-UUID", "0cf3dc501ff812adb0b202baed4f37274b210853");
         post.addHeader("Accept-Language", "en-us");
         post.addHeader("Connection", "keep-alive");
-        String auth = Base64.encodeBase64String(String.format("%s:%s", username, password).getBytes()).trim();
+        String auth = Base64.getEncoder().encodeToString(String.format("%s:%s", username, password).getBytes()).trim();
 //        System.err.println(auth);
         post.addHeader("Authorization", String.format("Basic %s", auth));
 

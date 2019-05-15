@@ -33,6 +33,7 @@ import vavix.util.screenscrape.StringI18nSimpleXPathScraper;
  * @author <a href=mailto:umjammer@gmail.com>nsano</a>
  * @version 0.00 071002 nsano initial version <br>
  */
+@SuppressWarnings("deprecation")
 public class GoogleTranslator implements Translator {
 
     /** url host */

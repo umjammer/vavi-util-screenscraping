@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
-import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -24,10 +23,8 @@ import vavix.util.screenscrape.ApacheURLScraper;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 051014 nsano initial version <br>
  */
+@SuppressWarnings("deprecation")
 public class MonexURLScraper extends ApacheURLScraper<String> {
-
-    /** */
-    private Cookie[] cookies;
 
     /** */
     private HttpClient httpClient = new HttpClient();

@@ -433,7 +433,7 @@ System.err.println("nextAnchor: " + nextAnchor);
     }
 
     void processByWebScraper(String[] args) throws Exception {
-        WebScraper.Util.foreach(Title.class, (each) -> {
+        WebScraper.Util.foreach(Title.class, each -> {
             try {
                 boolean r = false;
                 if (each.location.startsWith("file:///Users/nsano/Music/iTunes/iTunes%20Music/") &&
