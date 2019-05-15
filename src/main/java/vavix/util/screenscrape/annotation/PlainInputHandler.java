@@ -16,7 +16,7 @@ import java.net.URLConnection;
 /**
  * PlainInputHandler.
  *
- * not used currently. for ascii only documents.
+ * for ascii only documents (json etc.).
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>

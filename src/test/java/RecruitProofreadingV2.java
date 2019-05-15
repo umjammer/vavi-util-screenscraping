@@ -4,7 +4,13 @@
  * Programmed by Naohide Sano
  */
 
+import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.regex.Pattern;
+
+import com.google.common.io.Files;
 
 import vavi.util.properties.annotation.Property;
 import vavi.util.properties.annotation.PropsEntity;
@@ -62,17 +68,51 @@ public class RecruitProofreadingV2 {
         }
     }
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) throws Exception {
-        RecruitProofreadingV2 app = new RecruitProofreadingV2();
-        PropsEntity.Util.bind(app);
+    void test1(String[] args) throws Exception {
         String text = "薄茶色のシミがあちこちについた掛け布団。座ったら、五分でお尻が序くなってきそうだ。";
         List<Result> results = WebScraper.Util.scrape(Result.class, app.apiKey, text);
         for (Result result : results) {
             System.err.println(result);
         }
+    }
+
+    int line = 1;
+    int count = 0;
+    Pattern pattern = Pattern.compile("[。、「」]");
+
+    void test2(String[] args) throws Exception {
+        Path file = Paths.get(args[0]);
+        Files.asCharSource(file.toFile(), Charset.forName("utf8")).forEachLine(l -> {
+            try {
+                if (pattern.matcher(l).find()) {
+                    System.out.printf("B: %4d: %s\n", line, l);
+                    Result result = WebScraper.Util.scrape(Result.class, app.apiKey, l).get(0);
+                    System.out.printf("A: %4d: %s\n", line, result.checkedSentence);
+
+                    count++;
+//                    if (count > 3) {
+//                        System.exit(0);
+//                    }
+
+                    Thread.sleep(3000);
+                }
+
+                line++;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    static RecruitProofreadingV2 app;
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) throws Exception {
+        app = new RecruitProofreadingV2();
+        PropsEntity.Util.bind(app);
+        app.test1(args);
     }
 }
 

@@ -12,19 +12,21 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
+import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.internal.JsonContext;
 
 import vavi.beans.BeanUtil;
 import vavi.util.Debug;
 
 
 /**
- * JsonPathParser.
+ * JsonPath Parser.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2018/02/22 nsano initial version <br>
+ * @see "https://github.com/cmunilla/JPath"
  */
 public class JsonPathParser<T> implements Parser<InputStream, T> {
 
@@ -35,14 +37,14 @@ public class JsonPathParser<T> implements Parser<InputStream, T> {
      */
     public List<T> parse(Class<T> type, InputHandler<InputStream> handler, String ... args) {
         try {
-//            String encoding = WebScraper.Util.getEncoding(type);
+            String encoding = WebScraper.Util.getEncoding(type);
 //System.err.println("encoding: " + encoding);
 
             boolean isCollection = WebScraper.Util.isCollection(type);
 
             InputStream is = handler.getInput(args);
-            Object document = JsonPath.parse(is);
-System.err.println(JsonContext.class.cast(document).jsonString());
+            Object document = Configuration.defaultConfiguration().jsonProvider().parse(is, encoding);
+System.err.println(document);
 
             List<T> results = new ArrayList<>();
 
@@ -53,7 +55,7 @@ System.err.println(JsonContext.class.cast(document).jsonString());
                 if (jsonPath.isEmpty()) {
                     jsonPath = "$." + (isCollection ? "." : "") + field.getName();
                 }
-System.err.println("jsonPath: " + jsonPath);
+//System.err.println("jsonPath: " + jsonPath);
 
                 if (isCollection) {
 
@@ -84,7 +86,8 @@ System.err.println("nodeList: " + nodeList);
                         results.add(bean);
                     }
 
-                    String text = ((String) JsonPath.read(document, jsonPath)).trim();
+                    Object value = JsonPath.read(document, jsonPath);
+                    String text = String.valueOf(value).trim();
                     BeanUtil.setFieldValue(field, bean, text);
                 }
             }
@@ -109,7 +112,7 @@ System.err.println("nodeList: " + nodeList);
      * <li> TODO now 2 step JsonPath only
      * <li> TODO {@link WebScraper#value()} が存在すれば 2 step とか
      */
-    public void foreach(Class<T> type, EachHandler<T> eachHandler, InputHandler<InputStream> inputHandler, String ... args) {
+    public void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<InputStream> inputHandler, String ... args) {
         try {
 //            String encoding = WebScraper.Util.getEncoding(type);
 //System.err.println("encoding: " + encoding);
@@ -139,7 +142,7 @@ if (nodeList.size() == 0) {
                     BeanUtil.setFieldValue(field, bean, text.trim());
                 }
 
-                eachHandler.exec(bean);
+                eachHandler.accept(bean);
             }
 
         } catch (IllegalAccessException | InstantiationException | IOException e) {

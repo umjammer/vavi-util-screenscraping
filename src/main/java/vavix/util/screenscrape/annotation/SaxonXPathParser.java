@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -24,14 +25,14 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import net.sf.saxon.dom.NodeOverNodeInfo;
-import net.sf.saxon.om.NodeInfo;
-
 import org.xml.sax.InputSource;
 
 import vavi.beans.BeanUtil;
 import vavi.util.Debug;
 import vavi.xml.util.PrettyPrinter;
+
+import net.sf.saxon.dom.NodeOverNodeInfo;
+import net.sf.saxon.om.NodeInfo;
 
 
 /**
@@ -151,7 +152,7 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
      * <li> TODO now 2 step XPath only
      * <li> TODO {@link WebScraper#value()} が存在すれば 2 step とか
      */
-    public void foreach(Class<T> type, EachHandler<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
+    public void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
 //System.err.println("encoding: " + encoding);
@@ -190,7 +191,7 @@ if (nodeList.size() == 0) {
                         BeanUtil.setFieldValue(field, bean, text);
                     }
 
-                    eachHandler.exec(bean);
+                    eachHandler.accept(bean);
                 }
             } else if (NodeList.class.isInstance(nodeSet)) {
 
@@ -216,7 +217,7 @@ if (nodeList.getLength() == 0) {
                         BeanUtil.setFieldValue(field, bean, text);
                     }
 
-                    eachHandler.exec(bean);
+                    eachHandler.accept(bean);
                 }
             } else {
                 throw new IllegalStateException("unsupported type returns: " + nodeSet.getClass().getName());

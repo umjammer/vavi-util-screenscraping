@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -143,7 +144,7 @@ pp.print(document);
      * <li> TODO now 2 step XPath only
      * <li> TODO {@link WebScraper#value()} が存在すれば 2 step とか
      */
-    public void foreach(Class<T> type, EachHandler<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
+    public void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
 //System.err.println("encoding: " + encoding);
@@ -180,7 +181,7 @@ if (nodeList.getLength() == 0) {
                     BeanUtil.setFieldValue(field, bean, text);
                 }
 
-                eachHandler.exec(bean);
+                eachHandler.accept(bean);
             }
 
         } catch (XPathExpressionException | SAXException e) {

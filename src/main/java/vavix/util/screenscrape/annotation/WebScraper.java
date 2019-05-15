@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import vavi.net.www.protocol.URLStreamHandlerUtil;
 
@@ -213,7 +214,7 @@ public @interface WebScraper {
          * @throws IllegalArgumentException when {@link WebScraper#input()} is default and url is null.
          * @see {@link DefaultInputHandler#dealUrlAndArgs(String, String...)}
          */
-        public static <I, T> void foreach(Class<T> type, EachHandler<T> eachHandler, String ... args) throws IOException {
+        public static <I, T> void foreach(Class<T> type, Consumer<T> eachHandler, String ... args) throws IOException {
             //
             WebScraper webScraper = type.getAnnotation(WebScraper.class);
             if (webScraper == null) {

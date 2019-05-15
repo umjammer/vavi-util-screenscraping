@@ -4,7 +4,7 @@
 
 ## Introduction
 
-アノテーションを使って Screen Scraping を行い POJO に設定できます。
+This library screen-scrapes data from html and injects data into POJO using annotation.
 
 ```java
     @WebScraper(url = "http://foo.com/bar.html")
@@ -24,22 +24,32 @@
 
 ## Details
 
- * InputHandler
- * Parser
-  * SaxonParser
- * EachHandler
+ * `InputHandler` ... apply any processing before parsing
+
+ * `Parser`
+
+    * `XPathParser` ... default
+    * `HtmlXPathParser` ... for original purpose
+    * `SaxonXPathParser` ... for huge xml file
+    * `JsonPathParser` ... for json return
+
+ * `Parser#foreach()` ... like java collection stream
+
+## Sample
+
+ * [Scraping composers from JASRAC database for iTuens](https://github.com/umjammer/vavi-util-screenscraping/wiki)
 
 ## Annotation -> inject -> POJO
 
- 一般化できそう
+  Followings might be generalized.
 
  * [javax.persistence](http://ja.wikipedia.org/wiki/Java_Persistence_API)
  * [CLI](https://github.com/umjammer/klab-commons-cli/)
  * [CSV](https://github.com/umjammer/klab-commons-csv/)
- * [Properties](http://code.google.com/p/vavi-commons/blob/master/src/src/main/java/vavi/util/properties/annotation)
+ * [Properties](https://github.com/umjammer/vavi-commons/tree/master/src/main/java/vavi/util/properties/annotation)
 
- * [Rest]
- * [WebQuery]
+ * [Rest](https://github.com/umjammer/vavi-util-screenscraping/tree/master/src/main/java/vavi/net/rest)
+ * [WebQuery](https://github.com/umjammer/vavi-util-screenscraping/tree/master/src/test/java/vavi/net/webquery)
 
  * [UPnP](https://github.com/umjammer/cyberlink4java2/)
  

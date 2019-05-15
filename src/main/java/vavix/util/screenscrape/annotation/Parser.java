@@ -7,6 +7,7 @@
 package vavix.util.screenscrape.annotation;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 
 /**
@@ -26,7 +27,7 @@ public interface Parser<I, T> {
     List<T> parse(Class<T> type, InputHandler<I> inputHandler, String ... args);
 
     /** for less memory */
-    void foreach(Class<T> type, EachHandler<T> eachHandler, InputHandler<I> inputHandler, String ... args);
+    void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<I> inputHandler, String ... args);
 }
 
 /* */
