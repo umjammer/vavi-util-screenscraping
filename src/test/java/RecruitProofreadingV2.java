@@ -7,7 +7,6 @@
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import com.google.common.io.Files;
@@ -70,10 +69,8 @@ public class RecruitProofreadingV2 {
 
     void test1(String[] args) throws Exception {
         String text = "薄茶色のシミがあちこちについた掛け布団。座ったら、五分でお尻が序くなってきそうだ。";
-        List<Result> results = WebScraper.Util.scrape(Result.class, app.apiKey, text);
-        for (Result result : results) {
-            System.err.println(result);
-        }
+        Result result = WebScraper.Util.scrape(Result.class, apiKey, text).get(0);
+        System.err.println(result);
     }
 
     int line = 1;
@@ -86,13 +83,13 @@ public class RecruitProofreadingV2 {
             try {
                 if (pattern.matcher(l).find()) {
                     System.out.printf("B: %4d: %s\n", line, l);
-                    Result result = WebScraper.Util.scrape(Result.class, app.apiKey, l).get(0);
+                    Result result = WebScraper.Util.scrape(Result.class, apiKey, l).get(0);
                     System.out.printf("A: %4d: %s\n", line, result.checkedSentence);
 
                     count++;
-//                    if (count > 3) {
-//                        System.exit(0);
-//                    }
+                    if (count > 3) {
+                        System.exit(0);
+                    }
 
                     Thread.sleep(3000);
                 }
@@ -104,13 +101,11 @@ public class RecruitProofreadingV2 {
         });
     }
 
-    static RecruitProofreadingV2 app;
-
     /**
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        app = new RecruitProofreadingV2();
+        RecruitProofreadingV2 app = new RecruitProofreadingV2();
         PropsEntity.Util.bind(app);
         app.test1(args);
     }

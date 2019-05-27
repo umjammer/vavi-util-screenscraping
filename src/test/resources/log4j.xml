@@ -4,6 +4,7 @@
 
   <appender name="stderr" class="org.apache.log4j.ConsoleAppender">
      <param name="Target" value="System.err" /> 
+     <param name="threshold" value="warn" /> 
      <layout class="org.apache.log4j.PatternLayout">
         <param name="ConversionPattern" value="%d{ISO8601} [%p] %x%m%n\tat %t %c.%M(%F:%L)\n" />
      </layout>

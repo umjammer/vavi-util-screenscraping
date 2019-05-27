@@ -44,7 +44,7 @@ public class EqTest {
     public static class MyInput implements InputHandler<Reader> {
         private String cache;
         /**
-         * @param args 0: no
+         * @param args 0: number of answer pattern, 1: sex, 2: age
          */
         public Reader getInput(String ... args) throws IOException {
             if (cache != null) {
@@ -54,7 +54,7 @@ public class EqTest {
             StringBuilder sb = new StringBuilder(new TriDecimal(Integer.valueOf(args[0])).toString());
             sb.insert(0, "0000000000000000000");
             String no = sb.reverse().toString();
-    System.out.println("  \"ans\": " + no.substring(0, 20) + ",");
+System.out.println("  \"ans\": " + no.substring(0, 20) + ",");
 
             String url = "http://eqtest.biz/cate/index.html";
             HtmlPage page0 = client.getPage(url);
@@ -170,8 +170,8 @@ System.out.println("  \"url\": \"" + resultAnchor.getHrefAttribute() + "\", ");
     public static void main(String[] args) throws Exception {
         for (int i = 663; i < Math.pow(3, 20); i++) {
             System.out.println("{");
-            List<Result> results = WebScraper.Util.scrape(Result.class, String.valueOf(i), String.valueOf(0), String.valueOf(1));
-            System.out.println(results.get(0).toString());
+            Result result = WebScraper.Util.scrape(Result.class, String.valueOf(i), String.valueOf(0), String.valueOf(1)).get(0);
+            System.out.println(result);
             System.out.println("},");
         }
     }
