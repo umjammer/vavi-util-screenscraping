@@ -4,12 +4,10 @@
  * Programmed by Naohide Sano
  */
 
-import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.regex.Pattern;
-
-import com.google.common.io.Files;
 
 import vavi.util.properties.annotation.Property;
 import vavi.util.properties.annotation.PropsEntity;
@@ -79,7 +77,7 @@ public class RecruitProofreadingV2 {
 
     void test2(String[] args) throws Exception {
         Path file = Paths.get(args[0]);
-        Files.asCharSource(file.toFile(), Charset.forName("utf8")).forEachLine(l -> {
+        Files.lines(file).forEach(l -> {
             try {
                 if (pattern.matcher(l).find()) {
                     System.out.printf("B: %4d: %s\n", line, l);
@@ -107,7 +105,7 @@ public class RecruitProofreadingV2 {
     public static void main(String[] args) throws Exception {
         RecruitProofreadingV2 app = new RecruitProofreadingV2();
         PropsEntity.Util.bind(app);
-        app.test1(args);
+        app.test2(args);
     }
 }
 

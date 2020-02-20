@@ -41,7 +41,10 @@ import vavix.util.screenscrape.annotation.WebScraper;
  */
 public class iTunes {
 
-    /** iTunes ライブラリ一曲 */
+    /**
+     * iTunes ライブラリ一曲
+     * TODO Music.app is not supported.
+     */
     @WebScraper(url = "file:///Users/nsano/Music/iTunes/iTunes%20Music%20Library.xml",
                 parser = SaxonXPathParser.class,
                 value = "/plist/dict/dict/dict")

@@ -37,7 +37,7 @@ public @interface Target {
         }
 
         /**
-         * @param field {@link @Target} annotated
+         * @param field {@link Target} annotated
          */
         public static String getValue(Field field) {
             Target target = field.getAnnotation(Target.class);
@@ -48,7 +48,7 @@ public @interface Target {
         }
 
         /**
-         * @param field {@link @Target} annotated
+         * @param field {@link Target} annotated
          */
         public static boolean getOptional(Field field) {
             Target target = field.getAnnotation(Target.class);

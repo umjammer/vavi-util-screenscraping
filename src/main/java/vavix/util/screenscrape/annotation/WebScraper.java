@@ -45,7 +45,7 @@ public @interface WebScraper {
      * <p>
      * url 中の文字 {args_index} は args の順に置き換えられます。
      * </p>
-     * @see {@link DefaultInputHandler#dealUrlAndArgs(String, String...)}
+     * @see DefaultInputHandler#dealUrlAndArgs(String, String...)
      */
     String url() default "";
 
@@ -179,7 +179,7 @@ public @interface WebScraper {
          * @param args parameters for input handler
          * @return List of type objects.
          * @throws IllegalArgumentException when {@link WebScraper#input()} is default and url is null.
-         * @see {@link DefaultInputHandler#dealUrlAndArgs(String, String...)}
+         * @see DefaultInputHandler#dealUrlAndArgs(String, String...)
          */
         public static <I, T> List<T> scrape(Class<T> type, String ... args) throws IOException {
             //
@@ -210,9 +210,8 @@ public @interface WebScraper {
          *
          * @param type type annotated by {@link WebScraper}
          * @param args parameters for input handler
-         * @return List of type objects.
          * @throws IllegalArgumentException when {@link WebScraper#input()} is default and url is null.
-         * @see {@link DefaultInputHandler#dealUrlAndArgs(String, String...)}
+         * @see DefaultInputHandler#dealUrlAndArgs(String, String...)
          */
         public static <I, T> void foreach(Class<T> type, Consumer<T> eachHandler, String ... args) throws IOException {
             //

@@ -48,7 +48,6 @@ public @interface Ignored {
         /**
          * @param field
          * @param bean
-         * @param value
          */
         public static boolean isIgnoreable(Field field, Object bean) {
             Ignored ignored = field.getAnnotation(Ignored.class);
