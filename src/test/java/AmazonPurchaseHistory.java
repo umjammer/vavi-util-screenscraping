@@ -16,11 +16,11 @@ import javax.xml.xpath.XPathFactory;
 
 import org.xml.sax.InputSource;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlInput;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import vavi.net.auth.oauth2.amazon.AmazonLocalAuthenticator;
 import vavi.util.CharNormalizerJa;
 import vavi.util.properties.annotation.Property;
 import vavi.util.properties.annotation.PropsEntity;
@@ -32,7 +32,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
 
 
 /**
- * AmazonPurchaseHistory.
+ * AmazonPurchaseHistory. 2020 version.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2016/03/12 umjammer initial version <br>
@@ -42,20 +42,14 @@ public class AmazonPurchaseHistory {
 
     @Property(name = "java.test.amazon.email")
     String email;
-    @Property(name = "java.test.amazon.password")
-    String password;
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_10);
-
-    static {
-        client.setJavaScriptEnabled(false);
-    }
+    static WebDriver driver;
 
     /** */
     public static class MyInput extends DefaultInputHandler {
         private String cache;
         /**
-         * @param args 0: url, 1: ignore, 2: start, 3: email, 4: password
+         * @param args 0: url, 1: ignore, 2: start
          */
         public Reader getInput(String ... args) throws IOException {
             if (cache != null) {
@@ -64,37 +58,43 @@ public class AmazonPurchaseHistory {
 
             String url = args[0];
             int start = Integer.parseInt(args[2]);
-            String email = args[3];
-            String password = args[4];
-            HtmlPage page0 = client.getPage(url);
 
-//System.exit(1);
-            if (page0.getUrl().toString().startsWith("https://www.amazon.co.jp/ap/signin/")) {
-System.err.println(page0.getUrl());
-//System.err.println(page0.asXml());
+//System.err.println("goto: " + url);
+            driver.navigate().to(url);
 
-                HtmlInput input1 = (HtmlInput) page0.getHtmlElementById("ap_email");
-                input1.setValueAttribute(email);
-                HtmlInput input2 = (HtmlInput) page0.getHtmlElementById("ap_password");
-                input2.setValueAttribute(password);
-                HtmlInput input3 = (HtmlInput) page0.getHtmlElementById("signInSubmit");
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            try { Thread.sleep(300); } catch (InterruptedException e) {}
+            wait.until(d -> {
+                if (d == null) {
+                    throw new IllegalStateException("browser maight be closed");
+                }
+                String r = ((JavascriptExecutor) d).executeScript("return document.readyState;").toString();
+//Debug.println(r);
+                return "complete".equals(r);
+            });
 
-                page0 = input3.click();
-System.err.println("-----------------------------------------------------------------------------------");
-            }
-//System.err.println(page0.getUrl());
-//System.err.println(page0.asXml());
-
+//System.err.println("location: " + driver.getCurrentUrl());
             //
-            cache = page0.asXml();
+            cache = driver.getPageSource();
 //System.err.println(cache);
+//try {
+// SAXParserFactory spf = SAXParserFactory.newInstance();
+// SAXParser sp = spf.newSAXParser();
+// XMLReader xr = sp.getXMLReader();
+//
+// xr.setContentHandler(new FragmentContentHandler(xr));
+// xr.parse(new InputSource(new StringReader(cache)));
+//} catch (ParserConfigurationException | SAXException e) {
+// e.printStackTrace();
+//}
+
             try {
                 System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");
                 XPath xPath = XPathFactory.newInstance().newXPath();
                 InputSource in = new InputSource(new StringReader(cache));
-                String xpath = "//*[@id='controlsContainer']/DIV[2]/SPAN[2]/SPAN/text()";
+                String xpath = "//SPAN[@class='num-orders']/text()";
                 String text = (String) xPath.evaluate(xpath, in, XPathConstants.STRING);
-//System.err.println("text: " + text);
+//System.err.println("num-orders: " + text);
                 text = text.replace("件", "").trim();
                 int max = text.isEmpty() ? 0 : Integer.parseInt(text);
                 if (start > max) {
@@ -111,16 +111,15 @@ System.err.println("------------------------------------------------------------
     @WebScraper(url = "https://www.amazon.co.jp/gp/css/order-history?digitalOrders=1&unifiedOrders=1&orderFilter=year-{0}&startIndex={1}",
                 input = MyInput.class,
                 parser = HtmlXPathParser.class,
-                encoding = "Windows-31J",
                 value = "//DIV[@id='ordersContainer']/DIV[@class='a-box-group a-spacing-base order']")
     public static class Result {
-        @Target(value = "/DIV/DIV[1]/DIV/DIV/DIV/DIV[1]/DIV/DIV[1]/DIV[2]/SPAN/text()")
+        @Target(value = "//DIV[1]/DIV/DIV/DIV/DIV[1]/DIV/DIV[1]/DIV[2]/SPAN/text()")
         String date;
-        @Target(value = "/DIV/DIV[1]/DIV/DIV/DIV/DIV[1]/DIV/DIV[2]/DIV[2]/SPAN/text()")
+        @Target(value = "//DIV[1]/DIV/DIV/DIV/DIV[1]/DIV/DIV[2]/DIV[2]/SPAN/text()")
         String price;
-        @Target(value = "/DIV/DIV[2]/DIV/DIV/DIV/DIV[1]/DIV/DIV/DIV/DIV[2]/DIV[1]/A/text()")
+        @Target(value = "//DIV[2]/DIV/DIV/DIV/DIV[1]/DIV/DIV/DIV/DIV[2]/DIV[1]/A/text()")
         String title;
-        @Target(value = "/DIV/DIV[2]/DIV/DIV/DIV/DIV[1]/DIV/DIV/DIV/DIV[2]/DIV[2]/SPAN/text()")
+        @Target(value = "//DIV[2]/DIV/DIV/DIV/DIV[1]/DIV/DIV/DIV/DIV[2]/DIV[2]/SPAN/text()")
         String author;
         public String toString() {
             StringBuilder sb = new StringBuilder();
@@ -141,17 +140,24 @@ System.err.println("------------------------------------------------------------
     public static void main(String[] args) throws Exception {
         AmazonPurchaseHistory app = new AmazonPurchaseHistory();
         PropsEntity.Util.bind(app);
-        for (int year = 2000; year < 2017; year++) {
+
+        String url = "https://www.amazon.co.jp/ap/signin?openid.return_to=https%3A%2F%2Fwww.amazon.co.jp%2Fref%3Dgw_sgn_ib%2F358-4710901-2880702&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=jpflex&openid.mode=checkid_setup&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0";
+        driver = new AmazonLocalAuthenticator(url).authorize(app.email);
+//System.err.println("auth done");
+
+        for (int year = 2000; year <= 2020; year++) {
             for (int i = 0; ; i++) {
                 try {
                     int start = i * 10;
-                    WebScraper.Util.foreach(Result.class, System.out::println, String.valueOf(year), String.valueOf(start), app.email, app.password);
+                    WebScraper.Util.foreach(Result.class, System.out::println, String.valueOf(year), String.valueOf(start));
                 } catch (NoSuchElementException e) {
 //                    System.err.println(year + ": " + e.getMessage());
                     break;
                 }
             }
         }
+
+        driver.quit();
     }
 }
 

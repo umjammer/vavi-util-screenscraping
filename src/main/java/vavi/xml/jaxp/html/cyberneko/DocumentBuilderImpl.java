@@ -68,6 +68,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
                   // Validation
                   parser.setFeature("http://xml.org/sax/features/validation", this.dbf.isValidating());
                   parser.setFeature("http://cyberneko.org/html/features/augmentations", true);
+                  parser.setFeature("http://xml.org/sax/features/namespaces", false);
                   parser.setProperty("http://cyberneko.org/html/properties/names/elems", "lower");
 //System.err.println("elements: " + parser.getProperty("http://cyberneko.org/html/properties/names/elems"));
 //              }
@@ -122,6 +123,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
                 parser.setErrorHandler(eh);
             }
             parser.parse(is);
+//new PrettyPrinter(System.out).print(parser.getDocument());
             return parser.getDocument();
 //        }
     }

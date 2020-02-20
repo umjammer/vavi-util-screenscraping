@@ -6,7 +6,22 @@
 
 package vavix.util.screenscrape.annotation;
 
+import java.io.InputStreamReader;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import org.xml.sax.InputSource;
+
 import org.junit.jupiter.api.Test;
+
+import vavi.xml.util.PrettyPrinter;
+
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 
 /**
@@ -18,11 +33,33 @@ import org.junit.jupiter.api.Test;
 @WebScraper
 public class WebScraperTest {
 
-    @Test
-    public void test() throws Exception {
-//        fail("Not yet implemented");
+    protected XPath xPath;
+
+    {
+        System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "org.apache.xpath.jaxp.XPathFactoryImpl");
+        xPath = XPathFactory.newInstance().newXPath();
     }
 
+    @Test
+    public void test() throws Exception {
+//        System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
+        System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");
+
+        InputSource in = new InputSource(new InputStreamReader((WebScraperTest.class.getResourceAsStream("/amazon.xml"))));
+        in.setEncoding("utf-8");
+
+//        String xpath = "/DIV/DIV/DIV/DIV/DIV/DIV/DIV/SPAN/text()";
+//        String xpath = "//DIV[@class='a-row a-size-base']";
+        String xpath = "//DIV[1]/DIV/DIV/DIV/DIV[1]/DIV/DIV[1]/DIV[2]/SPAN/text()";
+
+        NodeList nodeList = (NodeList) xPath.evaluate(xpath, in, XPathConstants.NODESET);
+        assertNotEquals(0, nodeList.getLength());
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            new PrettyPrinter(System.err).print(node);
+System.err.println("-------------------------------------------------------------");
+        }
+    }
 }
 
 /* */

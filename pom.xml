@@ -8,11 +8,12 @@
 
   <groupId>vavi</groupId>
   <artifactId>vavi-util-screenscraping</artifactId>
+  <version>1.0.8-SNAPSHOT</version>
+
   <name>Vavi Screen Scraping API</name>
   <organization>
     <name></name>
   </organization>
-  <version>1.0.7</version>
   <url>https://github.com/umjammer/vavi-util-screenscraping</url>
   <description>1.0.7
 
@@ -97,7 +98,7 @@ TODO
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-commons</artifactId>
-      <version>1.0.6</version>
+      <version>1.0.13</version>
     </dependency>
     <dependency>
       <groupId>net.sf.saxon</groupId>
@@ -123,16 +124,22 @@ TODO
       <groupId>com.github.cmunilla</groupId>
       <artifactId>JPath</artifactId>
       <version>master-SNAPSHOT</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.ow2.asm</groupId>
+          <artifactId>asm</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
-      <version>3.6.0</version>
+      <version>3.141.59</version>
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-chrome-driver</artifactId>
-      <version>3.6.0</version>
+      <version>3.141.59</version>
     </dependency>
 
     <dependency>
@@ -147,10 +154,17 @@ TODO
       <version>5.3.0</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-commons-sandbox</artifactId>
-      <version>0.3.3</version>
+      <version>0.3.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.umjammer</groupId>
+      <artifactId>vavi-sound-sandbox</artifactId>
+      <version>1.0.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -164,6 +178,11 @@ TODO
       <artifactId>vavi-math</artifactId>
       <version>0.0.2</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>vavi</groupId>
+      <artifactId>vavi-net-auth</artifactId>
+      <version>0.0.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>jaxen</groupId>
@@ -235,6 +254,12 @@ TODO
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>4.3.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.7.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

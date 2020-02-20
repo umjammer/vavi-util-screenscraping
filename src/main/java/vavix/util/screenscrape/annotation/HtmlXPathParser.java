@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -115,14 +116,14 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
                 }
             }
 
-            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
-
             return results;
 
         } catch (XPathExpressionException e) {
             throw new IllegalArgumentException(e);
         } catch (IllegalAccessException | InstantiationException | IOException e) {
             throw new IllegalStateException(e);
+        } finally {
+            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
         }
     }
 
@@ -141,7 +142,7 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
     public void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<Reader> inputHandler, String... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-System.err.println("encoding: " + encoding);
+Debug.println(Level.FINE, "encoding: " + encoding);
 
             System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");
 
@@ -152,8 +153,8 @@ System.err.println("encoding: " + encoding);
 
             Object nodeSet = xPath.evaluate(xpath, in, XPathConstants.NODESET);
 
-            // TODO vavi.xml.jaxp.html.cyberneko has bug!
-            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
+            // TODO vavi.xml.jaxp.html.cyberneko has bug! <- what's ???
+//            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
 
             NodeList nodeList = NodeList.class.cast(nodeSet);
 //System.err.println("nodeList: " + nodeList.getLength());
@@ -167,6 +168,7 @@ if (nodeList.getLength() == 0) {
                 Node node = nodeList.item(i);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 new PrettyPrinter(new PrintWriter(baos)).print(node); // TODO use constructor w/ encoding
+//System.err.println("-------------------------------------------------------------");
 //System.err.println(baos.toString()); // TODO use encoding
 
                 Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
@@ -185,6 +187,8 @@ if (nodeList.getLength() == 0) {
             throw new IllegalArgumentException(e);
         } catch (IllegalAccessException | InstantiationException | IOException e) {
             throw new IllegalStateException(e);
+        } finally {
+            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
         }
     }
 }
