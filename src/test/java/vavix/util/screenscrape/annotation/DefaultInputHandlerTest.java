@@ -28,7 +28,6 @@ public class DefaultInputHandlerTest {
         assertEquals(3, result.length);
         assertEquals("http://foo.com?bar=VAVI&buz=UMJAMMER", result[0]);
     }
-
 }
 
 /* */

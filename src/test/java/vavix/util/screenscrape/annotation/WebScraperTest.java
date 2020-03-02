@@ -7,6 +7,8 @@
 package vavix.util.screenscrape.annotation;
 
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -19,8 +21,10 @@ import org.xml.sax.InputSource;
 
 import org.junit.jupiter.api.Test;
 
+import vavi.util.CharNormalizerJa;
 import vavi.xml.util.PrettyPrinter;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 
@@ -30,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2016/02/27 umjammer initial version <br>
  */
-@WebScraper
 public class WebScraperTest {
 
     protected XPath xPath;
@@ -59,6 +62,40 @@ public class WebScraperTest {
             new PrettyPrinter(System.err).print(node);
 System.err.println("-------------------------------------------------------------");
         }
+    }
+
+    @WebScraper(url = "classpath:amazon.html",
+            parser = HtmlXPathParser.class,
+            isDebug = true,
+            value = "//DIV[@id='ordersContainer']/DIV[@class='a-box-group a-spacing-base order']")
+    public static class Result {
+        @Target(value = "//DIV[1]/DIV/DIV/DIV/DIV[1]/DIV/DIV[1]/DIV[2]/SPAN/text()")
+        String date;
+        @Target(value = "//DIV[1]/DIV/DIV/DIV/DIV[1]/DIV/DIV[2]/DIV[2]/SPAN/text()")
+        String price;
+        @Target(value = "//DIV[2]/DIV/DIV/DIV/DIV[1]/DIV/DIV/DIV/DIV[2]/DIV[1]/A/text()")
+        String title;
+        @Target(value = "//DIV[2]/DIV/DIV/DIV/DIV[1]/DIV/DIV/DIV/DIV[2]/DIV[2]/SPAN/text()")
+        String author;
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append(date.replaceAll("[年月]", "/").replace("日", ""));
+            sb.append(",\"");
+            sb.append(CharNormalizerJa.ToHalf.normalize(price).replace('￥', '¥'));
+            sb.append("\",\"");
+            sb.append(title);
+            sb.append("\",\"");
+            sb.append(author.replaceAll("\\s+", " "));
+            sb.append("\"");
+            return sb.toString();
+        }
+    }
+
+//    @Test
+    public void test1() throws Exception {
+        List<Result> results = new ArrayList<>();
+        WebScraper.Util.foreach(Result.class, e -> results.add(e));
+        assertEquals(10, results.size());
     }
 }
 
