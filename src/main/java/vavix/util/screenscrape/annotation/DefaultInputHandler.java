@@ -14,6 +14,9 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.logging.Level;
+
+import vavi.util.Debug;
 
 
 /**
@@ -35,10 +38,10 @@ public class DefaultInputHandler implements InputHandler<Reader> {
      */
     public Reader getInput(String ... args) throws IOException {
         String url = args[0];
-System.err.println("url: " + url);
+Debug.println(Level.FINE, "url: " + url);
         URLConnection connection = new URL(url).openConnection();
 if (HttpURLConnection.class.isInstance(connection)) {
- System.err.println("responseCode: " + HttpURLConnection.class.cast(connection).getResponseCode());
+ Debug.println(Level.FINE, "responseCode: " + HttpURLConnection.class.cast(connection).getResponseCode());
 }
         InputStream is = connection.getInputStream();
 //System.err.println(StringUtil.getDump(baos.toByteArray()));

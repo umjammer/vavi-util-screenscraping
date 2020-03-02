@@ -78,8 +78,10 @@ public class XPathParser<T> implements Parser<Reader, T> {
             in.setEncoding(encoding);
 
             Document document = db.parse(in);
-PrettyPrinter pp = new PrettyPrinter(System.err);
-pp.print(document);
+if (WebScraper.Util.isDebug(type)) {
+ PrettyPrinter pp = new PrettyPrinter(System.err);
+ pp.print(document);
+}
 
             List<T> results = new ArrayList<>();
 
@@ -158,8 +160,12 @@ pp.print(document);
 
             NodeList nodeList = NodeList.class.cast(nodeSet);
 //System.err.println("nodeList: " + nodeList.getLength());
-if (nodeList.getLength() == 0) {
- Debug.println("no node list: " + xpath);
+if (WebScraper.Util.isDebug(type)) {
+ if (nodeList.getLength() == 0) {
+//  System.err.println("xpath: " + xpath);
+  Debug.println("no node list: " + xpath);
+  new PrettyPrinter(System.err).print(new InputSource(inputHandler.getInput(args)));
+ }
 }
 
             for (int i = 0; i < nodeList.getLength(); i++) {
@@ -168,6 +174,10 @@ if (nodeList.getLength() == 0) {
                 Node node = nodeList.item(i);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 new PrettyPrinter(new PrintWriter(baos)).print(node);
+if (WebScraper.Util.isDebug(type)) {
+ System.err.println("-------------------------------------------------------------");
+ System.err.println(baos.toString()); // TODO use encoding
+}
 
                 InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
                 is.setEncoding(encoding);

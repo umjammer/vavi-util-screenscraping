@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
@@ -44,7 +45,7 @@ public class JsonPathParser<T> implements Parser<InputStream, T> {
 
             InputStream is = handler.getInput(args);
             Object document = Configuration.defaultConfiguration().jsonProvider().parse(is, encoding);
-System.err.println(document);
+Debug.println(document);
 
             List<T> results = new ArrayList<>();
 
@@ -60,7 +61,7 @@ System.err.println(document);
                 if (isCollection) {
 
                     List<Object> nodeList = JsonPath.read(document, jsonPath);
-System.err.println("nodeList: " + nodeList);
+Debug.println("nodeList: " + nodeList);
                     for (int i = 0; i < nodeList.size(); i++) {
                         // because loops for each fields, instantiation should be done once
                         T bean = null;
@@ -125,7 +126,7 @@ System.err.println("nodeList: " + nodeList);
             List<Object> nodeList = JsonPath.read(document, jsonPath);
 //System.err.println("nodeList: " + nodeList.getLength());
 if (nodeList.size() == 0) {
- Debug.println("no node list: " + jsonPath);
+ Debug.println(Level.WARNING, "no node list: " + jsonPath);
 }
 
             for (int i = 0; i < nodeList.size(); i++) {

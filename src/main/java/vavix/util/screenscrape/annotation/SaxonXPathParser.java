@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -169,7 +170,7 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
                 List<NodeInfo> nodeList = List.class.cast(nodeSet);
 //System.err.println("nodeList: " + nodeList.size());
 if (nodeList.size() == 0) {
- Debug.println("no node list: " + xpath);
+ Debug.println(Level.WARNING, "no node list: " + xpath);
 }
 
                 for (int i = 0; i < nodeList.size(); i++) {
@@ -198,7 +199,7 @@ if (nodeList.size() == 0) {
                 NodeList nodeList = NodeList.class.cast(nodeSet);
 //System.err.println("nodeList: " + nodeList.getLength());
 if (nodeList.getLength() == 0) {
- Debug.println("no node list: " + xpath);
+ Debug.println(Level.WARNING, "no node list: " + xpath);
 }
 
                 for (int i = 0; i < nodeList.getLength(); i++) {

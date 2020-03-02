@@ -73,6 +73,9 @@ public @interface WebScraper {
     /** input encoding. default is <code>System.getProperty("file.encoding")</code> */
     String encoding() default "";
 
+    /** debug mode or not */
+    boolean isDebug() default false;
+
     /** */
     class Util {
 
@@ -138,6 +141,15 @@ public @interface WebScraper {
                 throw new IllegalArgumentException("type is not annotated with @WebScraper");
             }
             return webScraper.url();
+        }
+
+        /** */
+        public static boolean isDebug(Class<?> type) {
+            WebScraper webScraper = type.getAnnotation(WebScraper.class);
+            if (webScraper == null) {
+                throw new IllegalArgumentException("type is not annotated with @WebScraper");
+            }
+            return webScraper.isDebug();
         }
 
         /**

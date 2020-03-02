@@ -64,8 +64,9 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
     public List<T> parse(Class<T> type, InputHandler<Reader> handler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-//System.err.println("encoding: " + encoding);
-
+if (WebScraper.Util.isDebug(type)) {
+ Debug.println(Level.FINE, "encoding: " + encoding);
+}
             List<T> results = new ArrayList<>();
 
             System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");
@@ -78,14 +79,17 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
                 in.setEncoding(encoding);
 
                 String xpath = Target.Util.getValue(field);
-//PrettyPrinter pp = new PrettyPrinter(System.err);
-//pp.print(in);
-//System.err.println("xpath: " + xpath);
-
+if (WebScraper.Util.isDebug(type)) {
+ Debug.println("xpath: " + xpath);
+}
                 if (WebScraper.Util.isCollection(type)) {
 
                     NodeList nodeList = (NodeList) xPath.evaluate(xpath, in, XPathConstants.NODESET);
-//System.err.println("nodeList: " + nodeList.getLength());
+if (WebScraper.Util.isDebug(type)) {
+ if (nodeList.getLength() == 0) {
+  Debug.println("nodeList: " + nodeList.getLength());
+ }
+}
                     for (int i = 0; i < nodeList.getLength(); i++) {
                         // because loops for each fields, instantiation should be done once
                         T bean = null;
@@ -97,7 +101,9 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
                         }
 
                         String text = nodeList.item(i).getTextContent().trim();
-//System.err.println(field.getName() + ": " + text);
+if (WebScraper.Util.isDebug(type)) {
+ Debug.println(field.getName() + ": " + text);
+}
                         BeanUtil.setFieldValue(field, bean, text);
                     }
                 } else {
@@ -112,6 +118,9 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
                     }
 
                     String text = ((String) xPath.evaluate(xpath, in, XPathConstants.STRING)).trim();
+if (WebScraper.Util.isDebug(type)) {
+ Debug.println(field.getName() + ": " + text);
+}
                     BeanUtil.setFieldValue(field, bean, text);
                 }
             }
@@ -142,8 +151,9 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
     public void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<Reader> inputHandler, String... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-Debug.println(Level.FINE, "encoding: " + encoding);
-
+if (WebScraper.Util.isDebug(type)) {
+ Debug.println(Level.FINE, "encoding: " + encoding);
+}
             System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");
 
             InputSource in = new InputSource(inputHandler.getInput(args));
@@ -157,9 +167,10 @@ Debug.println(Level.FINE, "encoding: " + encoding);
 //            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
 
             NodeList nodeList = NodeList.class.cast(nodeSet);
-//System.err.println("nodeList: " + nodeList.getLength());
-if (nodeList.getLength() == 0) {
- Debug.println("no node list: " + xpath);
+if (WebScraper.Util.isDebug(type)) {
+ if (nodeList.getLength() == 0) {
+  Debug.println("no node list: " + xpath);
+ }
 }
 
             for (int i = 0; i < nodeList.getLength(); i++) {
@@ -168,8 +179,10 @@ if (nodeList.getLength() == 0) {
                 Node node = nodeList.item(i);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 new PrettyPrinter(new PrintWriter(baos)).print(node); // TODO use constructor w/ encoding
-//System.err.println("-------------------------------------------------------------");
-//System.err.println(baos.toString()); // TODO use encoding
+if (WebScraper.Util.isDebug(type)) {
+ System.err.println("-------------------------------------------------------------");
+ System.err.println(baos.toString()); // TODO use encoding
+}
 
                 Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
                 for (Field field : targetFields) {
