@@ -33,6 +33,7 @@ import javax.script.ScriptEngineManager;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 070224 nsano initial version <br>
  */
+@Deprecated
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Rest {
