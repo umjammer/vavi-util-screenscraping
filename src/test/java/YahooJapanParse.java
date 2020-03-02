@@ -19,7 +19,7 @@ import vavi.net.rest.Rest;
  */
 @Rest(protocol = "HTTP",
       method="GET",
-      url="http://jlp.yahooapis.jp/JIMService/V1/conversion")
+      url="https://jlp.yahooapis.jp/MAService/V1/parse")
 public class YahooJapanParse {
 
     /** アプリケーションID。 */

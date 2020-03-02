@@ -33,7 +33,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
 @PropsEntity(url = "file://${user.dir}/local.properties")
 public class Test7 {
 
-    @Property(name = "java.test.yahooJapan.apiKey")
+    @Property(name = "java.test.yahooJapan.apiKey.v1")
     String appid;
 
     /** */
@@ -67,17 +67,22 @@ System.err.println("sentence: " + sentence);
     /** */
     @WebScraper(input = MyInput.class)
     public static class Data {
-        @Target("//Segment/SegmentText/text()")
-        String name;
-        @Target("//Segment/CandidateList/Candidate/text()")
-        String pronunciation;
+        @Target("//ResultSet/ma_result/word_list/word/surface/text()")
+        String surface;
+        @Target("//ResultSet/ma_result/word_list/word/reading/text()")
+        String reading;
+        @Target("//ResultSet/ma_result/word_list/word/pos/text()")
+        String pos;
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append("name: ");
-            sb.append(name);
+            sb.append("surface: ");
+            sb.append(surface);
             sb.append(", ");
-            sb.append("pronunciation: ");
-            sb.append(pronunciation);
+            sb.append("pos: ");
+            sb.append(pos);
+            sb.append(", ");
+            sb.append("reading: ");
+            sb.append(reading);
             return sb.toString();
         }
     }
