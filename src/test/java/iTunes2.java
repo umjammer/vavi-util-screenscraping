@@ -7,6 +7,7 @@
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -24,11 +25,12 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import vavi.util.CharNormalizerJa;
+import vavi.util.Debug;
 import vavi.util.LevenshteinDistance;
 
+import vavix.rococoa.ituneslibrary.ITLibrary;
 import vavix.util.screenscrape.annotation.HtmlXPathParser;
 import vavix.util.screenscrape.annotation.InputHandler;
-import vavix.util.screenscrape.annotation.SaxonXPathParser;
 import vavix.util.screenscrape.annotation.Target;
 import vavix.util.screenscrape.annotation.WebScraper;
 
@@ -41,35 +43,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
  */
 public class iTunes2 {
 
-    /** iTunes ライブラリ一曲 */
-    @WebScraper(url = "file:///Users/nsano/Music/iTunes/iTunes%20Music%20Library.xml",
-                parser = SaxonXPathParser.class,
-                value = "/plist/dict/dict/dict")
-    public static class Title {
-        @Target("/dict/key[text()='Artist']/following-sibling::string[1]/text()")
-        String artist;
-        @Target("/dict/key[text()='Name']/following-sibling::string[1]/text()")
-        String name;
-        @Target("/dict/key[text()='Composer']/following-sibling::string[1]/text()")
-        String composer;
-        @Target("/dict/key[text()='Album']/following-sibling::string[1]/text()")
-        String album;
-        @Target("/dict/key[text()='Album Artist']/following-sibling::string[1]/text()")
-        String albumArtist;
-        @Target("/dict/key[text()='Location']/following-sibling::string[1]/text()")
-        String location;
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(artist);
-            sb.append("\t");
-            sb.append(name);
-            sb.append("\t");
-            sb.append(composer);
-            return sb.toString();
-        }
-    }
-
-    WebDriver driver;
+    private WebDriver driver;
 
     {
         String pwd = System.getProperty("user.dir");
@@ -87,11 +61,40 @@ public class iTunes2 {
         static void waitFor(WebDriver driver) {
             new WebDriverWait(driver, 10).until(
                 d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete"));
+            try { Thread.sleep(300); } catch (InterruptedException e) {}
         }
 
         static void setAttribute(WebDriver driver, WebElement element, String name, String value) {
             ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);", element, name, value);
         }
+
+        static int c;
+
+        static void showStats(WebDriver driver) {
+            System.err.println("----------------------------");
+            System.err.println(driver.getCurrentUrl());
+            c = 0;
+            driver.getWindowHandles().forEach(h -> { System.err.println(c++ + ": " + h); });
+            System.err.println("----------------------------");
+        }
+    }
+
+    private iTunes2() {
+        // authentication?
+        driver.navigate().to("http://www2.jasrac.or.jp/eJwid/");
+        WebElement button0 = driver.findElements(By.tagName("form")).get(1).findElement(By.name("input"));
+
+        button0.click();
+        SeleniumUtil.waitFor(driver);
+    }
+
+    private static iTunes2 instance;
+
+    public static iTunes2 getInstance() {
+        if (instance == null) {
+            instance = new iTunes2();
+        }
+        return instance;
     }
 
     /** アーティスト、作品名検索 */
@@ -104,42 +107,43 @@ try {
             String artist = args[0].toUpperCase();
             String title = args[1].toUpperCase();
 //System.err.println("ARGS: " + artist + ", " + title);
-            app.driver.navigate().to("http://www2.jasrac.or.jp/eJwid/");
-            WebElement button0 = app.driver.findElements(By.tagName("form")).get(1).findElement(By.name("input"));
 
-            button0.click();
-            SeleniumUtil.waitFor(app.driver);
+            instance.driver.switchTo().window(String.class.cast(instance.driver.getWindowHandles().toArray()[0]));
 
-            app.driver.switchTo().frame("frame2");
-            SeleniumUtil.waitFor(app.driver);
+            instance.driver.switchTo().frame("frame2");
+            SeleniumUtil.waitFor(instance.driver);
 
-            WebElement inputT = app.driver.findElement(By.name("IN_WORKS_TITLE_NAME1"));
-            SeleniumUtil.setAttribute(app.driver, inputT, "value", title);
+            WebElement inputT = instance.driver.findElement(By.name("IN_WORKS_TITLE_NAME1"));
+            SeleniumUtil.setAttribute(instance.driver, inputT, "value", title);
             // 0:前方一致, 1:後方一致, 2:中間一致 3:完全一致
 //            Select selectT = new Select(app.driver.getSelectByName("IN_WORKS_TITLE_OPTION1"));
 //            selectT.selectByValue("3");
-            WebElement inputA = app.driver.findElement(By.name("IN_ARTIST_NAME1"));
-            SeleniumUtil.setAttribute(app.driver, inputA, "value", artist);
+            WebElement inputA = instance.driver.findElement(By.name("IN_ARTIST_NAME1"));
+            SeleniumUtil.setAttribute(instance.driver, inputA, "value", artist);
             // 0:前方一致, 1:後方一致, 2:中間一致 3:完全一致
-            Select selectA = new Select(app.driver.findElement(By.name("IN_ARTIST_NAME_OPTION1")));
+            Select selectA = new Select(instance.driver.findElement(By.name("IN_ARTIST_NAME_OPTION1")));
             selectA.selectByValue("3");
-            WebElement button1 = app.driver.findElement(By.name("CMD_SEARCH"));
+            WebElement button1 = instance.driver.findElement(By.name("CMD_SEARCH"));
 
             button1.click();
-            SeleniumUtil.waitFor(app.driver);
+            SeleniumUtil.waitFor(instance.driver);
 
-//System.err.println("@@@: " + app.driver.getPageSource());
-            return new StringReader(app.driver.getPageSource());
+            // back to page 1
+            instance.driver.switchTo().window(String.class.cast(instance.driver.getWindowHandles().toArray()[0]));
+
+            instance.driver.switchTo().frame("frame3");
+//Debug.println("location: " + app.driver.getCurrentUrl());
+            return new StringReader(instance.driver.getPageSource());
 } catch (Exception e) {
-System.err.println("@@@: " + app.driver.getPageSource());
-    throw e;
+ SeleniumUtil.showStats(instance.driver);
+ throw e;
 }
         }
     }
 
     @WebScraper(input = MyInput.class,
-                parser = HtmlXPathParser.class,
-                encoding = "MS932")
+//                isDebug = true,
+                parser = HtmlXPathParser.class)
     public static class TitleUrl {
         @Target(value = "//TABLE//TR/TD[2]/DIV/text()")
         String artist;
@@ -164,17 +168,17 @@ System.err.println("@@@: " + app.driver.getPageSource());
         public Reader getInput(String ... args) throws IOException {
             String url = args[0];
 
-            app.driver.navigate().to("http://www2.jasrac.or.jp/eJwid/" + url);
-            SeleniumUtil.waitFor(app.driver);
+            instance.driver.navigate().to("http://www2.jasrac.or.jp/eJwid/" + url);
+            SeleniumUtil.waitFor(instance.driver);
 
-            return new StringReader(app.driver.getPageSource());
+            return new StringReader(instance.driver.getPageSource());
         }
     }
 
     /** 作詞、作曲詳細 (一行) */
     @WebScraper(input = MyInput2.class,
-                parser = HtmlXPathParser.class,
-                encoding = "MS932")
+//                isDebug = true,
+                parser = HtmlXPathParser.class)
     public static class Composer {
         @Target(value = "//TABLE[4]//TR/TD[2]/SPAN/text()")
         String name;
@@ -197,32 +201,31 @@ System.err.println("@@@: " + app.driver.getPageSource());
         public Reader getInput(String ... args) throws IOException {
             String title = args[0];
 //System.err.println("ARGS: " + artist + ", " + title);
-            app.driver.navigate().to("http://www2.jasrac.or.jp/eJwid/");
-            WebElement button0 = app.driver.findElements(By.tagName("form")).get(1).findElement(By.name("input"));
 
-            button0.click();
-            SeleniumUtil.waitFor(app.driver);
+            instance.driver.switchTo().window(String.class.cast(instance.driver.getWindowHandles().toArray()[0]));
 
-            app.driver.switchTo().frame("frame2");
-            SeleniumUtil.waitFor(app.driver);
+            instance.driver.switchTo().frame("frame2");
+            SeleniumUtil.waitFor(instance.driver);
 
-            WebElement inputT = app.driver.findElement(By.name("IN_WORKS_TITLE_NAME1"));
-            SeleniumUtil.setAttribute(app.driver, inputT, "value", title);
-            Select selectT = new Select(app.driver.findElement(By.name("IN_WORKS_TITLE_OPTION1")));
+            WebElement inputT = instance.driver.findElement(By.name("IN_WORKS_TITLE_NAME1"));
+            SeleniumUtil.setAttribute(instance.driver, inputT, "value", title);
+            Select selectT = new Select(instance.driver.findElement(By.name("IN_WORKS_TITLE_OPTION1")));
             selectT.selectByValue("3");
-            WebElement button1 = app.driver.findElement(By.name("CMD_SEARCH"));
+            WebElement button1 = instance.driver.findElement(By.name("CMD_SEARCH"));
 
             button1.click();
-            SeleniumUtil.waitFor(app.driver);
+            SeleniumUtil.waitFor(instance.driver);
 
-            StringBuffer sb = new StringBuffer(app.driver.getPageSource());
+            instance.driver.switchTo().window(String.class.cast(instance.driver.getWindowHandles().toArray()[instance.driver.getWindowHandles().size() - 1]));
+
+            StringBuffer sb = new StringBuffer(instance.driver.getPageSource());
 
             try {
                 while (true) {
-                    WebElement nextAnchor = nextAnchor(app.driver.findElements(By.tagName("a")));
-System.err.println("nextAnchor: " + nextAnchor);
+                    WebElement nextAnchor = nextAnchor(instance.driver.findElements(By.tagName("a")));
+Debug.println("nextAnchor: " + nextAnchor);
                     nextAnchor.click();
-                    sb.append(app.driver.getPageSource());
+                    sb.append(instance.driver.getPageSource());
                 }
             } catch (NoSuchElementException e) {
             }
@@ -244,8 +247,8 @@ System.err.println("nextAnchor: " + nextAnchor);
 
     /** 作品名指定の作品 (複数) */
     @WebScraper(input = MyInput3.class,
-                parser = HtmlXPathParser.class,
-                encoding = "MS932")
+//                isDebug = true,
+                parser = HtmlXPathParser.class)
     public static class TitleUrl3 {
         @Target(value = "//TABLE//TR/TD[5]/text()")
         String artist;
@@ -270,31 +273,29 @@ System.err.println("nextAnchor: " + nextAnchor);
         public Reader getInput(String ... args) throws IOException {
             String artist = args[0];
 
-            app.driver.navigate().to("http://www2.jasrac.or.jp/eJwid/");
-            WebElement button0 = app.driver.findElements(By.tagName("form")).get(1).findElement(By.name("input"));
+            instance.driver.switchTo().window(String.class.cast(instance.driver.getWindowHandles().toArray()[0]));
 
-            button0.click();
-            SeleniumUtil.waitFor(app.driver);
+            instance.driver.switchTo().frame("frame2");
+            SeleniumUtil.waitFor(instance.driver);
 
-            app.driver.switchTo().frame("frame2");
-            SeleniumUtil.waitFor(app.driver);
-
-            WebElement inputA = app.driver.findElement(By.name("IN_ARTIST_NAME1"));
-            SeleniumUtil.setAttribute(app.driver, inputA, "value", artist);
-            Select selectA = new Select(app.driver.findElement(By.name("IN_ARTIST_NAME_OPTION1")));
+            WebElement inputA = instance.driver.findElement(By.name("IN_ARTIST_NAME1"));
+            SeleniumUtil.setAttribute(instance.driver, inputA, "value", artist);
+            Select selectA = new Select(instance.driver.findElement(By.name("IN_ARTIST_NAME_OPTION1")));
             selectA.selectByValue("3");
-            WebElement button1 = app.driver.findElement(By.name("CMD_SEARCH"));
+            WebElement button1 = instance.driver.findElement(By.name("CMD_SEARCH"));
 
             button1.click();
-            SeleniumUtil.waitFor(app.driver);
+            SeleniumUtil.waitFor(instance.driver);
 
-            StringBuffer sb = new StringBuffer(app.driver.getPageSource());
+            instance.driver.switchTo().window(String.class.cast(instance.driver.getWindowHandles().toArray()[instance.driver.getWindowHandles().size() - 1]));
+
+            StringBuffer sb = new StringBuffer(instance.driver.getPageSource());
 
             try {
                 while (true) {
-                    WebElement nextAnchor = nextAnchor(app.driver.findElements(By.tagName("a")));
+                    WebElement nextAnchor = nextAnchor(instance.driver.findElements(By.tagName("a")));
                     nextAnchor.click();
-                    sb.append(app.driver.getPageSource());
+                    sb.append(instance.driver.getPageSource());
                 }
             } catch (NoSuchElementException e) {
             }
@@ -315,8 +316,8 @@ System.err.println("nextAnchor: " + nextAnchor);
 
     /** アーティスト指定の作品 (複数) */
     @WebScraper(input = MyInput4.class,
-                parser = HtmlXPathParser.class,
-                encoding = "MS932")
+//                isDebug = true,
+                parser = HtmlXPathParser.class)
     public static class TitleUrl4 {
         @Target(value = "//TABLE//TR/TD[1]/DIV/text()")
         String artist;
@@ -331,62 +332,6 @@ System.err.println("nextAnchor: " + nextAnchor);
             sb.append(CharNormalizerJa.ToHalfAns2.normalize(title));
             return sb.toString();
         }
-    }
-
-    public static String capitalize(String s) {
-        if (s.length() == 0) {
-            return s;
-        } else {
-            return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
-        }
-    }
-
-    static final Pattern normalizeComposerPattern = Pattern.compile("[\\p{Upper}\\d' _ー\\.\\(\\)-]+");
-
-    /** TODO Mc-, O-, Dr, St, Van, De-, La-, III, II, Jr, Sr, DJ ... and (US1), (GB) ... */
-    static String normalizeComposer(String name) {
-        Matcher matcher = normalizeComposerPattern.matcher(name);
-        if (!matcher.matches()) {
-            return name; // 国内
-        }
-        name = name.replace("ー", "-");
-        StringBuilder result = new StringBuilder();
-        String[] ns = name.split("\\s");
-        if (ns.length > 1) {
-            for (int i = 1; i < ns.length; i++) {
-                result.append(capitalize(ns[i]));
-                result.append(" ");
-            }
-        }
-        result.append(capitalize(ns[0]));
-        return result.toString();
-    }
-
-    static String getComposer(String url) throws IOException {
-        List<Composer> cs = WebScraper.Util.scrape(Composer.class, url);
-        StringBuilder lyrics_ = new StringBuilder();
-        StringBuilder music_ = new StringBuilder();
-        for (Composer composer : cs) {
-//System.err.println(composer);
-//System.err.println(composer.type + ", " + composer.type.indexOf("作詞") + ", " + composer.type.indexOf("作曲"));
-            if ((composer.type.indexOf("作詞") != -1 || composer.type.indexOf("訳詞") != -1) && composer.name.indexOf("権利者") == -1) {
-                lyrics_.append(normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(composer.name)));
-                lyrics_.append(", ");
-            }
-            if ((composer.type.indexOf("作曲") != -1 || composer.type.indexOf("不明") != -1) && composer.name.indexOf("権利者") == -1) {
-                music_.append(normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(composer.name)));
-                music_.append(", ");
-            }
-        }
-        if (lyrics_.length() > 1) {
-            lyrics_.setLength(lyrics_.length() - 2);
-        }
-        if (music_.length() > 1) {
-            music_.setLength(music_.length() - 2);
-        }
-        String lyrics = lyrics_.toString();
-        String music = music_.toString();
-        return lyrics.equals(music) || lyrics.isEmpty() ? music : music + " / " + lyrics;
     }
 
     /** アーティスト名で近い順 */
@@ -413,50 +358,102 @@ System.err.println("nextAnchor: " + nextAnchor);
         }
     }
 
-    static iTunes2 app;
-
-    /**
-     * @param args 0: artist, 1: title
-     */
-    public static void main(String[] args) throws Exception {
-        app = new iTunes2();
-        app.processByWebScraper(args);
+    private static String capitalize(String s) {
+        if (s.length() == 0) {
+            return s;
+        } else {
+            return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+        }
     }
 
-    int errorCount = 0;
+    private static final Pattern normalizeComposerPattern = Pattern.compile("[\\p{Upper}\\d' _ー\\.\\(\\)-]+");
 
-    static void sleep() {
+    /** TODO Mc-, O-, Dr, St, Van, De-, La-, III, II, Jr, Sr, DJ ... and (US1), (GB) ... */
+    private static String normalizeComposer(String name) {
+        Matcher matcher = normalizeComposerPattern.matcher(name);
+        if (!matcher.matches()) {
+            return name; // 国内
+        }
+        name = name.replace("ー", "-");
+        StringBuilder result = new StringBuilder();
+        String[] ns = name.split("\\s");
+        if (ns.length > 1) {
+            for (int i = 1; i < ns.length; i++) {
+                result.append(capitalize(ns[i]));
+                result.append(" ");
+            }
+        }
+        result.append(capitalize(ns[0]));
+        return result.toString();
+    }
+
+    private String getComposer(String url) throws IOException {
+//Debug.println("url: " + url);
+        List<Composer> cs = WebScraper.Util.scrape(Composer.class, url);
+        StringBuilder lyrics_ = new StringBuilder();
+        StringBuilder music_ = new StringBuilder();
+        for (Composer composer : cs) {
+//Debug.println(composer);
+//Debug.println(composer.type + ", " + composer.type.indexOf("作詞") + ", " + composer.type.indexOf("作曲"));
+            if ((composer.type.indexOf("作詞") != -1 || composer.type.indexOf("訳詞") != -1) && composer.name.indexOf("権利者") == -1) {
+                lyrics_.append(normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(composer.name)));
+                lyrics_.append(", ");
+            }
+            if ((composer.type.indexOf("作曲") != -1 || composer.type.indexOf("不明") != -1) && composer.name.indexOf("権利者") == -1) {
+                music_.append(normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(composer.name)));
+                music_.append(", ");
+            }
+        }
+        if (lyrics_.length() > 1) {
+            lyrics_.setLength(lyrics_.length() - 2);
+        }
+        if (music_.length() > 1) {
+            music_.setLength(music_.length() - 2);
+        }
+        String lyrics = lyrics_.toString();
+        String music = music_.toString();
+        return lyrics.equals(music) || lyrics.isEmpty() ? music : music + " / " + lyrics;
+    }
+
+    private int errorCount = 0;
+
+    private static void sleep() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(300);
         } catch (InterruptedException e) {
         }
     }
 
-    void processByWebScraper(String[] args) throws Exception {
-        WebScraper.Util.foreach(Title.class, each -> {
-            try {
-                boolean r = false;
-                if (each.location.startsWith("file:///Users/nsano/Music/iTunes/iTunes%20Music/") &&
-                    !each.location.startsWith("file:///Users/nsano/Music/iTunes/iTunes%20Music/Podcasts/") &&
-                    !each.location.endsWith(".pdf")
-                    ) {
-                    r = doEach(each);
-                } else {
-                    System.err.println("not music: " + each.location);
+    static {
+        com.sun.jna.NativeLibrary.addSearchPath("rococoa", System.getProperty("java.library.path"));
+    }
+
+    public void processITunesLibrary() throws Exception {
+        ITLibrary library = ITLibrary.libraryWithAPIVersion("1.1");
+        library.getMediaItems().stream()
+            .filter(each -> each.mediaKind() == 2)
+            .forEach(each -> {
+                try {
+                    // SPECIAL, exclude speed leaning
+                    if ("Speed Learning".equals(each.artist().name())) {
+                        return;
+                    }
+
+                    if (each.composer() != null && !each.composer().isEmpty()) {
+                        return;
+                    }
+
+                    getComposerFromJasrac(each.artist().name(), each.title(), each.album().albumArtist()).forEach(System.out::println);
+                } catch (Exception e) {
+                    e.printStackTrace(System.err);
+                    System.err.println("error: " + each.artist().name() + " - " + each.title());
+                    errorCount++;
+                    if (errorCount > 2) {
+Debug.println("too many errors: " + errorCount);
+                        System.exit(1);
+                    }
                 }
-                if (r) {
-                    sleep();
-                }
-            } catch (Exception e) {
-                e.printStackTrace(System.err);
-                System.err.println("error: " + each);
-                errorCount++;
-                if (errorCount > 2) {
-System.err.println("too many errors: " + errorCount);
-                    System.exit(1);
-                }
-            }
-        }, args);
+            });
     }
 
     // TODO la, un, los
@@ -465,43 +462,72 @@ System.err.println("too many errors: " + errorCount);
     // TODO "...
     static final Pattern normalizeNamePattern = Pattern.compile("(.*)(feat.*|[~〜].+|[-ー].+|[\\/／].+|[\\(（].+)");
 
+    static class Result {
+        enum Probability {
+            RESULT, RESULTa, RESULTn, RESULTp, MAYBEa, MAYBEn, NONE
+        }
+        Probability probability;
+        String artist;
+        String title;
+        String composer;
+        Result(String artist, String title, String composer, Probability probability) {
+            this.artist = artist;
+            this.title = title;
+            this.composer = composer;
+            this.probability = probability;
+        }
+        public String toString() {
+            return probability + "\t" + artist + "\t" + title + "\t" + composer;
+        }
+    }
+
+    static class Result2 extends Result {
+        String artist2;
+        String title2;
+        int index;
+        Result2(String artist, String title, String composer, Probability probability, int index, String artist2, String title2) {
+            super(artist, title, composer, probability);
+            this.artist2 = artist2;
+            this.title2 = title2;
+            this.index = index;
+        }
+        public String toString() {
+            return probability + String.valueOf(index) + "\t" + artist + "\t" + title + "\t" + "(" + composer + ")" + "\t[" + artist2 + ", " + title2 + "]";
+        }
+    }
+
     /**
      * main
      */
-    boolean doEach(Title each) throws IOException {
-        // SPECIAL, exclude speed leaning
-        if ("Speed Learning".equals(each.artist)) {
-            return false;
-        }
+    public List<Result> getComposerFromJasrac(String artist, String title, String albumArtist) throws IOException {
+        List<Result> result = new ArrayList<>();
 
-        if (!each.composer.isEmpty()) {
-            return false;
-        }
-System.err.println(each);
-
+//System.err.println(artist + " - " + title);
         // 1. plain artist, name
-        List<TitleUrl> urls = WebScraper.Util.scrape(TitleUrl.class, each.artist, each.name);
+        List<TitleUrl> urls = WebScraper.Util.scrape(TitleUrl.class, artist, title);
         if (urls.size() > 0) {
-            System.out.println("RESULT\t" + each + getComposer(urls.get(0).url));
-            return true;
+            sleep();
+            result.add(new Result(artist, title, getComposer(urls.get(0).url), Result.Probability.RESULT));
+            return result;
         }
 
         // 2. re-scrape by album artist, name
-        String normalizedArtist = each.artist;
-        if (each.albumArtist != null && !each.albumArtist.isEmpty()) {
-            normalizedArtist = each.albumArtist;
+        String normalizedArtist = artist;
+        if (albumArtist != null && !albumArtist.isEmpty()) {
+            normalizedArtist = albumArtist;
             sleep();
-            List<TitleUrl> urls2 = WebScraper.Util.scrape(TitleUrl.class, normalizedArtist, each.name);
+            List<TitleUrl> urls2 = WebScraper.Util.scrape(TitleUrl.class, normalizedArtist, title);
             if (urls2.size() > 0) {
-                System.out.println("RESULTa\t" + each + getComposer(urls2.get(0).url));
-                return true;
+                sleep();
+                result.add(new Result(artist, title, getComposer(urls2.get(0).url), Result.Probability.RESULTa));
+                return result;
             }
         }
 
         // 3. re-scrape by album artist, normalized name (cut ~XXX, -XXX, feat. XXX)
         // TODO (...), & -> and, II -> 2
-        String normalizedName = each.name;
-        Matcher matcher = normalizeArticlePattern.matcher(each.name);
+        String normalizedName = title;
+        Matcher matcher = normalizeArticlePattern.matcher(title);
         if (matcher.matches()) {
             normalizedName = matcher.group(2);
         }
@@ -512,8 +538,9 @@ System.err.println(each);
         sleep();
         List<TitleUrl> urls3 = WebScraper.Util.scrape(TitleUrl.class, normalizedArtist, normalizedName);
         if (urls3.size() > 0) {
-            System.out.println("RESULTn\t" + each + getComposer(urls3.get(0).url));
-            return true;
+            sleep();
+            result.add(new Result(artist, title, getComposer(urls3.get(0).url), Result.Probability.RESULTn));
+            return result;
         }
 
         // 4. by artist only
@@ -524,10 +551,12 @@ System.err.println(each);
             Collections.sort(url4s, new MyComparator4(normalizedName));
             for (TitleUrl4 url4 : url4s) {
                 if (ca == 0 && normalizedName.equalsIgnoreCase(CharNormalizerJa.ToHalfAns2.normalize(url4.title))) {
-                    System.out.println("RESULTp\t" + each + getComposer(url4.url));
-                    return true;
+                    sleep();
+                    result.add(new Result(artist, title, getComposer(url4.url), Result.Probability.RESULTp));
+                    return result;
                 }
-                System.out.println("MAYBEa" + ca + "\t" + each + "(" + getComposer(url4.url) + ")" + "\t[" + CharNormalizerJa.ToHalfAns2.normalize(url4.artist) + ", " + CharNormalizerJa.ToHalfAns2.normalize(url4.title) + "]");
+                sleep();
+                result.add(new Result2(artist, title, getComposer(url4.url), Result.Probability.MAYBEa, ca, CharNormalizerJa.ToHalfAns2.normalize(url4.artist), CharNormalizerJa.ToHalfAns2.normalize(url4.title)));
                 ca++;
                 if (ca > 2) {
                     break;
@@ -546,21 +575,31 @@ System.err.println(each);
             }
             Collections.sort(url3s, new MyComparator3(normalizedArtist));
             for (TitleUrl3 url3 : url3s) {
-                System.out.println("MAYBEn" + cn + "\t" + each + "(" + getComposer(url3.url) + ")" + "\t[" + CharNormalizerJa.ToHalfAns2.normalize(url3.artist) + ", " + CharNormalizerJa.ToHalfAns2.normalize(url3.title) + "]");
+                sleep();
+                result.add(new Result2(artist, title, getComposer(url3.url), Result.Probability.MAYBEn, cn, CharNormalizerJa.ToHalfAns2.normalize(url3.artist), CharNormalizerJa.ToHalfAns2.normalize(url3.title)));
                 cn++;
                 if (cn > 2) {
                     break;
                 }
             }
-            return true;
+            return result;
         }
 
         // at last
         if (ca == 0) {
-            System.out.println("NONE\t" + each);
+            result.add(new Result(artist, title, "", Result.Probability.NONE));
         }
 
-        return true;
+        return result;
+    }
+
+    /**
+     * @param args 0: artist, 1: title
+     */
+    public static void main(String[] args) throws Exception {
+        iTunes2 app = iTunes2.getInstance();
+        app.processITunesLibrary();
+        app.driver.quit();
     }
 }
 

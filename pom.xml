@@ -98,7 +98,7 @@ TODO
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-commons</artifactId>
-      <version>1.0.13</version>
+      <version>1.0.14</version>
     </dependency>
     <dependency>
       <groupId>net.sf.saxon</groupId>
@@ -154,6 +154,12 @@ TODO
       <version>5.3.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-commons</artifactId>
+      <version>1.5.2</version>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>com.github.umjammer</groupId>
@@ -180,9 +186,10 @@ TODO
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>vavi</groupId>
+      <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-net-auth</artifactId>
-      <version>0.0.4-SNAPSHOT</version>
+      <version>0.0.4</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>jaxen</groupId>
