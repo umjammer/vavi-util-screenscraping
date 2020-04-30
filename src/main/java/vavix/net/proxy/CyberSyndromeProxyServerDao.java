@@ -18,12 +18,9 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.HeadMethod;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import vavi.util.Debug;
 
@@ -32,6 +29,7 @@ import vavix.util.screenscrape.annotation.HtmlXPathParser;
 import vavix.util.screenscrape.annotation.InputHandler;
 import vavix.util.screenscrape.annotation.Target;
 import vavix.util.screenscrape.annotation.WebScraper;
+import vavix.util.selenium.SeleniumUtil;
 
 
 /**
@@ -71,16 +69,6 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
             chromeOptions.addArguments("--headless"/*, "--disable-gpu"*/);
 
             driver = new ChromeDriver(chromeOptions);
-        }
-        static class SeleniumUtil {
-            static void waitFor(WebDriver driver) {
-                new WebDriverWait(driver, 10).until(
-                    d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete"));
-            }
-
-            static void setAttribute(WebDriver driver, WebElement element, String name, String value) {
-                ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);", element, name, value);
-            }
         }
 
         /** */
