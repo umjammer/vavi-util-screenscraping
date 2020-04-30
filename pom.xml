@@ -132,14 +132,9 @@ TODO
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-java</artifactId>
-      <version>3.141.59</version>
-    </dependency>
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-chrome-driver</artifactId>
-      <version>3.141.59</version>
+      <groupId>com.github.umjammer</groupId>
+      <artifactId>vavi-net-auth</artifactId>
+      <version>0.0.6</version>
     </dependency>
 
     <dependency>
@@ -183,12 +178,6 @@ TODO
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-math</artifactId>
       <version>0.0.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.umjammer</groupId>
-      <artifactId>vavi-net-auth</artifactId>
-      <version>0.0.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -16,13 +16,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import vavi.util.CharNormalizerJa;
 import vavi.util.Debug;
@@ -33,6 +29,7 @@ import vavix.util.screenscrape.annotation.HtmlXPathParser;
 import vavix.util.screenscrape.annotation.InputHandler;
 import vavix.util.screenscrape.annotation.Target;
 import vavix.util.screenscrape.annotation.WebScraper;
+import vavix.util.selenium.SeleniumUtil;
 
 
 /**
@@ -43,41 +40,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
  */
 public class iTunes2 {
 
-    private WebDriver driver;
-
-    {
-        String pwd = System.getProperty("user.dir");
-        System.setProperty("webdriver.chrome.driver", pwd + "/bin/chromedriver");
-
-        ChromeOptions chromeOptions = new ChromeOptions();
-        String app = System.getProperty("com.google.chrome.app");
-        chromeOptions.setBinary(app);
-        chromeOptions.addArguments("--headless"/*, "--disable-gpu"*/);
-
-        driver = new ChromeDriver(chromeOptions);
-    }
-
-    static class SeleniumUtil {
-        static void waitFor(WebDriver driver) {
-            new WebDriverWait(driver, 10).until(
-                d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete"));
-            try { Thread.sleep(300); } catch (InterruptedException e) {}
-        }
-
-        static void setAttribute(WebDriver driver, WebElement element, String name, String value) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);", element, name, value);
-        }
-
-        static int c;
-
-        static void showStats(WebDriver driver) {
-            System.err.println("----------------------------");
-            System.err.println(driver.getCurrentUrl());
-            c = 0;
-            driver.getWindowHandles().forEach(h -> { System.err.println(c++ + ": " + h); });
-            System.err.println("----------------------------");
-        }
-    }
+    private WebDriver driver = SeleniumUtil.getDriver();
 
     private iTunes2() {
         // authentication?
@@ -599,7 +562,6 @@ Debug.println("too many errors: " + errorCount);
     public static void main(String[] args) throws Exception {
         iTunes2 app = iTunes2.getInstance();
         app.processITunesLibrary();
-        app.driver.quit();
     }
 }
 

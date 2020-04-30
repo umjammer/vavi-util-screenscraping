@@ -5,98 +5,71 @@
  */
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlInput;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.openqa.selenium.WebDriver;
 
+import vavi.net.auth.oauth2.amazon.AmazonLocalAuthenticator;
 import vavi.util.properties.annotation.Property;
 import vavi.util.properties.annotation.PropsEntity;
 
-import vavix.util.screenscrape.annotation.DefaultInputHandler;
 import vavix.util.screenscrape.annotation.HtmlXPathParser;
+import vavix.util.screenscrape.annotation.SeleniumInputHandler;
 import vavix.util.screenscrape.annotation.Target;
 import vavix.util.screenscrape.annotation.WebScraper;
 
 
 /**
- * Amazon.
+ * Amazon Having List. 2020 version.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2016/03/12 umjammer initial version <br>
  */
-@PropsEntity(url = "file://${user.dir}/local.properties")
 public class Amazon {
 
-    @Property(name = "java.test.amazon.email")
-    String email;
-    @Property(name = "java.test.amazon.password")
-    String password;
-
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_10);
-
-    static {
-        client.setJavaScriptEnabled(false);
-    }
-
     /** */
-    public static class MyInput extends DefaultInputHandler {
-        private String cache;
-        /**
-         * @param args 0: url, 1: ignore, 2: ignore, 3: email, 4: password
-         */
-        public Reader getInput(String ... args) throws IOException {
-            if (cache != null) {
-                return new StringReader(cache);
+    public static class MyInput extends SeleniumInputHandler {
+        private static WebDriver driver;
+
+        @PropsEntity(url = "file://${user.dir}/local.properties")
+        public static class Id {
+            @Property(name = "java.test.amazon.email")
+            String email;
+        }
+
+        static {
+            if (driver == null) {
+                try {
+                    Id bean = new Id();
+                    PropsEntity.Util.bind(bean);
+                    String url = "https://www.amazon.co.jp/ap/signin?openid.return_to=https%3A%2F%2Fwww.amazon.co.jp%2Fref%3Dgw_sgn_ib%2F358-4710901-2880702&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=jpflex&openid.mode=checkid_setup&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0";
+                    driver = new AmazonLocalAuthenticator(url).authorize(bean.email);
+
+                    Runtime.getRuntime().addShutdownHook(new Thread(() -> driver.quit()));
+                } catch (IOException e) {
+                    throw new IllegalStateException(e);
+                }
             }
+        }
 
-            String url = args[0];
-            String email = args[3];
-            String password = args[4];
-            HtmlPage page0 = client.getPage(url);
-
-//System.exit(1);
-            if (page0.getUrl().toString().startsWith("https://www.amazon.co.jp/ap/signin/")) {
-System.err.println(page0.getUrl());
-//System.err.println(page0.asXml());
-
-                HtmlInput input1 = (HtmlInput) page0.getHtmlElementById("ap_email");
-                input1.setValueAttribute(email);
-                HtmlInput input2 = (HtmlInput) page0.getHtmlElementById("ap_password");
-                input2.setValueAttribute(password);
-                HtmlInput input3 = (HtmlInput) page0.getHtmlElementById("signInSubmit");
-
-                page0 = input3.click();
-System.err.println("-----------------------------------------------------------------------------------");
-            }
-//System.err.println(page0.getUrl());
-//System.err.println(page0.asXml());
-
-            //
-            cache = page0.asXml();
-//System.err.println(cache);
-
-            return new StringReader(cache);
+        protected WebDriver getDriver() {
+            return driver;
         }
     }
 
     @WebScraper(url = "https://www.amazon.co.jp/gp/yourstore/iyr/ref=pd_ys_iyr_next?ie=UTF8&collection=owned&iyrGroup=&maxItem={0}&minItem={1}",
                 input = MyInput.class,
                 parser = HtmlXPathParser.class,
-                encoding = "Windows-31J",
-                value = "/HTML/BODY/TABLE/TBODY/TR/TD/DIV[@id='iyrCenter']/TABLE/TBODY/TR[@valign='middle']")
+                isDebug = false,
+                value = "//DIV[@id='iyrCenter']/TABLE[2]/TBODY/TR[starts-with(@id, 'iyrListItem')]")
     public static class Result {
-        @Target(value = "/TR/TD/FONT/B/A/text()")
+        @Target(value = "//B/A/text()")
         String title;
-        @Target(value = "/TR/TD/FONT/SPAN/text()")
-        String author;
+        // TODO url
+        String author = "";
         public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append(title);
-            sb.append(",");
+            sb.append(", ");
             sb.append(author);
             return sb.toString();
         }
@@ -106,12 +79,10 @@ System.err.println("------------------------------------------------------------
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        Amazon app = new Amazon();
-        PropsEntity.Util.bind(app);
         for (int i = 0; i < 193; i++) {
             int min = i * 15 + 1;
             int max = (i + 1) * 15;
-            WebScraper.Util.foreach(Result.class, System.out::println, String.valueOf(max), String.valueOf(min), app.email, app.password);
+            WebScraper.Util.foreach(Result.class, System.out::println, String.valueOf(max), String.valueOf(min));
         }
     }
 }
