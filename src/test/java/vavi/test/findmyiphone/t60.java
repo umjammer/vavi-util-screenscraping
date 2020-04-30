@@ -17,9 +17,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ObjectNode;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 /**
@@ -97,7 +98,7 @@ System.err.println(this.partition);
         JsonNode node = mapper.readTree(response.getEntity().getContent());
 //System.err.println(node);
 
-        String statusCode = node.get("statusCode").getTextValue();
+        String statusCode = node.get("statusCode").asText();
 //System.err.println(statusCode);
         if (!statusCode.equals("200")) {
             throw new IOException("statusCode: " + statusCode);
@@ -109,21 +110,21 @@ System.err.println(this.partition);
 //System.err.println(content);
             JsonNode location = content.get("location");
             if (!location.isNull()) {
-                device.locationTimestamp = location.get("timeStamp").getLongValue();
-                device.locationType = location.get("positionType").getTextValue();
-                device.horizontalAccuracy = location.get("horizontalAccuracy").getDoubleValue();
-                device.locationFinished = location.get("locationFinished").getBooleanValue();
-                device.longitude = location.get("longitude").getDoubleValue();
-                device.latitude = location.get("latitude").getDoubleValue();
+                device.locationTimestamp = location.get("timeStamp").asLong();
+                device.locationType = location.get("positionType").asText();
+                device.horizontalAccuracy = location.get("horizontalAccuracy").asDouble();
+                device.locationFinished = location.get("locationFinished").asBoolean();
+                device.longitude = location.get("longitude").asDouble();
+                device.latitude = location.get("latitude").asDouble();
             }
-            device.isLocating = content.get("isLocating").getBooleanValue();
-            device.deviceModel = content.get("deviceModel").getTextValue();
-            device.deviceStatus = content.get("deviceStatus").getTextValue();
-            device.id = content.get("id").getTextValue();
-            device.name = content.get("name").getTextValue();
-            device.deviceClass = content.get("deviceClass").getTextValue();
-            device.chargingStatus = content.get("batteryStatus").getTextValue();
-            device.batteryLevel = content.get("batteryLevel").getDoubleValue();
+            device.isLocating = content.get("isLocating").asBoolean();
+            device.deviceModel = content.get("deviceModel").asText();
+            device.deviceStatus = content.get("deviceStatus").asText();
+            device.id = content.get("id").asText();
+            device.name = content.get("name").asText();
+            device.deviceClass = content.get("deviceClass").asText();
+            device.chargingStatus = content.get("batteryStatus").asText();
+            device.batteryLevel = content.get("batteryLevel").asDouble();
 
             devices.put(device.name, device);
             System.err.println(device);
