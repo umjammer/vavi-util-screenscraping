@@ -1,0 +1,108 @@
+{
+   "readableProduct" : {
+      "toc" : null,
+      "id" : "13933686331610375009",
+      "prevReadableProductUri" : "https://pocket.shonenmagazine.com/episode/13933686331610374968",
+      "publishedAt" : "2020-03-23T03:00:00Z",
+      "imageUrisDigest" : "84bb710ac27401262d4ad6c0a53653f8490bfedc",
+      "title" : "【第三百話】私たちの知っている可符香ちゃんは天使みたいないい子でした",
+      "hasPurchased" : false,
+      "number" : 299,
+      "nextReadableProductUri" : "https://pocket.shonenmagazine.com/episode/13933686331610375047",
+      "typeName" : "episode",
+      "pageStructure" : {
+         "choJuGiga" : "usagi",
+         "startPosition" : "latter",
+         "readingDirection" : "rtl",
+         "pages" : [
+            {
+               "width" : 960,
+               "src" : "https://cdn-img.pocket.shonenmagazine.com/public/original/13933686331610379280-18ae80dea60012a5de258d9fe252800b",
+               "height" : 1378,
+               "type" : "main",
+               "contentStart" : "306282"
+            },
+            {
+               "src" : "https://cdn-img.pocket.shonenmagazine.com/public/original/13933686331610379281-23e337088a57c7f9668d4f29af35942b",
+               "width" : 960,
+               "type" : "main",
+               "height" : 1378
+            },
+            {
+               "height" : 1378,
+               "type" : "main",
+               "width" : 960,
+               "src" : "https://cdn-img.pocket.shonenmagazine.com/public/original/13933686331610379282-5b7e9675b8639e92e4dfd04948b57b63"
+            },
+            {
+               "width" : 960,
+               "src" : "https://cdn-img.pocket.shonenmagazine.com/public/original/13933686331610379283-36dc6d891b05f1a68e733df2f15bf459",
+               "height" : 1378,
+               "type" : "main"
+            },
+            {
+               "height" : 1378,
+               "type" : "main",
+               "width" : 960,
+               "src" : "https://cdn-img.pocket.shonenmagazine.com/public/original/13933686331610379284-3981bc8e15c0ba0b5039d7dc310f11e7"
+            },
+            {
+               "src" : "https://cdn-img.pocket.shonenmagazine.com/public/original/13933686331610379285-1d6c97b9e0eb9a30a00c164eabdaa7ff",
+               "width" : 960,
+               "type" : "main",
+               "height" : 1378
+            },
+            {
+               "src" : "https://cdn-img.pocket.shonenmagazine.com/public/original/13933686331610379286-44216018aee0e13fd3470fefa9e696b2",
+               "width" : 960,
+               "type" : "main",
+               "height" : 1378
+            },
+            {
+               "height" : 1378,
+               "type" : "main",
+               "width" : 960,
+               "src" : "https://cdn-img.pocket.shonenmagazine.com/public/original/13933686331610379287-5b63ba77ecfc5f56b055a1b9bb4238df"
+            },
+            {
+               "type" : "main",
+               "height" : 1378,
+               "src" : "https://cdn-img.pocket.shonenmagazine.com/public/original/13933686331610379288-a14c783e60629995b416530700f5546d",
+               "width" : 960
+            },
+            {
+               "height" : 1378,
+               "type" : "main",
+               "width" : 960,
+               "src" : "https://cdn-img.pocket.shonenmagazine.com/public/original/13933686331610379289-1fc1807bac04e8d9eef88b79a562f107"
+            },
+            {
+               "src" : "https://cdn-img.pocket.shonenmagazine.com/public/original/13933686331610379290-7a6c12cfdfbf333cbb7e8313f9d49aa9",
+               "width" : 960,
+               "type" : "main",
+               "height" : 1378
+            },
+            {
+               "src" : "https://cdn-img.pocket.shonenmagazine.com/public/original/13933686331610379291-932c528d26514a8e5e5a07e5042d373d",
+               "width" : 960,
+               "type" : "main",
+               "height" : 1378,
+               "contentEnd" : "306282"
+            },
+            {
+               "type" : "other"
+            },
+            {
+               "type" : "backMatter"
+            }
+         ]
+      },
+      "series" : {
+         "thumbnailUri" : "https://cdn-scissors.gigaviewer.com/image/scale/a20ce0faddcebfa1b2a934c2186e6ae47172d727/enlarge=0;height=484;no_unsharpmask=1;quality=90;version=1;width=484/https%3A%2F%2Fcdn-img.pocket.shonenmagazine.com%2Fpublic%2Fseries-thumbnail%2F10834108156708420369-23fb3d07016ae81852fc6e2eb1202125%3F1585904766",
+         "title" : "さよなら絶望先生",
+         "id" : "10834108156708420369"
+      },
+      "isPublic" : true,
+      "permalink" : "https://pocket.shonenmagazine.com/episode/13933686331610375009"
+   }
+}

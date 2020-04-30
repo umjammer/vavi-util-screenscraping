@@ -28,6 +28,46 @@ class JsonPathParserTest {
 System.err.println(text);
         assertEquals("167d42f30842", text);
     }
+
+    @WebScraper(url = "classpath:ep.json",
+            parser = JsonPathParser.class,
+            input = PlainInputHandler.class,
+            value = "$..pages",
+            isDebug = true,
+            isCollection = false)
+    public static class Page {
+        @Target
+        String src;
+        @Target
+        int width;
+        @Target
+        int height;
+        @Target
+        String type;
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("Page [src=");
+            builder.append(src);
+            builder.append(", width=");
+            builder.append(width);
+            builder.append(", height=");
+            builder.append(height);
+            builder.append(", type=");
+            builder.append(type);
+            builder.append("]");
+            return builder.toString();
+        }
+    }
+
+    @Test
+    void test2() throws Exception {
+        WebScraper.Util.foreach(Page.class, System.err::println);
+    }
+
+    @Test
+    void test3() throws Exception {
+        WebScraper.Util.scrape(Page.class).forEach(System.err::println);;
+    }
 }
 
 /* */
