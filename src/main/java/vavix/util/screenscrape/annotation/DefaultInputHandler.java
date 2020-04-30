@@ -33,7 +33,7 @@ public class DefaultInputHandler implements InputHandler<Reader> {
     /**
      * CAUTION!!! Reader が <code>-Dfile.encoding</code> に依存しているので注意
      *
-     * @param args 0: url, 1, 2, 3...: {@link WebScraper.Util#scrape(Class, String...)}'s args or
+     * @param args 0: url ({#} is embedded), 1, 2, 3...: {@link WebScraper.Util#scrape(Class, String...)}'s args or
      *             {@link WebScraper.Util#foreach(Class, java.util.function.Consumer, String...)}'s args.
      */
     public Reader getInput(String ... args) throws IOException {
@@ -51,6 +51,7 @@ if (HttpURLConnection.class.isInstance(connection)) {
 
     /**
      * args will be embedded in url.
+     * @param args will be url-encoded.
      */
     public String[] dealUrlAndArgs(String url, String ... args) {
         return InputHandler._dealUrlAndArgs(url, args);

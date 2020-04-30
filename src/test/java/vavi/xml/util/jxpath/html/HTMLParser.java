@@ -60,9 +60,9 @@ public class HTMLParser implements XMLParser {
         } catch (ParserConfigurationException e) {
             throw new IllegalStateException(e);
         } catch (SAXException e) {
-          throw (RuntimeException) new IllegalArgumentException().initCause(e);
+            throw (RuntimeException) new IllegalArgumentException().initCause(e);
         } catch (IOException e) {
-          throw (RuntimeException) new IllegalArgumentException().initCause(e);
+            throw (RuntimeException) new IllegalArgumentException().initCause(e);
         }
     }
 }

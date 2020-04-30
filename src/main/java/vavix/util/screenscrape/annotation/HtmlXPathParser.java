@@ -41,6 +41,7 @@ import vavi.xml.util.PrettyPrinter;
  * <p>
  * CAUTION: xpath should be upper cased.
  * </p>
+ * TODO binder
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>

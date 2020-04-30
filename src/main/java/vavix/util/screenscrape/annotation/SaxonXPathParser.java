@@ -39,6 +39,8 @@ import net.sf.saxon.om.NodeInfo;
 /**
  * XPathParser.
  *
+ * TODO binder
+ *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>
  */

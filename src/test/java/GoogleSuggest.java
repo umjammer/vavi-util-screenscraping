@@ -21,7 +21,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
 public class GoogleSuggest {
 
     /** query result as xml */
-    @WebScraper(url = "http://www.google.com/complete/search?q={0}&hl={1}&output={2}&ie={3}&oe={3}")
+    @WebScraper(url = "http://www.google.com/complete/search?q={0}&hl={1}&output={2}&ie={3}&oe={3}", isDebug = true)
     public static class Result {
         @Target("//toplevel/CompleteSuggestion/suggestion/@data")
         String data;

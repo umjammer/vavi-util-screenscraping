@@ -14,13 +14,13 @@ import java.net.URLEncoder;
 /**
  * InputHandler.
  *
+ * @param <T> TODO necessary?
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>
  */
 public interface InputHandler<T> {
 
     /**
-     * TODO こういう所だよなぁ、Java のメソッドが First Class Object だったらなぁと思う場面
      * @param args {@link WebScraper.Util#scrape(Class, String...)},
      *             {@link WebScraper.Util#foreach(Class, java.util.function.Consumer, String...)}
      *             の args
@@ -45,6 +45,7 @@ public interface InputHandler<T> {
      *
      *      result: "http://foo.com?bar=VAVI&buz=UMJAMMER"
      * </pre>
+     * @param args will be url-encoded.
      * @return [ url, args... ]
      * @throws IllegalArgumentException when url is null.
      */
