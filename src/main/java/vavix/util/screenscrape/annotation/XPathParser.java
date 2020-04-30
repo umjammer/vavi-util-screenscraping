@@ -40,6 +40,8 @@ import vavi.xml.util.PrettyPrinter;
 /**
  * XPathParser.
  *
+ * TODO binder
+ *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>
  */
@@ -120,7 +122,7 @@ if (WebScraper.Util.isDebug(type)) {
                         results.add(bean);
                     }
 
-                    String text = ((String) xPath.evaluate(xpath, in, XPathConstants.STRING)).trim();
+                    String text = ((String) xPath.evaluate(xpath, document, XPathConstants.STRING)).trim();
                     BeanUtil.setFieldValue(field, bean, text);
                 }
             }
