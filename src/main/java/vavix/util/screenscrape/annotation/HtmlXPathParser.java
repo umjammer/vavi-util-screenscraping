@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ import org.xml.sax.InputSource;
 import vavi.beans.BeanUtil;
 import vavi.util.Debug;
 import vavi.xml.util.PrettyPrinter;
+import vavi.xml.util.XPathDebugger;
 
 
 /**
@@ -171,6 +173,7 @@ if (WebScraper.Util.isDebug(type)) {
 if (WebScraper.Util.isDebug(type)) {
  if (nodeList.getLength() == 0) {
   Debug.println("no node list: " + xpath);
+  XPathDebugger.getEntryList(new InputSource(inputHandler.getInput(args))).forEach(System.err::println);
  }
 }
 
@@ -182,6 +185,7 @@ if (WebScraper.Util.isDebug(type)) {
                 new PrettyPrinter(new PrintWriter(baos)).print(node); // TODO use constructor w/ encoding
 if (WebScraper.Util.isDebug(type)) {
  System.err.println("-------------------------------------------------------------");
+ XPathDebugger.getEntryList(new InputSource(new StringReader(baos.toString()))).forEach(System.err::println);
  System.err.println(baos.toString()); // TODO use encoding
 }
 
