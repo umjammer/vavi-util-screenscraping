@@ -33,10 +33,10 @@ import vavix.util.screenscrape.annotation.WebScraper;
 @Disabled
 public class Test2 {
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_10);
+    static WebClient client = new WebClient(BrowserVersion.FIREFOX_68);
 
     static {
-        client.setJavaScriptEnabled(false);
+        client.setJavaScriptEngine(null);
     }
 
     /** */

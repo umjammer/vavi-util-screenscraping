@@ -34,10 +34,10 @@ import vavix.util.screenscrape.annotation.XPathParser;
  */
 public class Jasrac {
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_10);
+    static WebClient client = new WebClient(BrowserVersion.FIREFOX_68);
 
     static {
-        client.setJavaScriptEnabled(true);
+        client.setJavaScriptEngine(null); // TODO
     }
 
     /** */
