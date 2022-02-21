@@ -29,7 +29,7 @@ public class GooHiragana {
     String apiKey;
 
     @WebScraper(
-        url = "https://api.apigw.smt.docomo.ne.jp/gooLanguageAnalysis/v1/hiragana?APIKEY={0}",
+        url = "https://labs.goo.ne.jp/api/hiragana",
         isDebug = true,
         input = PostInputHandler.class,
         parser = JsonPathParser.class)
@@ -58,7 +58,7 @@ public class GooHiragana {
         GooHiragana app = new GooHiragana();
         PropsEntity.Util.bind(app);
         String text = "薄茶色のシミがあちこちについた掛け布団。座ったら、五分でお尻が痒くなってきそうだ。";
-        List<Result> results = WebScraper.Util.scrape(Result.class, "{\"request_id\":\"001\", \"sentence\":\"{1}\",\"output_type\":\"katakana\"}", "application/json", app.apiKey, text);
+        List<Result> results = WebScraper.Util.scrape(Result.class, "{\"app_id\":\"{0}\",\"request_id\":\"001\", \"sentence\":\"{1}\",\"output_type\":\"katakana\"}", "application/json", app.apiKey, text);
         for (Result result : results) {
             System.err.println(result);
         }
