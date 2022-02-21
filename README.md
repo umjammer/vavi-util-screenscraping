@@ -2,6 +2,8 @@
 
 # Screen Scraping Library for Java
 
+🌏 Scrape the world!
+
 ## Introduction
 
 This library screen-scrapes data from html and injects data into POJO using annotation.
@@ -46,10 +48,10 @@ This library screen-scrapes data from html and injects data into POJO using anno
 
 ## TODO
 
- * ~~Tidy バージョンも作る~~
- * ~~文字化けでコメント消した~~
- * InputHandler でキャッシュしなくてもいいように
- * ~~WebScraper#url に 埋め込み~~
+ * ~~Tidy version~~
+ * ~~deleted garbled text~~
+ * InputHandler w/o cache
+ * ~~argument injection into WebScraper#url~~
     ```
         @WebScraper(url = "http://foo.com?bar={bar}")
         public static class Result {

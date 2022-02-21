@@ -15,41 +15,7 @@
     <name></name>
   </organization>
   <url>https://github.com/umjammer/vavi-util-screenscraping</url>
-  <description>1.0.9
-
-    eliminate vavi.net.rest package
-    update json handler
-    add post input handler
-
-1.0.8
-
-    improve debugging
-
-1.0.7
-
-    fix a security vulnerability pointed out by github
-
-1.0.6
-
-    json path
-
-1.0.5
-
-    maintenace version
-
-1.0.3
-
-    move pretty printer to vavi-commons, vavi-commons-sandbox
-    move PrettyPrinter to vavi-commons
-    add @Depricate to depricated classes
-
-1.0.2
-
-    add url replacing with args
-    deprecate vavi.net.webquery
-    deprecate vavi.util.screenscrape
-    deprecate vavi.xml.util.jxpath.html
-
+  <description>
 TODO
 
     @WebScraper#encoding()
@@ -108,7 +74,7 @@ TODO
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-commons</artifactId>
-      <version>1.0.15</version>
+      <version>1.1.5</version>
     </dependency>
     <dependency>
       <groupId>net.sf.saxon</groupId>
@@ -177,6 +143,12 @@ TODO
       <artifactId>vavi-sound-sandbox</artifactId>
       <version>1.0.2</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>vavi</groupId>
+          <artifactId>vavi-sound-nda</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.github.umjammer</groupId>
@@ -258,7 +230,7 @@ TODO
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
+      <artifactId>slf4j-jdk14</artifactId>
       <version>1.7.2</version>
       <scope>test</scope>
     </dependency>
