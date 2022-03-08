@@ -8,11 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Scanner;
-
-import org.junit.jupiter.api.Disabled;
 
 import vavi.net.rest.Rest;
 import vavi.util.properties.annotation.Property;
@@ -29,7 +27,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 080319 nsano initial version <br>
  */
-@Disabled
+@SuppressWarnings("deprecation")
 @PropsEntity(url = "file://${user.dir}/local.properties")
 public class Test7 {
 
@@ -60,7 +58,7 @@ System.err.println("sentence: " + sentence);
                 cacheKey = sentence;
             }
 
-            return new StringReader(new String(cache, Charset.forName("UTF8").name()));
+            return new StringReader(new String(cache, StandardCharsets.UTF_8.name()));
         }
     }
 

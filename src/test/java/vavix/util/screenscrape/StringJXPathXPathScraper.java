@@ -12,7 +12,6 @@ import org.apache.commons.jxpath.Container;
 import org.apache.commons.jxpath.JXPathContext;
 
 import vavi.xml.util.jxpath.html.HtmlDocumentContainer;
-import vavix.util.screenscrape.XPathScraper;
 
 
 /**

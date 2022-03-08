@@ -39,6 +39,7 @@ public class GsonBinder<T> implements Binder {
         if (fieldClass.equals(String.class)) {
             BeanUtil.setFieldValue(field, destBean, value);
         } else if (fieldClass.equals(List.class)) {
+            @SuppressWarnings("unchecked")
             Type listType = elseValue != null && Class.class.isInstance(elseValue) ?
                 getTypeToken(Class.class.cast(elseValue)).getType() : new TypeToken<ArrayList<T>>() {}.getType();
 //System.err.println("listType: " + listType.getTypeName());
