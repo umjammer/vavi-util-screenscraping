@@ -14,12 +14,10 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import org.xml.sax.InputSource;
-
-import org.junit.jupiter.api.Test;
 
 import vavi.util.CharNormalizerJa;
 import vavi.xml.util.PrettyPrinter;
@@ -36,6 +34,21 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
  */
 public class WebScraperTest {
 
+    static final String JAXP_KEY_DBF = "javax.xml.parsers.DocumentBuilderFactory";
+    static final String JAXP_VALUE_DBF_DEFAULT = "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl";
+    static final String JAXP_VALUE_DBF_CYBERNEKO = "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl";
+
+    String backup;
+
+    private void push() {
+        backup = System.getProperty(JAXP_KEY_DBF);
+    }
+
+    private void pop() {
+        if (backup != null)
+            System.setProperty(JAXP_KEY_DBF, backup);
+    }
+
     protected XPath xPath;
 
     {
@@ -45,8 +58,8 @@ public class WebScraperTest {
 
     @Test
     public void test() throws Exception {
-//        System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
-        System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");
+        push();
+        System.setProperty(JAXP_KEY_DBF, JAXP_VALUE_DBF_CYBERNEKO);
 
         InputSource in = new InputSource(new InputStreamReader((WebScraperTest.class.getResourceAsStream("/amazon.xml"))));
         in.setEncoding("utf-8");
@@ -62,13 +75,33 @@ public class WebScraperTest {
             new PrettyPrinter(System.err).print(node);
 System.err.println("-------------------------------------------------------------");
         }
+
+        pop();
     }
 
     @WebScraper(url = "classpath:amazon.html",
             parser = HtmlXPathParser.class,
             isDebug = true,
-            value = "//DIV[@id='ordersContainer']/DIV[@class='a-box-group a-spacing-base order']")
+            value = "/HTML/BODY/TABLE/TBODY/TR")
     public static class Result {
+        @Target(value = "//TR/TD[@class='line-number']/@value")
+        String td1;
+        @Target(value = "//TR/TD[@class='line-content']/text()")
+        String t2;
+    }
+
+    @Test
+    public void test1() throws Exception {
+        List<Result> results = new ArrayList<>();
+        WebScraper.Util.foreach(Result.class, e -> results.add(e));
+        assertEquals(7987, results.size());
+    }
+
+    @WebScraper(url = "classpath:amazon.xml",
+            parser = SaxonXPathParser.class,
+            isDebug = true,
+            value = "//DIV[@class='a-box-group a-spacing-base order']")
+    public static class Result2 {
         @Target(value = "//DIV[1]/DIV/DIV/DIV/DIV[1]/DIV/DIV[1]/DIV[2]/SPAN/text()")
         String date;
         @Target(value = "//DIV[1]/DIV/DIV/DIV/DIV[1]/DIV/DIV[2]/DIV[2]/SPAN/text()")
@@ -91,11 +124,14 @@ System.err.println("------------------------------------------------------------
         }
     }
 
-//    @Test
-    public void test1() throws Exception {
-        List<Result> results = new ArrayList<>();
-        WebScraper.Util.foreach(Result.class, e -> results.add(e));
-        assertEquals(10, results.size());
+    @Test
+    public void test2() throws Exception {
+//InputStream is = WebScraperTest.class.getResourceAsStream("/amazon.xml");
+//XPathDebugger.getEntryList(new InputSource(is)).forEach(System.err::println);
+
+        List<Result2> results = new ArrayList<>();
+        WebScraper.Util.foreach(Result2.class, e -> { results.add(e); System.err.println(e); });
+        assertEquals(1, results.size());
     }
 }
 

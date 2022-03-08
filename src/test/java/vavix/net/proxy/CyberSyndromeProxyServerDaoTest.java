@@ -6,11 +6,10 @@
 
 package vavix.net.proxy;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import vavix.net.proxy.ProxyChanger.InternetAddress;
 
@@ -21,12 +20,14 @@ import vavix.net.proxy.ProxyChanger.InternetAddress;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2018/03/06 umjammer initial version <br>
  */
-@Disabled
 public class CyberSyndromeProxyServerDaoTest {
 
     @Test
+    @Disabled("slow")
     public void test() {
-        fail("Not yet implemented");
+        CyberSyndromeProxyServerDao proxyServerDao = new CyberSyndromeProxyServerDao();
+        List<InternetAddress> proxies = proxyServerDao.getProxyInetSocketAddresses();
+proxies.forEach(System.err::println);
     }
 
     /** */

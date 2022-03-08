@@ -6,6 +6,8 @@
 
 package vavix.util.screenscrape.annotation;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.junit.jupiter.api.Test;
 
 import com.jayway.jsonpath.JsonPath;
@@ -61,12 +63,14 @@ System.err.println(text);
 
     @Test
     void test2() throws Exception {
-        WebScraper.Util.foreach(Page.class, System.err::println);
+        AtomicInteger i = new AtomicInteger();
+        WebScraper.Util.foreach(Page.class, e -> { i.incrementAndGet(); });
+        assertEquals(14, i.get());
     }
 
     @Test
     void test3() throws Exception {
-        WebScraper.Util.scrape(Page.class).forEach(System.err::println);;
+        assertEquals(14, WebScraper.Util.scrape(Page.class).size());
     }
 }
 

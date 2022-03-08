@@ -41,7 +41,7 @@ import vavi.xml.util.XPathDebugger;
  * parse HTML using cyberneko.
  * </p>
  * <p>
- * CAUTION: xpath should be upper cased.
+ * CAUTION: xpath at {@link Target#value()} should be upper cased.
  * </p>
  * TODO binder
  *
@@ -60,6 +60,22 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
 //System.err.println(XPathFactory.newInstance().getClass());
     }
 
+    static final String JAXP_KEY_DBF = "javax.xml.parsers.DocumentBuilderFactory";
+    static final String JAXP_VALUE_DBF_CYBERNEKO = "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl";
+
+    String backup;
+
+    /** backups current property */
+    private void push() {
+        backup = System.getProperty(JAXP_KEY_DBF);
+    }
+
+    /** restores backup property */
+    private void pop() {
+        if (backup != null)
+            System.setProperty(JAXP_KEY_DBF, backup);
+    }
+
     /**
      * TODO Reader は、 InputSource の引数ならどれでもとか
      * <li> TODO now 1 step XPath only
@@ -72,7 +88,8 @@ if (WebScraper.Util.isDebug(type)) {
 }
             List<T> results = new ArrayList<>();
 
-            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");
+            push();
+            System.setProperty(JAXP_KEY_DBF, JAXP_VALUE_DBF_CYBERNEKO);
 
             Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
             for (Field field : targetFields) {
@@ -135,7 +152,7 @@ if (WebScraper.Util.isDebug(type)) {
         } catch (IllegalAccessException | InstantiationException | IOException e) {
             throw new IllegalStateException(e);
         } finally {
-            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
+            pop();
         }
     }
 
@@ -157,7 +174,8 @@ if (WebScraper.Util.isDebug(type)) {
 if (WebScraper.Util.isDebug(type)) {
  Debug.println(Level.FINE, "encoding: " + encoding);
 }
-            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "vavi.xml.jaxp.html.cyberneko.DocumentBuilderFactoryImpl");
+            push();
+            System.setProperty(JAXP_KEY_DBF, JAXP_VALUE_DBF_CYBERNEKO);
 
             InputSource in = new InputSource(inputHandler.getInput(args));
             in.setEncoding(encoding);
@@ -166,9 +184,6 @@ if (WebScraper.Util.isDebug(type)) {
 
             Object nodeSet = xPath.evaluate(xpath, in, XPathConstants.NODESET);
 
-            // TODO vavi.xml.jaxp.html.cyberneko has bug! <- what's ???
-//            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
-
             NodeList nodeList = NodeList.class.cast(nodeSet);
 if (WebScraper.Util.isDebug(type)) {
  if (nodeList.getLength() == 0) {
@@ -176,6 +191,9 @@ if (WebScraper.Util.isDebug(type)) {
   XPathDebugger.getEntryList(new InputSource(inputHandler.getInput(args))).forEach(System.err::println);
  }
 }
+            // below is needed for sub xpath query
+            // !!!CAUTION!!! when adding debugging code or etc. check the code needs cyberneko or not, and position against this line.
+            System.setProperty(JAXP_KEY_DBF, backup);
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 T bean = type.newInstance();
@@ -185,7 +203,6 @@ if (WebScraper.Util.isDebug(type)) {
                 new PrettyPrinter(new PrintWriter(baos)).print(node); // TODO use constructor w/ encoding
 if (WebScraper.Util.isDebug(type)) {
  System.err.println("-------------------------------------------------------------");
- XPathDebugger.getEntryList(new InputSource(new StringReader(baos.toString()))).forEach(System.err::println);
  System.err.println(baos.toString()); // TODO use encoding
 }
 
@@ -195,6 +212,13 @@ if (WebScraper.Util.isDebug(type)) {
                     InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
                     in.setEncoding(System.getProperty("file.encoding")); // TODO use encoding
                     String text = (String) xPath.evaluate(subXpath, is, XPathConstants.STRING);
+if (WebScraper.Util.isDebug(type)) {
+ if (text == null) {
+  XPathDebugger.getEntryList(new InputSource(new StringReader(baos.toString()))).forEach(System.err::println);
+ } else {
+  Debug.println("subXpath: " + subXpath + ": " + text);
+ }
+}
                     BeanUtil.setFieldValue(field, bean, text.trim());
                 }
 
@@ -206,7 +230,7 @@ if (WebScraper.Util.isDebug(type)) {
         } catch (IllegalAccessException | InstantiationException | IOException e) {
             throw new IllegalStateException(e);
         } finally {
-            System.setProperty("javax.xml.parsers.DocumentBuilderFactory", "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
+            pop();
         }
     }
 }
