@@ -40,7 +40,8 @@ import vavix.util.selenium.SeleniumUtil;
  */
 public class iTunes2 {
 
-    private WebDriver driver = SeleniumUtil.getDriver();
+    private SeleniumUtil seleniumUtil = new SeleniumUtil();
+    private WebDriver driver = seleniumUtil.getWebDriver();
 
     private iTunes2() {
         // authentication?
@@ -77,12 +78,12 @@ try {
             SeleniumUtil.waitFor(instance.driver);
 
             WebElement inputT = instance.driver.findElement(By.name("IN_WORKS_TITLE_NAME1"));
-            SeleniumUtil.setAttribute(instance.driver, inputT, "value", title);
+            instance.seleniumUtil.setAttribute(inputT, "value", title);
             // 0:前方一致, 1:後方一致, 2:中間一致 3:完全一致
 //            Select selectT = new Select(app.driver.getSelectByName("IN_WORKS_TITLE_OPTION1"));
 //            selectT.selectByValue("3");
             WebElement inputA = instance.driver.findElement(By.name("IN_ARTIST_NAME1"));
-            SeleniumUtil.setAttribute(instance.driver, inputA, "value", artist);
+            instance.seleniumUtil.setAttribute(inputA, "value", artist);
             // 0:前方一致, 1:後方一致, 2:中間一致 3:完全一致
             Select selectA = new Select(instance.driver.findElement(By.name("IN_ARTIST_NAME_OPTION1")));
             selectA.selectByValue("3");
@@ -98,7 +99,7 @@ try {
 //Debug.println("location: " + app.driver.getCurrentUrl());
             return new StringReader(instance.driver.getPageSource());
 } catch (Exception e) {
- SeleniumUtil.showStats(instance.driver);
+ instance.seleniumUtil.showStats();
  throw e;
 }
         }
@@ -171,7 +172,7 @@ try {
             SeleniumUtil.waitFor(instance.driver);
 
             WebElement inputT = instance.driver.findElement(By.name("IN_WORKS_TITLE_NAME1"));
-            SeleniumUtil.setAttribute(instance.driver, inputT, "value", title);
+            instance.seleniumUtil.setAttribute(inputT, "value", title);
             Select selectT = new Select(instance.driver.findElement(By.name("IN_WORKS_TITLE_OPTION1")));
             selectT.selectByValue("3");
             WebElement button1 = instance.driver.findElement(By.name("CMD_SEARCH"));
@@ -242,7 +243,7 @@ Debug.println("nextAnchor: " + nextAnchor);
             SeleniumUtil.waitFor(instance.driver);
 
             WebElement inputA = instance.driver.findElement(By.name("IN_ARTIST_NAME1"));
-            SeleniumUtil.setAttribute(instance.driver, inputA, "value", artist);
+            instance.seleniumUtil.setAttribute(inputA, "value", artist);
             Select selectA = new Select(instance.driver.findElement(By.name("IN_ARTIST_NAME_OPTION1")));
             selectA.selectByValue("3");
             WebElement button1 = instance.driver.findElement(By.name("CMD_SEARCH"));

@@ -19,8 +19,6 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.HeadMethod;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import vavi.util.Debug;
 
@@ -57,18 +55,11 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
         return proxyAddresses;
     }
 
+    // selenium
     public static class MyInput implements InputHandler<Reader> {
         WebDriver driver;
         {
-            String pwd = System.getProperty("user.dir");
-            System.setProperty("webdriver.chrome.driver", pwd + "/bin/chromedriver");
-
-            ChromeOptions chromeOptions = new ChromeOptions();
-            String app = System.getProperty("com.google.chrome.app");
-            chromeOptions.setBinary(app);
-            chromeOptions.addArguments("--headless"/*, "--disable-gpu"*/);
-
-            driver = new ChromeDriver(chromeOptions);
+            driver = new SeleniumUtil().getWebDriver();
         }
 
         /** */
