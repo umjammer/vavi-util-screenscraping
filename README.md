@@ -60,4 +60,5 @@ This library screen-scrapes data from html and injects data into POJO using anno
         List<Result> data = WebScraper.Util.scrape(Result.class, @UrlParam(bar) args[0]);
     ```
  * ~~json parser~~
+ * css selector
  * https://github.com/jhy/jsoup
