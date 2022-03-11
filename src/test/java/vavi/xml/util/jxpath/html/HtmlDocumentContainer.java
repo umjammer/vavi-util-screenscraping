@@ -19,6 +19,7 @@ import org.apache.commons.jxpath.xml.XMLParser;
  * @author <a href=mailto:umjammer@gmail.com>Naohide Sano</a> (nsano)
  * @version 0.00 040311 nsano initial version <br>
  */
+@Deprecated
 public class HtmlDocumentContainer implements Container {
 
     /** */

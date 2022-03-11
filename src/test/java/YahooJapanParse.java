@@ -17,6 +17,7 @@ import vavi.net.rest.Rest;
  * @version 0.00 080319 nsano initial version <br>
  * @see "http://developer.yahoo.co.jp/jlp/MAService/V1/parse.html"
  */
+@SuppressWarnings("deprecation")
 @Rest(protocol = "HTTP",
       method="GET",
       url="https://jlp.yahooapis.jp/MAService/V1/parse")

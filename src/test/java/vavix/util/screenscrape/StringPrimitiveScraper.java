@@ -12,8 +12,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.NoSuchElementException;
 
-import vavix.util.screenscrape.Scraper;
-
 
 /**
  * 、文字列で切り出す機です。

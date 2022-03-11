@@ -8,48 +8,14 @@
 
   <groupId>vavi</groupId>
   <artifactId>vavi-util-screenscraping</artifactId>
-  <version>1.0.9</version>
+  <version>1.0.10</version>
 
   <name>Vavi Screen Scraping API</name>
   <organization>
     <name></name>
   </organization>
   <url>https://github.com/umjammer/vavi-util-screenscraping</url>
-  <description>1.0.9
-
-    eliminate vavi.net.rest package
-    update json handler
-    add post input handler
-
-1.0.8
-
-    improve debugging
-
-1.0.7
-
-    fix a security vulnerability pointed out by github
-
-1.0.6
-
-    json path
-
-1.0.5
-
-    maintenace version
-
-1.0.3
-
-    move pretty printer to vavi-commons, vavi-commons-sandbox
-    move PrettyPrinter to vavi-commons
-    add @Depricate to depricated classes
-
-1.0.2
-
-    add url replacing with args
-    deprecate vavi.net.webquery
-    deprecate vavi.util.screenscrape
-    deprecate vavi.xml.util.jxpath.html
-
+  <description>
 TODO
 
     @WebScraper#encoding()
@@ -71,6 +37,16 @@ TODO
           <target>1.8</target>
           <encoding>UTF-8</encoding>
           <generatedSourcesDirectory>target/generated-sources/cxf</generatedSourcesDirectory>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M5</version>
+        <configuration>
+          <argLine>-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties</argLine>
+          <forkMode>always</forkMode>
+          <trimStackTrace>false</trimStackTrace>
         </configuration>
       </plugin>
         <!-- exec:exec -->
@@ -102,18 +78,36 @@ TODO
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
+    <repository>
+      <id>github</id>
+      <name>GitHub umjammer Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/umjammer/*</url>
+    </repository>
   </repositories>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.8.1</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
       <groupId>com.github.umjammer</groupId>
-      <artifactId>vavi-commons</artifactId>
-      <version>1.0.15</version>
+      <artifactId>vavi-commons-sandbox</artifactId>
+      <version>0.4.1</version>
     </dependency>
+
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>9.7.0-3</version>
+      <version>11.2</version>
     </dependency>
     <dependency>
       <groupId>commons-httpclient</groupId>
@@ -142,41 +136,38 @@ TODO
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.github.umjammer</groupId>
-      <artifactId>vavi-net-auth</artifactId>
-      <version>0.0.6</version>
+      <groupId>com.github.umjammer.vavi-net-auth</groupId>
+      <artifactId>vavi-net-auth-amazon</artifactId>
+      <version>0.1.4</version>
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.3.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.3.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-commons</artifactId>
-      <version>1.5.2</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>com.github.umjammer</groupId>
-      <artifactId>vavi-commons-sandbox</artifactId>
-      <version>0.3.5</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.umjammer</groupId>
+      <groupId>vavi</groupId>
       <artifactId>vavi-sound-sandbox</artifactId>
-      <version>1.0.2</version>
+      <version>1.0.4</version>
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>vavi</groupId>
+          <artifactId>vavi-sound-nda</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.github.umjammer</groupId>
@@ -258,7 +249,7 @@ TODO
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
+      <artifactId>slf4j-jdk14</artifactId>
       <version>1.7.2</version>
       <scope>test</scope>
     </dependency>

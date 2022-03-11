@@ -27,6 +27,8 @@ import vavi.util.Debug;
  * {@link WebScraper} で指定された {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
  * @see PostInputHandler#dealUrlAndArgs(String, String...)
  *
+ * TODO auto create body
+ *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>
  */

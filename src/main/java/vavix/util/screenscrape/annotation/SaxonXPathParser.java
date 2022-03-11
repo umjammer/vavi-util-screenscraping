@@ -25,7 +25,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import org.xml.sax.InputSource;
 
 import vavi.beans.BeanUtil;
@@ -46,13 +45,21 @@ import net.sf.saxon.om.NodeInfo;
  */
 public class SaxonXPathParser<T> implements Parser<Reader, T> {
 
+    static final String JAXP_KEY_XPF = XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI;
+    static final String JAXP_VALUE_XPF_SAXON = "net.sf.saxon.xpath.XPathFactoryImpl";
+
     /** */
     protected XPath xPath;
 
     {
-        System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "net.sf.saxon.xpath.XPathFactoryImpl");
-        xPath = XPathFactory.newInstance().newXPath();
-//System.err.println("SaxonXPathParser: xpath: " + XPathFactory.newInstance().getClass());
+        String backup = System.setProperty(JAXP_KEY_XPF, JAXP_VALUE_XPF_SAXON);
+        System.setProperty(JAXP_KEY_XPF, JAXP_VALUE_XPF_SAXON);
+        XPathFactory factory = XPathFactory.newInstance();
+        assert factory.getClass().getName().equals(JAXP_VALUE_XPF_SAXON) : "not saxon factory: " + factory.getClass().getName();
+Debug.println(Level.FINE, "XPathFactory: " + factory.getClass().getName());
+        xPath = factory.newXPath();
+        if (backup != null)
+            System.setProperty(JAXP_KEY_XPF, backup);
     }
 
     /**
@@ -62,7 +69,7 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
     public List<T> parse(Class<T> type, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-//System.err.println("encoding: " + encoding);
+Debug.println(Level.FINE, "encoding: " + encoding);
 
             List<T> results = new ArrayList<>();
 
@@ -73,7 +80,7 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
                 in.setEncoding(encoding);
 
                 String xpath = Target.Util.getValue(field);
-//System.err.println("xpath: " + xpath);
+Debug.println(Level.FINE, "xpath: " + xpath);
 
                 if (WebScraper.Util.isCollection(type)) {
 
@@ -81,8 +88,11 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
 
                     if (List.class.isInstance(nodeSet)) {
 
+                        @SuppressWarnings("unchecked")
                         List<NodeInfo> nodeList = List.class.cast(nodeSet);
-//System.err.println("nodeList: " + nodeList.size());
+if (nodeList.size() == 0) {
+ Debug.println(Level.WARNING, "no node list: " + xpath);
+}
                         for (int i = 0; i < nodeList.size(); i++) {
                             // because loops for each fields, instantiation should be done once
                             T bean = null;
@@ -94,13 +104,13 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
                             }
 
                             String text = nodeList.get(i).getStringValue().trim();
-//System.err.println(field.getName() + ": " + text);
+Debug.println(Level.FINE, field.getName() + ": " + text);
                             BeanUtil.setFieldValue(field, bean, text);
                         }
                     } else if (NodeList.class.isInstance(nodeSet)) {
 
                         NodeList nodeList = NodeList.class.cast(nodeSet);
-//System.err.println("nodeList: " + nodeList.getLength());
+Debug.println(Level.FINE, "nodeList: " + nodeList.getLength());
                         for (int i = 0; i < nodeList.getLength(); i++) {
                             // because loops for each fields, instantiation should be done once
                             T bean = null;
@@ -112,7 +122,7 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
                             }
 
                             String text = nodeList.item(i).getTextContent().trim();
-//System.err.println(field.getName() + ": " + text);
+Debug.println(Level.FINE, field.getName() + ": " + text);
                             BeanUtil.setFieldValue(field, bean, text);
                         }
                     } else {
@@ -169,6 +179,7 @@ public class SaxonXPathParser<T> implements Parser<Reader, T> {
 
             if (List.class.isInstance(nodeSet)) {
 
+                @SuppressWarnings("unchecked")
                 List<NodeInfo> nodeList = List.class.cast(nodeSet);
 //System.err.println("nodeList: " + nodeList.size());
 if (nodeList.size() == 0) {

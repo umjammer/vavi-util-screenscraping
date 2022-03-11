@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
  * @version 0.00 031103 nsano initial version <br>
  *          0.01 040312 nsano i18n <br>
  */
+@Deprecated
 public class HTMLParser implements XMLParser {
 
     /** */

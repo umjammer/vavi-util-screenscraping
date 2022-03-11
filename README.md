@@ -1,6 +1,10 @@
-[![Release](https://jitpack.io/v/umjammer/vavi-util-screenscraping.svg)](https://jitpack.io/#umjammer/vavi-util-screenscraping)
+[![Maven Package](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven-publish.yml)
+[![Java CI with Maven](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven.yml)
+[![CodeQL](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml)
 
 # Screen Scraping Library for Java
+
+🌏 Scrape the world!
 
 ## Introduction
 
@@ -46,10 +50,10 @@ This library screen-scrapes data from html and injects data into POJO using anno
 
 ## TODO
 
- * ~~Tidy バージョンも作る~~
- * ~~文字化けでコメント消した~~
- * InputHandler でキャッシュしなくてもいいように
- * ~~WebScraper#url に 埋め込み~~
+ * ~~Tidy version~~
+ * ~~deleted garbled text~~
+ * InputHandler w/o cache
+ * ~~argument injection into WebScraper#url~~
     ```
         @WebScraper(url = "http://foo.com?bar={bar}")
         public static class Result {
@@ -58,4 +62,5 @@ This library screen-scrapes data from html and injects data into POJO using anno
         List<Result> data = WebScraper.Util.scrape(Result.class, @UrlParam(bar) args[0]);
     ```
  * ~~json parser~~
+ * css selector
  * https://github.com/jhy/jsoup

@@ -20,10 +20,10 @@ import vavix.util.screenscrape.annotation.WebScraper;
  */
 public class Hatena {
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_10);
+    static WebClient client = new WebClient(BrowserVersion.FIREFOX_68);
 
     static {
-        client.setJavaScriptEnabled(false);
+        client.setJavaScriptEngine(null);
     }
 
     @WebScraper(url = "http://umjammer.hatenablog.com/archive/category/{0}?page={1}",

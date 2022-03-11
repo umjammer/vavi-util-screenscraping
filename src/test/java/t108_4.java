@@ -17,7 +17,9 @@ import vavi.xml.util.PrettyPrinter;
 
 /**
  * javadoc 形式のファイルをリーバースエンジニアリングします。
+ * @deprecated use codavaj
  */
+@Deprecated
 public class t108_4 {
     public static void main(String[] args) throws Exception {
         InputStream is = new URL(args[0]).openStream();

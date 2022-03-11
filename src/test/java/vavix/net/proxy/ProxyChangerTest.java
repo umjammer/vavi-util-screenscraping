@@ -8,6 +8,7 @@ package vavix.net.proxy;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,6 +22,7 @@ import vavix.net.proxy.ProxyChanger.InternetAddress;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2018/03/09 umjammer initial version <br>
  */
+@Disabled
 public class ProxyChangerTest {
 
     @Test

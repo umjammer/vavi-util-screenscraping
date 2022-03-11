@@ -7,23 +7,24 @@
 package vavi.xml.jaxp.html.cyberneko;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.html.dom.HTMLDOMImplementationImpl;
+import org.apache.html.dom.HTMLDocumentImpl;
+import org.cyberneko.html.parsers.DOMParser;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
-
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import org.apache.html.dom.HTMLDOMImplementationImpl;
-import org.apache.html.dom.HTMLDocumentImpl;
-import org.cyberneko.html.parsers.DOMParser;
+import vavi.util.Debug;
 
 
 /**
@@ -70,7 +71,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
                   parser.setFeature("http://cyberneko.org/html/features/augmentations", true);
                   parser.setFeature("http://xml.org/sax/features/namespaces", false);
                   parser.setProperty("http://cyberneko.org/html/properties/names/elems", "lower");
-//System.err.println("elements: " + parser.getProperty("http://cyberneko.org/html/properties/names/elems"));
+Debug.println(Level.FINE, "http://xml.org/sax/features/validation: " + this.dbf.isValidating());
 //              }
 
         } catch (SAXException e) {
