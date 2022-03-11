@@ -28,6 +28,14 @@ TODO
     <url>https://github.com/umjammer/vavi-util-screenscraping/issues</url>
   </issueManagement>
 
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub umjammer Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/umjammer/vavi-util-screenscraping</url>
+    </repository>
+  </distributionManagement>
+
   <build>
     <plugins>
       <plugin>
