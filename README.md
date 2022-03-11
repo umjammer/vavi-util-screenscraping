@@ -1,4 +1,5 @@
-[![Maven Package](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven-publish.yml)
+[![Maven Package](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven-publish.yml)
+[![Java CI with Maven](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml)
 
 # Screen Scraping Library for Java
