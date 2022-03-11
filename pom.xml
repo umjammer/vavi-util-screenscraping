@@ -78,6 +78,11 @@ TODO
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
+    <repository>
+      <id>github</id>
+      <name>GitHub umjammer Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/umjammer/*</url>
+    </repository>
   </repositories>
 
   <dependencyManagement>
@@ -153,9 +158,9 @@ TODO
     </dependency>
 
     <dependency>
-      <groupId>com.github.umjammer</groupId>
+      <groupId>vavi</groupId>
       <artifactId>vavi-sound-sandbox</artifactId>
-      <version>1.0.3</version>
+      <version>1.0.4</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
