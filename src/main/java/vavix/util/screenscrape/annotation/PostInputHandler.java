@@ -23,8 +23,9 @@ import vavi.util.Debug;
 
 /**
  * PostInputHandler.
- *
+ * <p>
  * {@link WebScraper} で指定された {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
+ * </p>
  * @see PostInputHandler#dealUrlAndArgs(String, String...)
  *
  * TODO auto create body
@@ -42,13 +43,18 @@ public class PostInputHandler implements InputHandler<InputStream> {
         String url = args[0];
         String body = dealBodyAndArgs(args[1], Arrays.copyOfRange(args, 3, args.length));
         String contentType = args[2];
+        String userAgent = System.getProperty("vavix.util.screenscrape.annotation.PostInputHandler.userAgent");
 Debug.println(Level.INFO, "url: " + url);
 Debug.println(Level.INFO, "body: " + body);
 Debug.println(Level.INFO, "contentType: " + contentType);
+Debug.println(Level.INFO, "userAgent: " + userAgent);
         URLConnection connection = new URL(url).openConnection();
         connection.setDoInput(true);
         connection.setDoOutput(true);
         connection.setRequestProperty("Content-Type", contentType);
+        if (userAgent != null) {
+            connection.setRequestProperty("User-Agent", userAgent);
+        }
 
         OutputStream os = connection.getOutputStream();
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
