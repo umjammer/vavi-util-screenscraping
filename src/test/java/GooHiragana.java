@@ -49,6 +49,7 @@ public class GooHiragana {
             sb.append(converted);
             return sb.toString();
         }
+        static final String BODY = "{\"app_id\":\"{0}\",\"request_id\":\"001\", \"sentence\":\"{1}\",\"output_type\":\"katakana\"}";
     }
 
     /**
@@ -58,7 +59,7 @@ public class GooHiragana {
         GooHiragana app = new GooHiragana();
         PropsEntity.Util.bind(app);
         String text = "薄茶色のシミがあちこちについた掛け布団。座ったら、五分でお尻が痒くなってきそうだ。";
-        List<Result> results = WebScraper.Util.scrape(Result.class, "{\"app_id\":\"{0}\",\"request_id\":\"001\", \"sentence\":\"{1}\",\"output_type\":\"katakana\"}", "application/json", app.apiKey, text);
+        List<Result> results = WebScraper.Util.scrape(Result.class, Result.BODY, "application/json", app.apiKey, text);
         for (Result result : results) {
             System.err.println(result);
         }
