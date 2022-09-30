@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
@@ -105,7 +106,10 @@ if (isDebug) {
 
     @Override
     protected Object getSubDocument(Object node) {
-        return node; // TODO
+if (isDebug) {
+ Debug.println(Level.FINE, node);
+}
+        return node;
     }
 }
 

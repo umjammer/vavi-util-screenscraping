@@ -235,12 +235,16 @@ if (WebScraper.Util.isDebug(type)) {
                 Class<?> option = Target.Util.getOption(field);
                 boolean optional = Target.Util.isOptional(field);
                 try {
-//System.err.println(fixSelector(field, subSelector) + ", " + subDocument);
+if (isDebug) {
+ Debug.println(Level.FINE, fixSelector(field, subSelector) + ", " + subDocument);
+}
                     String text = asText(select(fixSelector(field, subSelector), subDocument));
                     binder.bind(bean, field, field.getType(), text, option);
                 } catch (Exception e) {
                     if (!optional) {
-System.err.println(e + "\n" + subDocument);
+if (isDebug) {
+ Debug.println(Level.INFO, e + "\n" + subDocument);
+}
                     }
                 }
             }
