@@ -86,10 +86,10 @@ Debug.println(Level.FINE, "xpath: " + xpath);
 
                     Object nodeSet = xPath.evaluate(xpath, in, XPathConstants.NODESET);
 
-                    if (List.class.isInstance(nodeSet)) {
+                    if (nodeSet instanceof List) {
 
                         @SuppressWarnings("unchecked")
-                        List<NodeInfo> nodeList = List.class.cast(nodeSet);
+                        List<NodeInfo> nodeList = (List<NodeInfo>) nodeSet;
 if (nodeList.size() == 0) {
  Debug.println(Level.WARNING, "no node list: " + xpath);
 }
@@ -107,9 +107,9 @@ if (nodeList.size() == 0) {
 Debug.println(Level.FINE, field.getName() + ": " + text);
                             BeanUtil.setFieldValue(field, bean, text);
                         }
-                    } else if (NodeList.class.isInstance(nodeSet)) {
+                    } else if (nodeSet instanceof NodeList) {
 
-                        NodeList nodeList = NodeList.class.cast(nodeSet);
+                        NodeList nodeList = (NodeList) nodeSet;
 Debug.println(Level.FINE, "nodeList: " + nodeList.getLength());
                         for (int i = 0; i < nodeList.getLength(); i++) {
                             // because loops for each fields, instantiation should be done once
@@ -156,14 +156,14 @@ Debug.println(Level.FINE, field.getName() + ": " + text);
     /**
      * <h4>2 step XPath</h4>
      * <p>
-     *  {@link WebScraper#value()} で指定した XPath で取得できる部分 XML から
-     *  {@link Target#value()} で指定した XPath で取得する方法。
+     *  the method to retrieve values by `JsonPath` specified at {@link Target#value()} from
+     *  part of XML that is retrieved by `JsonPath` specified at {@link WebScraper#value()}
      * </p>
      * <p>
      * you need to specify at the first element of the {@link Target#value()} as same as the last element in {@link WebScraper#value()}.
      * </p>
-     * <li> TODO now 2 step XPath only
-     * <li> TODO {@link WebScraper#value()} が存在すれば 2 step とか
+     * TODO now 2 step XPath only
+     * TODO how about: if {@link WebScraper#value()} exists then 2 step
      */
     public void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
         try {
@@ -177,19 +177,19 @@ Debug.println(Level.FINE, field.getName() + ": " + text);
 
             Object nodeSet = xPath.evaluate(xpath, in, XPathConstants.NODESET);
 
-            if (List.class.isInstance(nodeSet)) {
+            if (nodeSet instanceof List) {
 
                 @SuppressWarnings("unchecked")
-                List<NodeInfo> nodeList = List.class.cast(nodeSet);
+                List<NodeInfo> nodeList = (List<NodeInfo>) nodeSet;
 //System.err.println("nodeList: " + nodeList.size());
 if (nodeList.size() == 0) {
  Debug.println(Level.WARNING, "no node list: " + xpath);
 }
 
-                for (int i = 0; i < nodeList.size(); i++) {
+                for (NodeInfo nodeInfo : nodeList) {
                     T bean = type.newInstance();
 
-                    NodeInfo node = nodeList.get(i);
+                    NodeInfo node = nodeInfo;
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     new PrettyPrinter(new PrintWriter(baos)).print(NodeOverNodeInfo.wrap(node));
 
@@ -207,9 +207,9 @@ if (nodeList.size() == 0) {
 
                     eachHandler.accept(bean);
                 }
-            } else if (NodeList.class.isInstance(nodeSet)) {
+            } else if (nodeSet instanceof NodeList) {
 
-                NodeList nodeList = NodeList.class.cast(nodeSet);
+                NodeList nodeList = (NodeList) nodeSet;
 //System.err.println("nodeList: " + nodeList.getLength());
 if (nodeList.getLength() == 0) {
  Debug.println(Level.WARNING, "no node list: " + xpath);

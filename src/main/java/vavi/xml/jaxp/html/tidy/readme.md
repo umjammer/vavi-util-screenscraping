@@ -1,12 +1,12 @@
 # vavi.xml.jaxp.html.tidy
 
-org.w3c.tidy パッケージの JAXP フロントエンドのクラスを提供します．
+provides `org.w3c.tidy` package JAXP frontend classes.
 
 ## TODO
 
- * SAX 系 (無理かも？)
+ * it's impossible about SAX?
 
-## Lisence
+## License
 
  * [JTidy](http://jtidy.sourceforge.net)
 

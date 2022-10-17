@@ -1,10 +1,10 @@
 # vavi.xml.jaxp.html.cyberneko
 
-org.cyberneko.html パッケージの JAXP フロントエンドのクラスを提供します．
+provides `org.cyberneko.html` package JAXP frontend classes.
 
 ## TODO
 
-## Lisence
+## License
 
  * [CyberNeko HTML Parser](http://people.apache.org/~andyc/neko/doc/html/index.html)
 

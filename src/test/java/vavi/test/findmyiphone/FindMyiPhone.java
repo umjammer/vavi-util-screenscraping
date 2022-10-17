@@ -33,23 +33,25 @@ import vavi.util.properties.annotation.PropsEntity;
 
 
 /**
- * t59. find my iphone [obsolete]
+ * FindMyiPhone. find my iphone [obsolete]
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2012/08/10 umjammer initial version <br>
  */
 @SuppressWarnings("deprecation")
 @PropsEntity(url = "file://${user.dir}/local.properties")
-public class t59 {
-    @Property(name = "java.test.59.email")
+public class FindMyiPhone {
+
+    @Property(name = "test.fmi.email")
     String email;
-    @Property(name = "java.test.59.password")
+    @Property(name = "test.fmi.password")
     String password;
+
     /**
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        t59 app = new t59();
+        FindMyiPhone app = new FindMyiPhone();
         PropsEntity.Util.bind(app);
         System.exit(0);
         List<JsonNode> locations = getDeviceLocations(app.email, app.password);
@@ -86,7 +88,7 @@ public class t59 {
         devicePage.getEntity().writeTo(os);
         os.close();
         Matcher m = Pattern.compile("DeviceMgmt.deviceIdMap\\['[0-9]+'\\] = '([a-z0-9]+)';")
-                .matcher(new String(os.toByteArray()));
+                .matcher(os.toString());
         List<String> deviceList = new ArrayList<>();
         while (m.find()) {
             deviceList.add(m.group(1));
@@ -124,7 +126,6 @@ public class t59 {
         }
         return null;
     }
-
 }
 
 /* */

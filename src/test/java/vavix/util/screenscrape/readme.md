@@ -1,7 +1,8 @@
-# vavi.util.screenscrap
-HTML Screen Scraping 関連のクラスを提供します．
+# vavi.util.screenscrape
+
+provides HTML Screen Scraping classes.
 
 ## TODO
 
- * ~~Generics 等を駆使してる割に使いにくい~~ → annotation 版ができたのでそちらを使え
- * URL 操作を Script 化
+ * ~~it's hard to use for using many technics like generics~~ → use annotation version instead of this package
+ * enable to script for URL manipulation

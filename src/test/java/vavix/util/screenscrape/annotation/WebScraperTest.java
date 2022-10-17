@@ -93,7 +93,7 @@ System.err.println("------------------------------------------------------------
     @Test
     public void test1() throws Exception {
         List<Result> results = new ArrayList<>();
-        WebScraper.Util.foreach(Result.class, e -> results.add(e));
+        WebScraper.Util.foreach(Result.class, results::add);
         assertEquals(7987, results.size());
     }
 

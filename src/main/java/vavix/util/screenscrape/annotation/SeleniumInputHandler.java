@@ -18,7 +18,7 @@ import vavix.util.selenium.SeleniumUtil;
 /**
  * SeleniumInputHandler.
  *
- * {@link WebScraper} で指定された {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
+ * strings "{args_index}" specified in {@link WebScraper#url()} at {@link WebScraper} will be replaced by `args` by its order.
  * @see SeleniumInputHandler#dealUrlAndArgs(String, String...)
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)

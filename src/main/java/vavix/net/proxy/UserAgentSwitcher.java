@@ -8,6 +8,9 @@ package vavix.net.proxy;
 
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+
+import vavi.util.Debug;
 
 
 /**
@@ -33,7 +36,7 @@ public class UserAgentSwitcher {
     public String getUserAgent() {
         List<String> userAgents = userAgentDao.getUserAgents();
         String userAgent = userAgents.get(random.nextInt(userAgents.size()));
-//Debug.println("userAgent: " + userAgent);
+Debug.println(Level.FINER, "userAgent: " + userAgent);
         return userAgent;
     }
 }

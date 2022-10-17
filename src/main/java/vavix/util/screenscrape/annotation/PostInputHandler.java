@@ -24,7 +24,7 @@ import vavi.util.Debug;
 /**
  * PostInputHandler.
  * <p>
- * {@link WebScraper} で指定された {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
+ * strings "{args_index}" specified in {@link WebScraper#url()} at {@link WebScraper} will be replaced by `args` by its order.
  * </p>
  * @see PostInputHandler#dealUrlAndArgs(String, String...)
  *
@@ -61,12 +61,12 @@ Debug.println(Level.INFO, "userAgent: " + userAgent);
         writer.write(body);
         writer.flush();
         writer.close();
-if (HttpURLConnection.class.isInstance(connection)) {
- Debug.println(Level.FINE, "responseCode: " + HttpURLConnection.class.cast(connection).getResponseCode());
+if (connection instanceof HttpURLConnection) {
+ Debug.println(Level.FINE, "responseCode: " + ((HttpURLConnection) connection).getResponseCode());
 }
         InputStream is = connection.getInputStream();
 //System.err.println(StringUtil.getDump(baos.toByteArray()));
-        // CAUTION!!! InputStreamReader が -Dfile.encoding に依存しているので注意
+        // CAUTION!!! InputStreamReader depends on `-Dfile.encoding`.
         return new BufferedInputStream(is);
     }
 
@@ -79,9 +79,7 @@ if (HttpURLConnection.class.isInstance(connection)) {
         String[] tmp = InputHandler._dealUrlAndArgs(url, Arrays.copyOfRange(args, 2, args.length));
         String[] result = new String[args.length + 1];
         result[0] = tmp[0];
-        for (int i = 0; i < args.length; i++) {
-            result[1 + i] = args[i];
-        }
+        System.arraycopy(args, 0, result, 1, args.length);
         return result;
     }
 

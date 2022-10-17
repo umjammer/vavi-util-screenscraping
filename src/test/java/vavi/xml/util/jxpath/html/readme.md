@@ -1,7 +1,7 @@
 # org.cyberneko.html.jxpath
 
-org.cyberneko.html パッケージの JXPath フロントエンドのクラスを提供します．
+provides `org.cyberneko.html` package JXPath frontend classes.
 
-## TODO これから実装すること
+## TODO
 
- * 5.0 で XPath 実装されたので用無し
+ * deprecated because XPath is implemented in version 5.0

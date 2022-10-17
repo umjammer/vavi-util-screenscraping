@@ -1,13 +1,13 @@
 # vavi.xml.jaxp.html.jericho
 
-jericho パッケージの JAXP フロントエンドのクラスを提供します．
+provides `jericho` package JAXP frontend classes.
 
 
 ## TODO
 
- * 無理かも？
+ * it's impossible?
 
-## Lisence
+## License
 
  * [JTidy](http://jtidy.sourceforge.net)
 

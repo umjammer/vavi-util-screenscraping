@@ -22,12 +22,11 @@ import vavix.net.proxy.ProxyChanger.InternetAddress;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2018/03/09 umjammer initial version <br>
  */
-@Disabled
 public class ProxyChangerTest {
 
     @Test
-    public void test() {
-        fail("Not yet implemented");
+    public void test() throws Exception {
+        main(new String[0]);
     }
 
 

@@ -1,45 +1,44 @@
 /*
- * Copyright (c) 2005 by Naohide Sano, All rights reserved.
+ * Copyright (c) 2003 by Naohide Sano, All rights reserved.
  *
  * Programmed by Naohide Sano
  */
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Properties;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import vavix.util.translation.Translator;
 import vavi.util.Debug;
 import vavix.util.translation.InfoseekJapanTranslator;
+import vavi.util.win32.WindowsProperties;
 
 
 /**
- * properties 形式のファイルの値を翻訳します。
+ * ini 形式のファイルの値を翻訳します。
  */
-public class t108_3 {
+public class TranslateIniFiles {
+
     public static void main(String[] args) throws IOException {
-        Properties props = new Properties();
-        props.load(new FileInputStream(args[0]));
+        WindowsProperties props = new WindowsProperties();
+        props.load(Files.newInputStream(Paths.get(args[0])));
 
         Translator translator = new InfoseekJapanTranslator();
 
-        Iterator<Object> i = props.keySet().iterator();
-        while (i.hasNext()) {
-            String key = (String) i.next();
+        for (Object o : props.keySet()) {
+            String key = (String) o;
             String value = props.getProperty(key);
             String translated = null;
             try {
                 translated = translator.toLocal(value);
             } catch (IOException e) {
-Debug.println(e);
+                Debug.println(e);
                 translated = "★★★ 翻訳失敗 ★★★[" + value + "]";
             }
             props.setProperty(key, translated);
         }
 
-        props.store(new FileOutputStream(args[1]), "created by t1");
+        props.store(Files.newOutputStream(Paths.get(args[1])), "created by t1");
     }
 }
 

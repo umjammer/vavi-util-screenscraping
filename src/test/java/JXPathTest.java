@@ -19,7 +19,7 @@ import org.w3c.dom.Element;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 050604 nsano initial version <br>
  */
-public class t108_2 {
+public class JXPathTest {
 
     /** */
     @SuppressWarnings("deprecation")

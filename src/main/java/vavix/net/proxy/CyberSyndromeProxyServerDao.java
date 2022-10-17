@@ -123,7 +123,7 @@ System.err.println("ERROR: " + address.address);
         });
     }
 
-    class ProxyChecker implements Runnable {
+    static class ProxyChecker implements Runnable {
         ProxyInternetAddress address;
         ProxyChecker(ProxyInternetAddress address) {
             this.address = address;

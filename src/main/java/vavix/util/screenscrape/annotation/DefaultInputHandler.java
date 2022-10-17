@@ -22,7 +22,7 @@ import vavi.util.Debug;
 /**
  * DefaultInputHandler.
  *
- * {@link WebScraper} で指定された {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
+ * strings "{args_index}" specified in {@link WebScraper#url()} at {@link WebScraper} will be replaced by `args` by its order.
  * @see DefaultInputHandler#dealUrlAndArgs(String, String...)
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
@@ -31,7 +31,7 @@ import vavi.util.Debug;
 public class DefaultInputHandler implements InputHandler<Reader> {
 
     /**
-     * CAUTION!!! Reader が <code>-Dfile.encoding</code> に依存しているので注意
+     * CAUTION!!! Reader depends on <code>-Dfile.encoding</code>.
      *
      * @param args 0: url ({#} is embedded), 1, 2, 3...: {@link WebScraper.Util#scrape(Class, String...)}'s args or
      *             {@link WebScraper.Util#foreach(Class, java.util.function.Consumer, String...)}'s args.
@@ -40,12 +40,12 @@ public class DefaultInputHandler implements InputHandler<Reader> {
         String url = args[0];
 Debug.println(Level.FINE, "url: " + url);
         URLConnection connection = new URL(url).openConnection();
-if (HttpURLConnection.class.isInstance(connection)) {
- Debug.println(Level.FINE, "responseCode: " + HttpURLConnection.class.cast(connection).getResponseCode());
+if (connection instanceof HttpURLConnection) {
+ Debug.println(Level.FINE, "responseCode: " + ((HttpURLConnection) connection).getResponseCode());
 }
         InputStream is = connection.getInputStream();
 //System.err.println(StringUtil.getDump(baos.toByteArray()));
-        // CAUTION!!! InputStreamReader が -Dfile.encoding に依存しているので注意
+        // CAUTION!!! InputStreamReader depends on `-Dfile.encoding`.
         return new BufferedReader(new InputStreamReader(is));
     }
 
