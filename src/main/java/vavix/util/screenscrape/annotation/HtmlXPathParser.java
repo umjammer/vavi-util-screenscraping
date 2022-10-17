@@ -192,8 +192,8 @@ if (WebScraper.Util.isDebug(type)) {
  }
 }
             // below is needed for sub xpath query
-            // !!!CAUTION!!! when adding debugging code or etc. check the code needs cyberneko or not, and position against this line.
-            System.setProperty(JAXP_KEY_DBF, backup);
+            // !!!CAUTION!!! when adding debugging code or etc. check the code needs cyberneko or not, and position against this line. <- what r u saying?
+            pop();
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 T bean = type.newInstance();
