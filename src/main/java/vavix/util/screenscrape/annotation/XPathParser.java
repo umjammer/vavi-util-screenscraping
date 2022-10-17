@@ -59,7 +59,9 @@ public class XPathParser<T> implements Parser<Reader, T> {
         xPath = XPathFactory.newInstance().newXPath();
 //System.err.println(XPathFactory.newInstance().getClass());
         try {
-            db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            db = factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             throw new IllegalArgumentException(e);
         }
