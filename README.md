@@ -13,7 +13,7 @@ This library screen-scrapes data from html and injects data into POJO using anno
 
 ```java
     @WebScraper(url = "http://foo.com/bar.html")
-    public class Buz {
+    public class Baz {
         @Target(value = "//TABLE//TR/TD[2]/DIV/text()")
         String artist;
         @Target(value = "//TABLE//TR/TD[4]/A/text()")
@@ -24,7 +24,7 @@ This library screen-scrapes data from html and injects data into POJO using anno
     
     :
     
-    List<Buz> buzs = WebScraper.Util.scrape(Buz.class);
+    List<Baz> bazs = WebScraper.Util.scrape(Baz.class);
 ```
 
 ## Install
