@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import vavix.net.proxy.ProxyChanger.InternetAddress;
 
 
@@ -25,6 +26,7 @@ import vavix.net.proxy.ProxyChanger.InternetAddress;
 public class ProxyChangerTest {
 
     @Test
+    @DisabledIfEnvironmentVariable(named = "GITHUB_WORKFLOW", matches = ".*")
     public void test() throws Exception {
         main(new String[0]);
     }
