@@ -8,7 +8,7 @@
 
   <groupId>vavi</groupId>
   <artifactId>vavi-util-screenscraping</artifactId>
-  <version>1.0.11-SNAPSHOT</version>
+  <version>1.0.11</version>
 
   <name>Vavi Screen Scraping API</name>
   <organization>
@@ -110,7 +110,7 @@ TODO
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-commons-sandbox</artifactId>
-      <version>0.4.1</version>
+      <version>0.4.2</version>
     </dependency>
 
     <dependency>
