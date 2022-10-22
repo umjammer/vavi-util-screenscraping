@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -54,26 +55,28 @@ public class XPathParser<T> implements Parser<Reader, T> {
     protected DocumentBuilder db;
 
     {
-//System.err.println(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI);
+Debug.println(Level.FINER, XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI);
 //        System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "org.apache.xpath.jaxp.XPathFactoryImpl");
         xPath = XPathFactory.newInstance().newXPath();
-//System.err.println(XPathFactory.newInstance().getClass());
+Debug.println(Level.FINER, XPathFactory.newInstance().getClass());
         try {
-            db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            db = factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
     /**
-     * TODO Reader は、 InputSource の引数ならどれでもとか
-     * TODO Reader が fields のループに入ってるから InputHandler にキャッシュが必要になる
+     * TODO how about: Reader accepts same as the InputSource arguments
+     * TODO InputHandler needs cache because Reader is inside of fields loop
      * <li> TODO now 1 step XPath only
      */
     public List<T> parse(Class<T> type, InputHandler<Reader> handler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-//System.err.println("encoding: " + encoding);
+Debug.println(Level.FINER, "encoding: " + encoding);
             Reader reader = handler.getInput(args);
 
             InputSource in = new InputSource(reader);
@@ -81,22 +84,23 @@ public class XPathParser<T> implements Parser<Reader, T> {
 
             Document document = db.parse(in);
 if (WebScraper.Util.isDebug(type)) {
- PrettyPrinter pp = new PrettyPrinter(System.err);
- pp.print(document);
+ if (Debug.isLoggable(Level.FINE)) {
+  PrettyPrinter pp = new PrettyPrinter(System.err);
+  pp.print(document);
+ }
 }
-
             List<T> results = new ArrayList<>();
 
             Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
             for (Field field : targetFields) {
 
                 String xpath = Target.Util.getValue(field);
-//System.err.println("xpath: " + xpath);
+Debug.println(Level.FINER, "xpath: " + xpath);
 
                 if (WebScraper.Util.isCollection(type)) {
 
                     NodeList nodeList = (NodeList) xPath.evaluate(xpath, document, XPathConstants.NODESET);
-//System.err.println("nodeList: " + nodeList.getLength());
+Debug.println(Level.FINER, "nodeList: " + nodeList.getLength());
                     for (int i = 0; i < nodeList.getLength(); i++) {
                         // because loops for each fields, instantiation should be done once
                         T bean = null;
@@ -108,7 +112,7 @@ if (WebScraper.Util.isDebug(type)) {
                         }
 
                         String text = nodeList.item(i).getTextContent().trim();
-//System.err.println(field.getName() + ": " + text);
+Debug.println(Level.FINER, field.getName() + ": " + text);
                         BeanUtil.setFieldValue(field, bean, text);
                     }
                 } else {
@@ -139,19 +143,19 @@ if (WebScraper.Util.isDebug(type)) {
     /**
      * <h4>2 step XPath</h4>
      * <p>
-     *  {@link WebScraper#value()} で指定した XPath で取得できる部分 XML から
-     *  {@link Target#value()} で指定した XPath で取得する方法。
+     *  the method to retrieve values by `JsonPath` specified at {@link Target#value()} from
+     *  part of XML that is retrieved by `JsonPath` specified at {@link WebScraper#value()}
      * </p>
      * <p>
      * you need to specify at the first element of the {@link Target#value()} as same as the last element in {@link WebScraper#value()}.
      * </p>
-     * <li> TODO now 2 step XPath only
-     * <li> TODO {@link WebScraper#value()} が存在すれば 2 step とか
+     * TODO now 2 step XPath only
+     * TODO how about: if {@link WebScraper#value()} exists then 2 step
      */
     public void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-//System.err.println("encoding: " + encoding);
+Debug.println(Level.FINER, "encoding: " + encoding);
 
             InputSource in = new InputSource(inputHandler.getInput(args));
             in.setEncoding(encoding);
@@ -160,12 +164,12 @@ if (WebScraper.Util.isDebug(type)) {
 
             Object nodeSet = xPath.evaluate(xpath, in, XPathConstants.NODESET);
 
-            NodeList nodeList = NodeList.class.cast(nodeSet);
+            NodeList nodeList = (NodeList) nodeSet;
 //System.err.println("nodeList: " + nodeList.getLength());
 if (WebScraper.Util.isDebug(type)) {
  if (nodeList.getLength() == 0) {
 //  System.err.println("xpath: " + xpath);
-  Debug.println("no node list: " + xpath);
+  Debug.println(Level.FINE, "no node list: " + xpath);
   new PrettyPrinter(System.err).print(new InputSource(inputHandler.getInput(args)));
  }
 }
@@ -177,10 +181,11 @@ if (WebScraper.Util.isDebug(type)) {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 new PrettyPrinter(new PrintWriter(baos)).print(node);
 if (WebScraper.Util.isDebug(type)) {
- System.err.println("-------------------------------------------------------------");
- System.err.println(baos.toString()); // TODO use encoding
+ if (Debug.isLoggable(Level.FINE)) {
+  System.err.println("-------------------------------------------------------------");
+  System.err.println(baos.toString()); // TODO use encoding
+ }
 }
-
                 InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
                 is.setEncoding(encoding);
 

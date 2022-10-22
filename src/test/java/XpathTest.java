@@ -30,7 +30,7 @@ import net.sf.saxon.om.NodeInfo;
  * @version 0.00 2011/02/10 umjammer initial version <br>
  */
 @Disabled
-public class Test1 {
+public class XpathTest {
 
     /** */
     public static void main(String[] args) throws Exception {

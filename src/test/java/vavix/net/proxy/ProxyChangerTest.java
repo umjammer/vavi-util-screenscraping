@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import vavix.net.proxy.ProxyChanger.InternetAddress;
 
 
@@ -22,12 +23,12 @@ import vavix.net.proxy.ProxyChanger.InternetAddress;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2018/03/09 umjammer initial version <br>
  */
-@Disabled
 public class ProxyChangerTest {
 
     @Test
-    public void test() {
-        fail("Not yet implemented");
+    @DisabledIfEnvironmentVariable(named = "GITHUB_WORKFLOW", matches = ".*")
+    public void test() throws Exception {
+        main(new String[0]);
     }
 
 

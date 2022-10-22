@@ -24,12 +24,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 /**
- * t60. find my iphone
+ * FindMyiPhone2. find my iphone
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2012/08/10 umjammer initial version <br>
  */
-public class t60 {
+public class FindMyiPhone2 {
 
     private static final String DeviceUUID = "0000000000000000000000000000000000000000";
     private static final String AppName = "FindMyiPhone";
@@ -45,7 +45,7 @@ public class t60 {
      * @param username iCloud account
      * @param password iCloud password
      */
-    public t60(String username, String password) throws IOException {
+    public FindMyiPhone2(String username, String password) throws IOException {
         this.username = username;
         this.password = password;
         getPartition();
@@ -320,12 +320,12 @@ System.err.println("body: " + body);
             body.put("maxDeviceLoadTime", 60000);
             body.put("maxLocatingTime", 90000);
             body.put("preferredLanguage", "en");
-            body.put("prefsUpdateTime", 1276872996660l);
+            body.put("prefsUpdateTime", 1276872996660L);
             body.put("sessionLifespan", 900000);
             ObjectNode sub = body.putObject("timezone");
             sub.put("currentOffset", -25200000);
             sub.put("previousOffset", -28800000);
-            sub.put("previousTransition", 1268560799999l);
+            sub.put("previousTransition", 1268560799999L);
             sub.put("tzCurrentName", "Pacific Daylight Time");
             sub.put("tzName", "America/Los_Angeles");
             body.put("validRegion", true);
@@ -388,7 +388,7 @@ System.err.println("body: " + body);
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        t60 app = new t60(args[0], args[1]);
+        FindMyiPhone2 app = new FindMyiPhone2(args[0], args[1]);
         Device device = app.getDevice("nsanoi8");
 //        device.remoteLock("test", false);
 //        device.remoteWipe(false);

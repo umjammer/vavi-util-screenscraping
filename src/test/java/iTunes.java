@@ -72,7 +72,7 @@ public class iTunes {
         }
     }
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_68);
+    static WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
 
     static {
         client.setJavaScriptEngine(null);

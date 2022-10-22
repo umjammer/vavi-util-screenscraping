@@ -29,7 +29,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
  */
 public class EqTest2 {
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_68);
+    static WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
 
     static {
         client.setJavaScriptEngine(null);
@@ -69,7 +69,7 @@ System.out.println("  \"ans\": " + no + ",");
                 submitButtons[2].setAttribute("type", "submit");
                 form3.appendChild(submitButtons[2]);
 
-                int selection = Integer.valueOf(String.valueOf(no.charAt(i)));
+                int selection = Integer.parseInt(String.valueOf(no.charAt(i)));
                 page0 = submitButtons[selection].click();
 
                 sleep();
@@ -86,7 +86,7 @@ System.out.println("  \"ans\": " + no + ",");
             submitButtons[1].setAttribute("type", "submit");
             form2.appendChild(submitButtons[1]);
 
-            int sex = Integer.valueOf(String.valueOf(args[1]));
+            int sex = Integer.parseInt(String.valueOf(args[1]));
 System.out.println("  \"sex\": " + sex + ",");
             page0 = submitButtons[sex].click();
 //System.err.println(page0.asXml());
@@ -102,7 +102,7 @@ System.out.println("  \"sex\": " + sex + ",");
                 form.appendChild(submitButtons[i]);
             }
 
-            int age = Integer.valueOf(String.valueOf(args[2]));
+            int age = Integer.parseInt(String.valueOf(args[2]));
 System.out.println("  \"age\": " + age + ",");
             page0 = submitButtons[sex].click();
 //System.err.println(page0.asXml());
@@ -149,9 +149,9 @@ System.out.println("  \"url\": \"" + resultAnchor.getHrefAttribute() + "\", ");
         public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append("\"result\": {");
-            sb.append("\"score\": " + score);
+            sb.append("\"score\": ").append(score);
             sb.append(", ");
-            sb.append("\"desc\": \"" + desc + "\"");
+            sb.append("\"desc\": \"").append(desc).append("\"");
             sb.append("}");
             return sb.toString();
         }

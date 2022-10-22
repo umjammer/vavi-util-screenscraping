@@ -22,15 +22,15 @@ import vavi.net.www.protocol.URLStreamHandlerUtil;
 /**
  * WebScraper.
  * <p>
- * 入力は {@link #url()} を指定するか、 {@link #input()} を指定します。
- * {@link #url()} を指定した場合は {@link DefaultInputHandler} が暗黙的に使用されます。
+ * input is specified by {@link #url()} or {@link #input()}.
+ * if you specified {@link #url()}, {@link DefaultInputHandler} is used implicitly.
  * </p>
  * <p>
- * 繰り返し対応は {@link #isCollection()} で指定します。デフォルトでは複数対応です。
- * {@link #isCollection()} を false に設定すると、戻り値のリストの有効添字は 0 のみになります。
+ * reputation is specified by {@link #isCollection()}. reputation is default.
+ * if you set {@link #isCollection()} false, return values index will be available 0 only.
  * </p>
  * <p>
- * {@link #input()} がデフォルトの場合 {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
+ * if {@link #input()} is default value, strings {args_index} in {@link WebScraper#url()} will be replaced by args by it's order.
  * </p>
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
@@ -43,7 +43,7 @@ public @interface WebScraper {
     /**
      * for {@link DefaultInputHandler}
      * <p>
-     * url 中の文字 {args_index} は args の順に置き換えられます。
+     * strings "{args_index}" will be replaced by `args` by its order.
      * </p>
      * @see DefaultInputHandler#dealUrlAndArgs(String, String...)
      */
@@ -54,14 +54,13 @@ public @interface WebScraper {
      *
      * CAUTION!!!
      * <p>
-     * default hander's return value (Reader)
+     * default handler's return value (Reader)
      * depends on "file.encoding" system. property
      * </p>
      */
     Class<? extends InputHandler<?>> input() default DefaultInputHandler.class;
 
     /** parser for input */
-    @SuppressWarnings("rawtypes")
     Class<? extends Parser> parser() default XPathParser.class;
 
     /** for 2 step XPath */
@@ -183,9 +182,9 @@ public @interface WebScraper {
 
         /**
          * Scrapes data.
-         * ユーザが使用するべきトップレベルの API です。
+         * entry point for user.
          * <p>
-         * {@link WebScraper#input()} がデフォルトの場合 {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
+         * if {@link WebScraper#input()} is default, strings `{args_index}` in {@link WebScraper#url()} will be replaced by `args` by its order.
          * </p>
          *
          * @param type type annotated by {@link WebScraper}
@@ -206,8 +205,8 @@ public @interface WebScraper {
             @SuppressWarnings("unchecked")
             InputHandler<I> inputHandler = (InputHandler<I>) getInputHandler(type);
 
-            // inputHandler がデフォルトの場合 url が設定されていれば
-            // 自動的に url が InputHandler#getInput() の引数に採用される
+            // if inputHandler is default, and if url is specified,
+            // `url` will be set for a InputHandler#getInput()'s argument automatically.
             String url = WebScraper.Util.getUrl(type);
             args = inputHandler.dealUrlAndArgs(url, args);
 
@@ -216,9 +215,9 @@ public @interface WebScraper {
 
         /**
          * Scrapes data.
-         * ユーザが使用するべきトップレベルの API です。
+         * entry point for user.
          * <p>
-         * {@link WebScraper#input()} がデフォルトの場合 {@link WebScraper#url()} 中の文字 {args_index} は args の順に置き換えられます。
+         * if {@link WebScraper#input()} is default, strings `{args_index}` in {@link WebScraper#url()} will be replaced by `args` by its order.
          * </p>
          *
          * @param type type annotated by {@link WebScraper}
@@ -238,8 +237,8 @@ public @interface WebScraper {
             @SuppressWarnings("unchecked")
             InputHandler<I> inputHandler = (InputHandler<I>) getInputHandler(type);
 
-            // inputHandler がデフォルトの場合 url が設定されていれば
-            // 自動的に url が InputHandler#getInput() の引数に採用される
+            // if inputHandler is default, and if url is specified,
+            // `url` will be set for a InputHandler#getInput()'s argument automatically.
             String url = WebScraper.Util.getUrl(type);
             args = inputHandler.dealUrlAndArgs(url, args);
 

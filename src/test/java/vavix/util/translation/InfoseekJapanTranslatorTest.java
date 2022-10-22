@@ -20,12 +20,12 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2016/02/24 umjammer initial version <br>
  */
-@Disabled
 public class InfoseekJapanTranslatorTest {
 
     @Test
-    public void test() {
-        fail("Not yet implemented");
+    @Disabled
+    public void test() throws Exception {
+        main(new String[] {"The quick brown fox jumps over the lazy dog."});
     }
 
     //----
@@ -33,7 +33,7 @@ public class InfoseekJapanTranslatorTest {
     /**
      * @param args [0] Japanese sentence, [1] English sentence
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
 
         Translator translator = new InfoseekJapanTranslator();
 

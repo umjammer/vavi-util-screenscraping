@@ -25,7 +25,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
  */
 @Disabled
 @PropsEntity(url = "file://${user.dir}/local.properties")
-public class Test7_2 {
+public class YahooJapanParse2 {
 
     @Property(name = "java.test.yahooJapan.apiKey")
     String appid;
@@ -55,7 +55,7 @@ public class Test7_2 {
 
     /** */
     public static void main(String[] args) throws Exception {
-        Test7_2 app = new Test7_2();
+        YahooJapanParse2 app = new YahooJapanParse2();
         PropsEntity.Util.bind(app);
         Scanner scanner = new Scanner(new File(args[0]));
         while (scanner.hasNextLine()) {

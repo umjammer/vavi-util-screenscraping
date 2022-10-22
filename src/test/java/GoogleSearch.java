@@ -25,15 +25,15 @@ import vavix.util.screenscrape.annotation.WebScraper;
 
 
 /**
- * Test2.
+ * GoogleSearch.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2014/04/30 umjammer initial version <br>
  */
 @Disabled
-public class Test2 {
+public class GoogleSearch {
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_68);
+    static WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
 
     static {
         client.setJavaScriptEngine(null);

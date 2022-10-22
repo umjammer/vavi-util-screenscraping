@@ -72,7 +72,7 @@ public abstract class BaseParser<I, T, N> implements Parser<I, T> {
         isDebug = WebScraper.Util.isDebug(type);
         encoding = WebScraper.Util.getEncoding(type);
 if (WebScraper.Util.isDebug(type)) {
- Debug.println(Level.FINE, "encoding: " + encoding);
+ Debug.println(Level.FINER, "encoding: " + encoding);
 }
         isCollection = WebScraper.Util.isCollection(type);
         try {
@@ -92,7 +92,7 @@ if (WebScraper.Util.isDebug(type)) {
                     }
                 }, null, inputHandler, args);
             } else {
-                processTwoStep(type, e -> results.add(e), inputHandler, args);
+                processTwoStep(type, results::add, inputHandler, args);
             }
             return results;
         } catch (Exception e) {
@@ -116,7 +116,7 @@ if (WebScraper.Util.isDebug(type)) {
         isDebug = WebScraper.Util.isDebug(type);
         encoding = WebScraper.Util.getEncoding(type);
 if (WebScraper.Util.isDebug(type)) {
- Debug.println(Level.FINE, "encoding: " + encoding);
+ Debug.println(Level.FINER, "encoding: " + encoding);
 }
         isCollection = WebScraper.Util.isCollection(type);
         try {
@@ -235,12 +235,16 @@ if (WebScraper.Util.isDebug(type)) {
                 Class<?> option = Target.Util.getOption(field);
                 boolean optional = Target.Util.isOptional(field);
                 try {
-//System.err.println(fixSelector(field, subSelector) + ", " + subDocument);
+if (isDebug) {
+ Debug.println(Level.FINER, fixSelector(field, subSelector) + ", " + subDocument);
+}
                     String text = asText(select(fixSelector(field, subSelector), subDocument));
                     binder.bind(bean, field, field.getType(), text, option);
                 } catch (Exception e) {
                     if (!optional) {
-System.err.println(e + "\n" + subDocument);
+if (isDebug) {
+ Debug.println(Level.FINE, e + "\n" + subDocument);
+}
                     }
                 }
             }

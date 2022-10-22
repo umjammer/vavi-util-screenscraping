@@ -34,7 +34,7 @@ import vavix.util.screenscrape.annotation.XPathParser;
  */
 public class Jasrac {
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_68);
+    static WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
 
     static {
         client.setJavaScriptEngine(null); // TODO

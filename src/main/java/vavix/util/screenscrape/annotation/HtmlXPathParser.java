@@ -54,10 +54,10 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
     protected XPath xPath;
 
     {
-//System.err.println(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI);
+Debug.println(Level.FINER, XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI);
         System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "org.apache.xpath.jaxp.XPathFactoryImpl");
         xPath = XPathFactory.newInstance().newXPath();
-//System.err.println(XPathFactory.newInstance().getClass());
+Debug.println(Level.FINER, XPathFactory.newInstance().getClass());
     }
 
     static final String JAXP_KEY_DBF = "javax.xml.parsers.DocumentBuilderFactory";
@@ -84,7 +84,7 @@ public class HtmlXPathParser<T> implements Parser<Reader, T> {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
 if (WebScraper.Util.isDebug(type)) {
- Debug.println(Level.FINE, "encoding: " + encoding);
+ Debug.println(Level.FINER, "encoding: " + encoding);
 }
             List<T> results = new ArrayList<>();
 
@@ -100,14 +100,14 @@ if (WebScraper.Util.isDebug(type)) {
 
                 String xpath = Target.Util.getValue(field);
 if (WebScraper.Util.isDebug(type)) {
- Debug.println("xpath: " + xpath);
+ Debug.println(Level.FINE, "xpath: " + xpath);
 }
                 if (WebScraper.Util.isCollection(type)) {
 
                     NodeList nodeList = (NodeList) xPath.evaluate(xpath, in, XPathConstants.NODESET);
 if (WebScraper.Util.isDebug(type)) {
  if (nodeList.getLength() == 0) {
-  Debug.println("nodeList: " + nodeList.getLength());
+  Debug.println(Level.FINE, "nodeList: " + nodeList.getLength());
  }
 }
                     for (int i = 0; i < nodeList.getLength(); i++) {
@@ -122,7 +122,7 @@ if (WebScraper.Util.isDebug(type)) {
 
                         String text = nodeList.item(i).getTextContent().trim();
 if (WebScraper.Util.isDebug(type)) {
- Debug.println(field.getName() + ": " + text);
+ Debug.println(Level.FINE, field.getName() + ": " + text);
 }
                         BeanUtil.setFieldValue(field, bean, text);
                     }
@@ -139,7 +139,7 @@ if (WebScraper.Util.isDebug(type)) {
 
                     String text = ((String) xPath.evaluate(xpath, in, XPathConstants.STRING)).trim();
 if (WebScraper.Util.isDebug(type)) {
- Debug.println(field.getName() + ": " + text);
+ Debug.println(Level.FINE, field.getName() + ": " + text);
 }
                     BeanUtil.setFieldValue(field, bean, text);
                 }
@@ -184,7 +184,7 @@ if (WebScraper.Util.isDebug(type)) {
 
             Object nodeSet = xPath.evaluate(xpath, in, XPathConstants.NODESET);
 
-            NodeList nodeList = NodeList.class.cast(nodeSet);
+            NodeList nodeList = (NodeList) nodeSet;
 if (WebScraper.Util.isDebug(type)) {
  if (nodeList.getLength() == 0) {
   Debug.println("no node list: " + xpath);
@@ -192,8 +192,8 @@ if (WebScraper.Util.isDebug(type)) {
  }
 }
             // below is needed for sub xpath query
-            // !!!CAUTION!!! when adding debugging code or etc. check the code needs cyberneko or not, and position against this line.
-            System.setProperty(JAXP_KEY_DBF, backup);
+            // !!!CAUTION!!! when adding debugging code or etc. check the code needs cyberneko or not, and position against this line. <- what r u saying?
+            pop();
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 T bean = type.newInstance();
@@ -202,10 +202,11 @@ if (WebScraper.Util.isDebug(type)) {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 new PrettyPrinter(new PrintWriter(baos)).print(node); // TODO use constructor w/ encoding
 if (WebScraper.Util.isDebug(type)) {
- System.err.println("-------------------------------------------------------------");
- System.err.println(baos.toString()); // TODO use encoding
+ if (Debug.isLoggable(Level.FINE)) {
+  System.err.println("-------------------------------------------------------------");
+  System.err.println(baos); // TODO use encoding
+ }
 }
-
                 Set<Field> targetFields = WebScraper.Util.getTargetFields(type);
                 for (Field field : targetFields) {
                     String subXpath = Target.Util.getValue(field);
@@ -216,7 +217,7 @@ if (WebScraper.Util.isDebug(type)) {
  if (text == null) {
   XPathDebugger.getEntryList(new InputSource(new StringReader(baos.toString()))).forEach(System.err::println);
  } else {
-  Debug.println("subXpath: " + subXpath + ": " + text);
+  Debug.println(Level.FINE, "subXpath: " + subXpath + ": " + text);
  }
 }
                     BeanUtil.setFieldValue(field, bean, text.trim());

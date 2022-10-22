@@ -1,6 +1,7 @@
 [![Maven Package](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven-publish.yml)
 [![Java CI with Maven](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml)
+![Java](https://img.shields.io/badge/Java-8-b07219)
 
 # Screen Scraping Library for Java
 
@@ -12,7 +13,7 @@ This library screen-scrapes data from html and injects data into POJO using anno
 
 ```java
     @WebScraper(url = "http://foo.com/bar.html")
-    public class Buz {
+    public class Baz {
         @Target(value = "//TABLE//TR/TD[2]/DIV/text()")
         String artist;
         @Target(value = "//TABLE//TR/TD[4]/A/text()")
@@ -23,8 +24,14 @@ This library screen-scrapes data from html and injects data into POJO using anno
     
     :
     
-    List<Buz> buzs = WebScraper.Util.scrape(Buz.class);
+    List<Baz> bazs = WebScraper.Util.scrape(Baz.class);
 ```
+
+## Install
+
+ * https://github.com/umjammer/vavi-util-screenscraping/packages/1299167
+ * this project uses github packages. add a personal access token to `~/.m2/settings.xml`
+ * see https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry
 
 ## Details
 
@@ -63,4 +70,5 @@ This library screen-scrapes data from html and injects data into POJO using anno
     ```
  * ~~json parser~~
  * css selector
- * https://github.com/jhy/jsoup
+   * https://github.com/jhy/jsoup
+ * integrate [serdes](https://github.com/umjammer/vavi-util-serdes)

@@ -72,11 +72,7 @@ public class GoogleTranslator implements Translator {
         }
         /** */
         public MyScraper() {
-            super(new Scraper<InputStream, String>() {
-                public String scrape(InputStream source) {
-                    return null;
-                }
-            });
+            super(source -> null);
         }
         /** */
         public MyScraper(String xpath, final String cookie, final String referer) {
@@ -139,7 +135,7 @@ Debug.println("url: " + url);
     /** */
     private static String xpath2;
 
-    /** */
+    /* */
     static {
         final Class<?> clazz = GoogleTranslator.class;
         final String path = "GoogleTranslator.properties";

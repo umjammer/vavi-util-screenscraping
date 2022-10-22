@@ -42,7 +42,7 @@ public @interface Target {
     Class<?> option() default Object.class;
 
     /**
-     * TODO アノテーションがメソッド指定の場合
+     * TODO when the annotation is annotated to a method
      */
     class Util {
 

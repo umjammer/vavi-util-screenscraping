@@ -9,6 +9,7 @@ package vavix.util.screenscrape.annotation;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 
 /**
@@ -18,12 +19,13 @@ import java.net.URLEncoder;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2010/10/01 nsano initial version <br>
  */
+@FunctionalInterface
 public interface InputHandler<T> {
 
     /**
      * @param args {@link WebScraper.Util#scrape(Class, String...)},
      *             {@link WebScraper.Util#foreach(Class, java.util.function.Consumer, String...)}
-     *             の args
+     *             's args
      */
     T getInput(String ... args) throws IOException;
 
@@ -55,7 +57,7 @@ public interface InputHandler<T> {
             if (url != null && !url.isEmpty()) {
                 int c = 0;
                 for (String arg : args) {
-                    url = url.replace("{" + c + "}", URLEncoder.encode(arg, "utf-8"));
+                    url = url.replace("{" + c + "}", URLEncoder.encode(arg, StandardCharsets.UTF_8.name()));
 //System.err.println(url + ", " + arg);
                     newArgs[c + 1] = arg;
                     c++;

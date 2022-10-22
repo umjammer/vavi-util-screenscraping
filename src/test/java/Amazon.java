@@ -39,18 +39,16 @@ public class Amazon {
         }
 
         static {
-            if (driver == null) {
-                try {
-                    Id bean = new Id();
-                    PropsEntity.Util.bind(bean);
-                    String url = "https://www.amazon.co.jp/ap/signin?openid.return_to=https%3A%2F%2Fwww.amazon.co.jp%2Fref%3Dgw_sgn_ib%2F358-4710901-2880702&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=jpflex&openid.mode=checkid_setup&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0";
-                    UserCredential credential = new AmazonLocalUserCredential(bean.email);
-                    driver = new AmazonLocalAuthenticator(url).authorize(credential);
+            try {
+                Id bean = new Id();
+                PropsEntity.Util.bind(bean);
+                String url = "https://www.amazon.co.jp/ap/signin?openid.return_to=https%3A%2F%2Fwww.amazon.co.jp%2Fref%3Dgw_sgn_ib%2F358-4710901-2880702&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=jpflex&openid.mode=checkid_setup&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0";
+                UserCredential credential = new AmazonLocalUserCredential(bean.email);
+                driver = new AmazonLocalAuthenticator(url).authorize(credential);
 
-                    Runtime.getRuntime().addShutdownHook(new Thread(() -> driver.quit()));
-                } catch (IOException e) {
-                    throw new IllegalStateException(e);
-                }
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> driver.quit()));
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
             }
         }
 

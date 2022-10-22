@@ -26,7 +26,7 @@ public class getGlobalIp {
     /** @see "xpath.properties" */
     static String xpath;
 
-    /** */
+    /* */
     static {
         final Class<?> clazz = getGlobalIp.class;
         final String path = "xpath.properties";

@@ -20,7 +20,7 @@ import vavi.xml.util.PrettyPrinter;
  * @deprecated use codavaj
  */
 @Deprecated
-public class t108_4 {
+public class ReverceJavadoc {
     public static void main(String[] args) throws Exception {
         InputStream is = new URL(args[0]).openStream();
 

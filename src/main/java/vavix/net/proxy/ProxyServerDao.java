@@ -19,7 +19,7 @@ import vavix.net.proxy.ProxyChanger.InternetAddress;
  */
 public interface ProxyServerDao {
 
-    /** 計算値ではなく静的リストを返すようにしてください。 */
+    /** return value should be not calculated value but static value. */
     List<InternetAddress> getProxyInetSocketAddresses();
 }
 

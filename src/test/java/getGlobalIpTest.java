@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import vavix.util.screenscrape.ApacheURLScraper;
 import vavix.util.screenscrape.Scraper;
 import vavix.util.screenscrape.SimpleURLScraper;
-import vavix.util.screenscrape.StringApacheXPathScraper;
 import vavix.util.screenscrape.StringSimpleXPathScraper;
 
 
@@ -39,19 +38,6 @@ class getGlobalIpTest {
     static final String host = "x68000.q-e-d.net";
     static final String account = "hoge";
     static final String password = "fuga";
-
-    @Test
-    void test01() throws Exception {
-        Properties props = new Properties();
-        props.setProperty("realm", realm);
-        props.setProperty("host", host);
-        props.setProperty("account", account);
-        props.setProperty("password", password);
-
-        Scraper<URL, String> scraper = new ApacheURLScraper<>(new StringApacheXPathScraper("/HTML/BODY/text()"), props);
-
-        System.out.println("ApacheXPathURLScraper: " + scraper.scrape(new URL(url)));
-    }
 
     @Test
     void test02() throws Exception {

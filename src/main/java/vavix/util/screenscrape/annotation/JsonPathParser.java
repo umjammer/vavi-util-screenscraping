@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
@@ -25,8 +26,8 @@ import vavi.util.Debug;
  * <p>
  * <li> 1 pass
  * <li> 2 pass
- *  {@link WebScraper#value()} で指定した JsonPath で取得できる部分 Json から
- *  {@link Target#value()} で指定した JsonPath で取得する方法。
+ *  the method to retrieve values by `JsonPath` specified at {@link Target#value()} from
+ *  part of Json that is retrieved by `JsonPath` specified at {@link WebScraper#value()}
  * </p>
  * <p>
  * TODO it doesn't have to be json path? we might as well use gson deserialize?
@@ -54,7 +55,7 @@ public class JsonPathParser<T> extends BaseParser<InputStream, T, Object> {
     protected Object getDocument(InputStream input) {
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(input, encoding);
 if (isDebug) {
- Debug.println(document);
+ Debug.println(Level.FINE, document);
 }
         return document;
     }
@@ -63,28 +64,23 @@ if (isDebug) {
     protected Iterable<Object> selectAll(String selector, Object document) {
         List<Object> nodes = JsonPath.read(document, selector);
 if (isDebug) {
- Debug.println("nodes: " + nodes);
+ Debug.println(Level.FINE, "nodes: " + nodes);
 }
         if (isTwoPass) {
-            org.codehaus.jettison.json.JSONArray a = org.codehaus.jettison.json.JSONArray.class.cast(nodes.get(0));
-            return new Iterable<Object>() {
+            org.codehaus.jettison.json.JSONArray a = (org.codehaus.jettison.json.JSONArray) nodes.get(0);
+            return () -> new Iterator<Object>() {
+                int i = 0;
                 @Override
-                public Iterator<Object> iterator() {
-                    return new Iterator<Object>() {
-                        int i = 0;
-                        @Override
-                        public boolean hasNext() {
-                            return i < a.length();
-                        }
-                        @Override
-                        public Object next() {
-                            try {
-                                return a.get(i++);
-                            } catch (org.codehaus.jettison.json.JSONException e) {
-                                throw new IllegalStateException(e);
-                            }
-                        }
-                    };
+                public boolean hasNext() {
+                    return i < a.length();
+                }
+                @Override
+                public Object next() {
+                    try {
+                        return a.get(i++);
+                    } catch (org.codehaus.jettison.json.JSONException e) {
+                        throw new IllegalStateException(e);
+                    }
                 }
             };
         } else {
@@ -105,7 +101,10 @@ if (isDebug) {
 
     @Override
     protected Object getSubDocument(Object node) {
-        return node; // TODO
+if (isDebug) {
+ Debug.println(Level.FINE, node);
+}
+        return node;
     }
 }
 

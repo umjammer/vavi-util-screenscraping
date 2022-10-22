@@ -20,7 +20,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
  */
 public class Hatena {
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_68);
+    static WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
 
     static {
         client.setJavaScriptEngine(null);
