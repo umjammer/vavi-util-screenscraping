@@ -157,7 +157,7 @@ System.out.println("  \"url\": \"" + resultAnchor.getHrefAttribute() + "\", ");
         }
     }
 
-    static String[] data = {
+    static final String[] data = {
 //        "10000000000000000000",
 //        "20000000000000000000",
         "01000000000000000000",
@@ -200,9 +200,7 @@ System.out.println("  \"url\": \"" + resultAnchor.getHrefAttribute() + "\", ");
 //        "00000000000000000002",
     };
 
-    /**
-     * @param args
-     */
+    /** */
     public static void main(String[] args) throws Exception {
         for (String datum : data) {
             System.out.println("{");
