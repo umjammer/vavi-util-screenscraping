@@ -8,7 +8,7 @@
 
   <groupId>vavi</groupId>
   <artifactId>vavi-util-screenscraping</artifactId>
-  <version>1.0.11</version>
+  <version>1.0.12</version>
 
   <name>Vavi Screen Scraping API</name>
   <organization>
