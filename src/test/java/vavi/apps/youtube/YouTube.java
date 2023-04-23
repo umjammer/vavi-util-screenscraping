@@ -44,7 +44,7 @@ class YouTube {
     static String watchUrlFormat;
     static String getUrlFormat;
 
-    /** */
+    /* */
     static {
         try {
             Properties props = new Properties();
@@ -72,7 +72,7 @@ Debug.printStackTrace(e);
          */
         StringSimpleXPathScraper myStreamXPathScraper = new StringSimpleXPathScraper(videoXpath) {
             Pattern pattern = Pattern.compile(videoTagRregex);
-            public String scrape(InputStream source) {
+            @Override public String scrape(InputStream source) {
                 String tag;
                 String script = super.scrape(source);
                 Matcher matcher = pattern.matcher(script);
@@ -88,7 +88,7 @@ Debug.printStackTrace(e);
         /**
          * @param url YouTube  URL
          */
-        public File scrape(URL url) {
+        @Override public File scrape(URL url) {
             try {
                 return pattern2(url);
             } catch (IOException e) {

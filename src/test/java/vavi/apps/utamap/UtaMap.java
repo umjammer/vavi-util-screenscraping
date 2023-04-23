@@ -63,7 +63,7 @@ Debug.printStackTrace(e);
          * </pre>
          * @param url UtaMap Yahoo! URL
          */
-        public File scrape(URL url) {
+        @Override public File scrape(URL url) {
             try {
                 String artistId;
                 String lyricsId;

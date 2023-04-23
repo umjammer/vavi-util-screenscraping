@@ -69,12 +69,10 @@ abstract class AbstractApacheHttpScraper<I, O> extends AbstractHttpScraper<I, O>
     }
 
     /** */
-    protected ErrorHandler<Integer> errorHandler = new ErrorHandler<Integer>() {
-        public void handle(Integer status) throws IOException {
+    protected ErrorHandler<Integer> errorHandler = status -> {
             if (status != 200) {
                 throw new IllegalStateException("unexpected result: " + status);
             }
-        }
     };
 
     /** */

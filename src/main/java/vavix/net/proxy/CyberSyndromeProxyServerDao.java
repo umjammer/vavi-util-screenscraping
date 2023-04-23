@@ -50,7 +50,7 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
     /** */
     private List<InternetAddress> proxyAddresses = new ArrayList<>();
 
-    /* */
+    @Override
     public List<InternetAddress> getProxyInetSocketAddresses() {
         return proxyAddresses;
     }
@@ -62,7 +62,7 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
             driver = new SeleniumUtil().getWebDriver();
         }
 
-        /** */
+        @Override
         public Reader getInput(String ... args) throws IOException {
             driver.navigate().to("http://www.cybersyndrome.net/plr6.html");
             SeleniumUtil.waitFor(driver);
@@ -79,21 +79,21 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
         /** */
         @Target("/TR/TD[2]/text()")
         private String address;
-        public String getHostName() {
+        @Override public String getHostName() {
             if (hostName == null) {
                 String[] data = address.trim().split(":");
                 hostName = data[0];
             }
             return hostName;
         }
-        public int getPort() {
+        @Override public int getPort() {
             if (port == 0) {
                 String[] data = address.trim().split(":");
                 port = Integer.parseInt(data[1]);
             }
             return port;
         }
-        /** */
+        @Override
         public String toString() {
             return getHostName() + ":" + getPort() + " " + (alive ? "OK" : "NG");
         }
@@ -128,13 +128,12 @@ System.err.println("ERROR: " + address.address);
         ProxyChecker(ProxyInternetAddress address) {
             this.address = address;
         }
-        /** */
-        public void run() {
             try {
 System.err.println("TRY: " + address.address);
                 HttpClient client = new HttpClient();
 
                 client.getHostConfiguration().setProxy(address.getHostName(), address.getPort());
+        @Override public void run() {
 
                 HeadMethod head = new HeadMethod("http://www.yahoo.co.jp/");
                 int status = client.executeMethod(head);

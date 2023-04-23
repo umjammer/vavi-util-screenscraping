@@ -46,7 +46,7 @@ class KGet {
     static String userAgent;
     static String encoding;
 
-    /** */
+    /* */
     static {
         try {
             Properties props = new Properties();
@@ -76,9 +76,9 @@ Debug.printStackTrace(e);
          * /kashi.swf?sn=27f8851e254bd313506f3ade935b3f3b/27574
          * /showKashi.asp?sn=27f8851e254bd313506f3ade935b3f3b/27574
          * </pre>
-         * @param args
+         * @param args 0: artist, 1: title
          */
-        public File scrape(String[] args) {
+        @Override public File scrape(String[] args) {
             try {
                 String artist = URLEncoder.encode(args[0], encoding);
                 String title = URLEncoder.encode(args[1], encoding);

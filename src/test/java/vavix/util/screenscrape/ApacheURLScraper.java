@@ -46,7 +46,7 @@ public class ApacheURLScraper<O> extends AbstractApacheHttpScraper<URL, O> {
     /**
      * @throws IllegalStateException when an error occurs
      */
-    public O scrape(URL url) {
+    @Override public O scrape(URL url) {
         try {
             HttpClient client = new HttpClient();
 

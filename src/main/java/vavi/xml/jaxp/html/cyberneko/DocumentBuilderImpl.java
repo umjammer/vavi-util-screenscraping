@@ -80,17 +80,17 @@ Debug.println(Level.FINE, "http://xml.org/sax/features/validation: " + this.dbf.
         }
     }
 
-    /** */
+    @Override
     public Document newDocument() {
         return new HTMLDocumentImpl();
     }
 
-    /** */
+    @Override
     public DOMImplementation getDOMImplementation() {
         return HTMLDOMImplementationImpl.getHTMLDOMImplementation();
     }
 
-    /** */
+    @Override
     public Document parse(InputSource is) throws SAXException, IOException {
         if (is == null) {
             throw new IllegalArgumentException("InputSource cannot be null");
@@ -129,34 +129,34 @@ Debug.println(Level.FINE, "http://xml.org/sax/features/validation: " + this.dbf.
 //        }
     }
 
-    /** */
+    @Override
     public boolean isNamespaceAware() {
         return namespaceAware;
     }
 
-    /** */
+    @Override
     public boolean isValidating() {
         return validating;
     }
 
-    /** */
+    @Override
     public void setEntityResolver(EntityResolver er) {
         this.er = er;
     }
 
-    /** */
+    @Override
     public void setErrorHandler(ErrorHandler eh) {
         // If app passes in a ErrorHandler of null,
         // then ignore all errors and warnings
         this.eh = (eh == null) ? new DefaultHandler() : eh;
     }
 
-    /**
-     * TODO 全然機能してない
-     * find encoding specified in html
-     * @param is need mark supported
-     * @return null if not found
-     */
+//    /**
+//     * TODO nothing works
+//     * find encoding specified in html
+//     * @param is need mark supported
+//     * @return null if not found
+//     */
 //    private String findEncoding(InputSource is) throws SAXException, IOException {
 //        String encoding = null;
 //System.err.println(StringUtil.paramString(is));

@@ -95,11 +95,9 @@ public class InfoseekJapanTranslator implements Translator {
         static UserAgentSwitcher userAgentSwitcher;
         /* */
         static {
-            if (userAgentSwitcher == null) {
                 userAgentSwitcher = new UserAgentSwitcher();
                 userAgentSwitcher.setUserAgentDao(new PropertiesUserAgentDao());
             }
-        }
         /** */
         public MyScraper2(String xpath) {
             super(new StringSimpleXPathScraper(xpath));
@@ -125,6 +123,7 @@ public class InfoseekJapanTranslator implements Translator {
     /**
      * @param word use {@link #encoding} when url encoding
      */
+    @Override
     public String toLocal(String word) throws IOException {
         return translate(word, TO_LOCAL, "0");
     }
@@ -181,6 +180,7 @@ Debug.println("url: " + url);
     /**
      * @param word use {@link #encoding} when url encoding
      */
+    @Override
     public String toGlobal(String word) throws IOException {
         return translate2(word, TO_GLOBAL, "1");
     }
@@ -192,7 +192,7 @@ Debug.println("url: " + url);
     /** */
     private static String xpath2;
 
-    /** */
+    /* */
     static {
         final Class<?> clazz = InfoseekJapanTranslator.class;
         final String path = "InfoseekJapanTranslator.properties";
@@ -217,11 +217,13 @@ Debug.printStackTrace(e);
     }
 
     /** */
+    @Override
     public Locale getLocalLocale() {
         return Locale.JAPANESE;
     }
 
     /** */
+    @Override
     public Locale getGlobalLocal() {
         return Locale.ENGLISH;
     }

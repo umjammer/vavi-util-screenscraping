@@ -68,6 +68,7 @@ public abstract class BaseParser<I, T, N> implements Parser<I, T> {
      * {@link WebScraper#value()} で指定した selector で取得できる部分 selected から
      * {@link Target#value()} で指定した subSelector で取得する方法。
      */
+    @Override
     public List<T> parse(Class<T> type, InputHandler<I> inputHandler, String ... args) {
         isDebug = WebScraper.Util.isDebug(type);
         encoding = WebScraper.Util.getEncoding(type);
@@ -112,6 +113,7 @@ if (WebScraper.Util.isDebug(type)) {
      * as same as the last xpath element in {@link WebScraper#value()}.
      * </p>
      */
+    @Override
     public void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<I> inputHandler, String ... args) {
         isDebug = WebScraper.Util.isDebug(type);
         encoding = WebScraper.Util.getEncoding(type);

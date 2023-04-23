@@ -48,7 +48,7 @@ public class ApacheHttpScraper<O> extends AbstractApacheHttpScraper<HttpContext,
     /**
      * @throws IllegalStateException when an error occurs
      */
-    public O scrape(HttpContext request) {
+    @Override public O scrape(HttpContext request) {
         try {
             HttpClient client = new HttpClient();
 
