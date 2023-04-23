@@ -38,7 +38,7 @@ public class SAXParserImpl extends SAXParser {
 
     /** */
     SAXParserImpl() throws SAXException, ParserConfigurationException {
-        parser = new org.cyberneko.html.parsers.SAXParser();
+        parser = new org.codelibs.nekohtml.parsers.SAXParser();
     }
 
     @Override
