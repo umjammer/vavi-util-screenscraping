@@ -93,9 +93,9 @@ public class InfoseekJapanTranslator implements Translator {
         static UserAgentSwitcher userAgentSwitcher;
         /* */
         static {
-                userAgentSwitcher = new UserAgentSwitcher();
-                userAgentSwitcher.setUserAgentDao(new PropertiesUserAgentDao());
-            }
+            userAgentSwitcher = new UserAgentSwitcher();
+            userAgentSwitcher.setUserAgentDao(new PropertiesUserAgentDao());
+        }
         /** */
         public MyScraper2(String xpath) {
             super(new StringSimpleXPathScraper(xpath));
@@ -103,8 +103,7 @@ public class InfoseekJapanTranslator implements Translator {
         /** */
         public MyScraper2(String xpath, final String cookie, final String referer) {
             super(new StringI18nSimpleXPathScraper(xpath, encoding),
-                  new Properties() {
-                    {
+                  new Properties() {{
                         String userAgent = userAgentSwitcher.getUserAgent();
 
                         setProperty("header.User-Agent", userAgent);
@@ -113,8 +112,7 @@ public class InfoseekJapanTranslator implements Translator {
 
                         setProperty("proxy.host", "localhost");
                         setProperty("proxy.port", "8080");
-                    }
-                  });
+                  }});
         }
     }
 

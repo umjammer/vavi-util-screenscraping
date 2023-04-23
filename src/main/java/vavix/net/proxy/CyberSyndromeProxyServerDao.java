@@ -112,15 +112,13 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
 
         WebScraper.Util.foreach(ProxyInternetAddress.class, address -> {
             try {
-//System.err.println("SUBMIT: " + address.address);
+//Debug.println("SUBMIT: " + address.address);
                 if (!address.address.isEmpty()) {
                     executorService.submit(new ProxyChecker(address));
                     Thread.sleep(300);
                 }
             } catch (Exception e) {
-System.err.println("ERROR: " + address.address);
-//e.printStackTrace();
-                Debug.println(e);
+Debug.println(Level.WARNING, "ERROR: " + address.address);
             }
         });
     }
