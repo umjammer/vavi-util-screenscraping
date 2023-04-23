@@ -14,9 +14,9 @@ import java.util.Scanner;
 
 import org.junit.jupiter.api.Disabled;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.htmlunit.BrowserVersion;
+import org.htmlunit.WebClient;
+import org.htmlunit.html.HtmlPage;
 
 import vavix.util.screenscrape.annotation.HtmlXPathParser;
 import vavix.util.screenscrape.annotation.InputHandler;

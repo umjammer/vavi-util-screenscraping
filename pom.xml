@@ -244,9 +244,9 @@ TODO
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>net.sourceforge.htmlunit</groupId>
+      <groupId>org.htmlunit</groupId>
       <artifactId>htmlunit</artifactId>
-      <version>2.66.0</version>
+      <version>3.1.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
