@@ -13,15 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.HeadMethod;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
 import vavi.util.Debug;
-
 import vavix.net.proxy.ProxyChanger.InternetAddress;
 import vavix.util.screenscrape.annotation.HtmlXPathParser;
 import vavix.util.screenscrape.annotation.InputHandler;
@@ -128,18 +130,16 @@ System.err.println("ERROR: " + address.address);
         ProxyChecker(ProxyInternetAddress address) {
             this.address = address;
         }
-            try {
-System.err.println("TRY: " + address.address);
-                HttpClient client = new HttpClient();
-
-                client.getHostConfiguration().setProxy(address.getHostName(), address.getPort());
         @Override public void run() {
+Debug.println("TRY: " + address.address);
+            HttpHost proxy = new HttpHost(address.getHostName(), address.getPort());
 
-                HeadMethod head = new HeadMethod("http://www.yahoo.co.jp/");
-                int status = client.executeMethod(head);
-//System.err.println("STA: " + status);
+            try (CloseableHttpClient client = HttpClients.custom().setProxy(proxy).build()) {
 
-                boolean alive = status == HttpStatus.SC_OK;
+                HttpHead head = new HttpHead("http://www.yahoo.co.jp/");
+                HttpResponse response = client.execute(head);
+//Debug.println("STA: " + status);
+                boolean alive = response.getStatusLine().getStatusCode() == HttpStatus.SC_OK;
                 address.setAlive(alive);
             } catch (Exception e) {
 System.err.println("ERR: " + e);

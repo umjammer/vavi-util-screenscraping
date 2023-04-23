@@ -14,13 +14,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.httpclient.Cookie;
-
-import vavix.net.proxy.PropertiesUserAgentDao;
-import vavix.net.proxy.UserAgentSwitcher;
-
+import org.apache.http.client.CookieStore;
 import vavi.net.http.HttpContext;
 import vavi.util.Debug;
+import vavix.net.proxy.PropertiesUserAgentDao;
+import vavix.net.proxy.UserAgentSwitcher;
 import vavix.util.screenscrape.ApacheHttpScraper;
 import vavix.util.screenscrape.SimpleURLScraper;
 import vavix.util.screenscrape.StringI18nSimpleXPathScraper;
@@ -137,7 +135,7 @@ public class InfoseekJapanTranslator implements Translator {
         request.setRemotePort(80);
         request.setRequestURI(url01.getPath());
         String token = scraper1.scrape(request);
-        Cookie[] cookie = scraper1.getCookies();
+        CookieStore cookie = scraper1.getCookieStore();
 Debug.println("token: " + token);
 
         String file = MessageFormat.format(base, word, token);
@@ -145,7 +143,7 @@ Debug.println("token: " + token);
 Debug.println("url: " + url);
 
         MyScraper scraper2 = new MyScraper(xpath2, url1);
-        scraper2.setCookies(cookie);
+        scraper2.setCookieStore(cookie);
         request.setRemoteHost(url.getHost());
         request.setRemotePort(80);
         request.setRequestURI(url.getPath());

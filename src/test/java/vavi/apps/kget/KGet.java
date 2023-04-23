@@ -19,12 +19,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Document;
 
 import org.xml.sax.InputSource;
-
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
 
 import vavi.util.Debug;
 import vavix.util.screenscrape.Scraper;
@@ -67,7 +70,7 @@ Debug.printStackTrace(e);
     /** */
     static class KGetURLScraper implements Scraper<String[], File> {
         /** */
-        private HttpClient httpClient = new HttpClient();
+        private HttpClient httpClient = HttpClients.createDefault();
 
         XPath xPath = XPathFactory.newInstance().newXPath();
 
@@ -87,14 +90,14 @@ Debug.printStackTrace(e);
                 String searchUrl = String.format(searchUrlFormat, 0, artist, title, "", "");
 System.err.println("search: " + searchUrl);
 
-                GetMethod get = new GetMethod(searchUrl);
-                get.setRequestHeader("User-Agent", userAgent);
-                int status = httpClient.executeMethod(get);
-                if (status != 200) {
-                    throw new IllegalStateException("unexpected result getting 'search': " + status);
+                HttpGet get = new HttpGet(searchUrl);
+                get.addHeader("User-Agent", userAgent);
+                HttpResponse response = httpClient.execute(get);
+                if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                    throw new IllegalStateException("unexpected result getting 'search': " + response.getStatusLine());
                 }
 
-                Reader reader = new InputStreamReader(get.getResponseBodyAsStream(), encoding);
+                Reader reader = new InputStreamReader(response.getEntity().getContent(), encoding);
                 reader.read(); // cr special hack!
                 reader.read(); // lf special hack!
                 InputSource is = new InputSource(reader);
@@ -111,21 +114,21 @@ System.err.println("lyricsUrl: " + lyricsUrl);
                 }
 
                 // 2.
-                get = new GetMethod(lyricsUrl);
-                get.setRequestHeader("User-Agent", userAgent);
-                status = httpClient.executeMethod(get);
-                if (status == 302) {
+                get = new HttpGet(lyricsUrl);
+                get.addHeader("User-Agent", userAgent);
+                response = httpClient.execute(get);
+                if (response.getStatusLine().getStatusCode() == 302) {
                     //
-                    lyricsUrl = get.getResponseHeader("Location").getValue();
+                    lyricsUrl = get.getHeaders("Location")[0].getValue();
 System.err.println("redirectUrl: " + lyricsUrl);
-                    get = new GetMethod(lyricsUrl);
-                    status = httpClient.executeMethod(get);
+                    get = new HttpGet(lyricsUrl);
+                    response = httpClient.execute(get);
                 }
-                if (status != 200) {
-                    throw new IllegalStateException("unexpected result getting 'search': " + status);
+                if (response.getStatusLine().getStatusCode() != 200) {
+                    throw new IllegalStateException("unexpected result getting 'search': " + response.getStatusLine());
                 }
 
-                reader = new InputStreamReader(get.getResponseBodyAsStream(), encoding);
+                reader = new InputStreamReader(response.getEntity().getContent(), encoding);
                 is = new InputSource(reader);
                 documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
                 document = documentBuilder.parse(is);
@@ -152,14 +155,14 @@ System.err.println("target: " + target);
 
                 String tagetUrl = String.format(lyricsUrlFormat, sn);
 System.err.println("target: " + tagetUrl);
-                get = new GetMethod(tagetUrl);
-                get.setRequestHeader("User-Agent", userAgent);
-                status = httpClient.executeMethod(get);
-                if (status != 200) {
-                    throw new IllegalStateException("unexpected result getting 'lyrics': " + status);
+                get = new HttpGet(tagetUrl);
+                get.addHeader("User-Agent", userAgent);
+                response = httpClient.execute(get);
+                if (response.getStatusLine().getStatusCode() != 200) {
+                    throw new IllegalStateException("unexpected result getting 'lyrics': " + response.getStatusLine());
                 }
 
-                String result = new String(get.getResponseBody(), encoding);
+                String result = EntityUtils.toString(response.getEntity(), encoding);
 
                 get.releaseConnection();
 
