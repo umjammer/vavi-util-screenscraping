@@ -156,9 +156,9 @@ TODO
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>vavi</groupId> <!-- com.github.umjammer.vavi-net-auth -->
+      <groupId>vavi</groupId>
       <artifactId>vavi-net-auth-amazon</artifactId>
-      <version>0.1.7-SNAPSHOT</version>
+      <version>0.1.7</version>
     </dependency>
 
     <dependency>
