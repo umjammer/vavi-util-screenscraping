@@ -192,7 +192,7 @@ TODO
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-commons-net</artifactId>
-      <version>1.0.3</version>
+      <version>1.0.8</version>
       <scope>test</scope>
     </dependency>
     <dependency>
