@@ -14,9 +14,11 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
-
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import vavi.util.Debug;
 import vavix.util.screenscrape.Scraper;
 
@@ -52,7 +54,7 @@ Debug.printStackTrace(e);
     /** */
     static class UtaMapURLScraper implements Scraper<URL, File> {
         /** */
-        private HttpClient httpClient = new HttpClient();
+        private HttpClient httpClient = HttpClients.createDefault();
 
         /**
          * <pre>
@@ -63,7 +65,7 @@ Debug.printStackTrace(e);
          * </pre>
          * @param url UtaMap Yahoo! URL
          */
-        public File scrape(URL url) {
+        @Override public File scrape(URL url) {
             try {
                 String artistId;
                 String lyricsId;
@@ -82,15 +84,15 @@ Debug.printStackTrace(e);
                 String utamapUrl = String.format(utamapUrlFormat, artistId, lyricsId);
 
 System.err.println("utamap: " + utamapUrl);
-                GetMethod get = new GetMethod(utamapUrl);
-                get.setRequestHeader("User-Agent", userAgent);
-                int status = httpClient.executeMethod(get);
-                if (status != 200) {
+                HttpGet get = new HttpGet(utamapUrl);
+                get.addHeader("User-Agent", userAgent);
+                HttpResponse status = httpClient.execute(get);
+                if (status.getStatusLine().getStatusCode() != 200) {
                     throw new IllegalStateException("unexpected result getting 'utamap': " + status);
                 }
 
                 //
-                String result = new String(get.getResponseBody(), "UTF-8").substring(7);
+                String result = EntityUtils.toString(status.getEntity(), "UTF-8").substring(7);
 System.err.println("downloading... size: " + result);
 
                 get.releaseConnection();

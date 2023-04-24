@@ -14,13 +14,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.httpclient.Cookie;
-
-import vavix.net.proxy.PropertiesUserAgentDao;
-import vavix.net.proxy.UserAgentSwitcher;
-
+import org.apache.http.client.CookieStore;
 import vavi.net.http.HttpContext;
 import vavi.util.Debug;
+import vavix.net.proxy.PropertiesUserAgentDao;
+import vavix.net.proxy.UserAgentSwitcher;
 import vavix.util.screenscrape.ApacheHttpScraper;
 import vavix.util.screenscrape.SimpleURLScraper;
 import vavix.util.screenscrape.StringI18nSimpleXPathScraper;
@@ -95,10 +93,8 @@ public class InfoseekJapanTranslator implements Translator {
         static UserAgentSwitcher userAgentSwitcher;
         /* */
         static {
-            if (userAgentSwitcher == null) {
-                userAgentSwitcher = new UserAgentSwitcher();
-                userAgentSwitcher.setUserAgentDao(new PropertiesUserAgentDao());
-            }
+            userAgentSwitcher = new UserAgentSwitcher();
+            userAgentSwitcher.setUserAgentDao(new PropertiesUserAgentDao());
         }
         /** */
         public MyScraper2(String xpath) {
@@ -107,8 +103,7 @@ public class InfoseekJapanTranslator implements Translator {
         /** */
         public MyScraper2(String xpath, final String cookie, final String referer) {
             super(new StringI18nSimpleXPathScraper(xpath, encoding),
-                  new Properties() {
-                    {
+                  new Properties() {{
                         String userAgent = userAgentSwitcher.getUserAgent();
 
                         setProperty("header.User-Agent", userAgent);
@@ -117,14 +112,14 @@ public class InfoseekJapanTranslator implements Translator {
 
                         setProperty("proxy.host", "localhost");
                         setProperty("proxy.port", "8080");
-                    }
-                  });
+                  }});
         }
     }
 
     /**
      * @param word use {@link #encoding} when url encoding
      */
+    @Override
     public String toLocal(String word) throws IOException {
         return translate(word, TO_LOCAL, "0");
     }
@@ -138,7 +133,7 @@ public class InfoseekJapanTranslator implements Translator {
         request.setRemotePort(80);
         request.setRequestURI(url01.getPath());
         String token = scraper1.scrape(request);
-        Cookie[] cookie = scraper1.getCookies();
+        CookieStore cookie = scraper1.getCookieStore();
 Debug.println("token: " + token);
 
         String file = MessageFormat.format(base, word, token);
@@ -146,7 +141,7 @@ Debug.println("token: " + token);
 Debug.println("url: " + url);
 
         MyScraper scraper2 = new MyScraper(xpath2, url1);
-        scraper2.setCookies(cookie);
+        scraper2.setCookieStore(cookie);
         request.setRemoteHost(url.getHost());
         request.setRemotePort(80);
         request.setRequestURI(url.getPath());
@@ -181,6 +176,7 @@ Debug.println("url: " + url);
     /**
      * @param word use {@link #encoding} when url encoding
      */
+    @Override
     public String toGlobal(String word) throws IOException {
         return translate2(word, TO_GLOBAL, "1");
     }
@@ -192,7 +188,7 @@ Debug.println("url: " + url);
     /** */
     private static String xpath2;
 
-    /** */
+    /* */
     static {
         final Class<?> clazz = InfoseekJapanTranslator.class;
         final String path = "InfoseekJapanTranslator.properties";
@@ -217,11 +213,13 @@ Debug.printStackTrace(e);
     }
 
     /** */
+    @Override
     public Locale getLocalLocale() {
         return Locale.JAPANESE;
     }
 
     /** */
+    @Override
     public Locale getGlobalLocal() {
         return Locale.ENGLISH;
     }

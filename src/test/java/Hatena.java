@@ -4,8 +4,8 @@
  * Programmed by Naohide Sano
  */
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
+import org.htmlunit.BrowserVersion;
+import org.htmlunit.WebClient;
 
 import vavix.util.screenscrape.annotation.HtmlXPathParser;
 import vavix.util.screenscrape.annotation.Target;

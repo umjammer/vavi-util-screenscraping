@@ -11,8 +11,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.checkerframework.common.reflection.qual.GetMethod;
 
 
 /**
@@ -46,22 +50,21 @@ public class ApacheURLScraper<O> extends AbstractApacheHttpScraper<URL, O> {
     /**
      * @throws IllegalStateException when an error occurs
      */
-    public O scrape(URL url) {
+    @Override public O scrape(URL url) {
         try {
-            HttpClient client = new HttpClient();
+            HttpClientBuilder client = HttpClientBuilder.create();
 
-            GetMethod get = new GetMethod(url.toString());
-            applyAuthentication(client, get);
+            HttpGet get = new HttpGet(url.toString());
+            applyAuthentication(client);
             applyCookies(client);
             applyRequestHeaders(get);
-            int status = client.executeMethod(get);
+            HttpResponse status = client.build().execute(get);
 
-            errorHandler.handle(status);
+            errorHandler.handle(status.getStatusLine().getStatusCode());
 
             retrieveResponseHeaders(get);
-            retrieveCookies(client);
 
-            O value = scraper.scrape(get.getResponseBodyAsStream());
+            O value = scraper.scrape(status.getEntity().getContent());
 
             get.releaseConnection();
 

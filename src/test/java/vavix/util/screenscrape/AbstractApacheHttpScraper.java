@@ -6,21 +6,22 @@
 
 package vavix.util.screenscrape;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.httpclient.Cookie;
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpMethodBase;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.http.Header;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 
 
 /**
@@ -69,33 +70,33 @@ abstract class AbstractApacheHttpScraper<I, O> extends AbstractHttpScraper<I, O>
     }
 
     /** */
-    protected ErrorHandler<Integer> errorHandler = new ErrorHandler<Integer>() {
-        public void handle(Integer status) throws IOException {
-            if (status != 200) {
-                throw new IllegalStateException("unexpected result: " + status);
-            }
+    protected ErrorHandler<Integer> errorHandler = status -> {
+        if (status != 200) {
+            throw new IllegalStateException("unexpected result: " + status);
         }
     };
 
     /** */
-    protected void applyAuthentication(HttpClient client, HttpMethod method) {
+    protected void applyAuthentication(HttpClientBuilder clientBuilder) {
         if (credentials != null) {
-            client.getState().setCredentials(realm, host, credentials);
-            method.setDoAuthentication(true);
+            BasicCredentialsProvider provider = new BasicCredentialsProvider();
+            AuthScope authScope = new AuthScope(new HttpHost(host));
+            provider.setCredentials(authScope, credentials);
+            clientBuilder.setDefaultCredentialsProvider(provider);
         }
     }
 
     /** */
-    protected void applyRequestHeaders(HttpMethod method) {
+    protected void applyRequestHeaders(HttpRequestBase method) {
         for (String name : requestHeaders.keySet()) {
             String value = requestHeaders.get(name);
-            method.setRequestHeader(name, value);
+            method.addHeader(name, value);
         }
     }
 
     /** */
-    protected void retrieveResponseHeaders(HttpMethod method) {
-        for (Header header : method.getResponseHeaders()) {
+    protected void retrieveResponseHeaders(HttpRequestBase method) {
+        for (Header header : method.getAllHeaders()) {
             String name = header.getName();
             String value = header.getValue();
             if (responseHeaders.containsKey(name)) {
@@ -110,34 +111,28 @@ abstract class AbstractApacheHttpScraper<I, O> extends AbstractHttpScraper<I, O>
     }
 
     /** */
-    protected void applyProxy(HttpMethodBase method, String host) {
-        HostConfiguration hc = new HostConfiguration();
-        hc.setHost(host);
-        hc.setProxy(proxyHost, proxyPort);
-        method.setHostConfiguration(hc);
+    protected void applyProxy(HttpClientBuilder httpClientBuilder) {
+        HttpHost proxy = new HttpHost(proxyHost, proxyPort);
+        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+        httpClientBuilder.setRoutePlanner(routePlanner);
     }
 
     /** */
-    protected Cookie[] cookies;
+    protected CookieStore cookieStore;
 
     /** to application */
-    public Cookie[] getCookies() {
-        return cookies;
+    public CookieStore getCookieStore() {
+        return cookieStore;
     }
 
     /** from application */
-    public void setCookies(Cookie[] cookies) {
-        this.cookies = cookies;
+    public void setCookieStore(CookieStore cookieStore) {
+        this.cookieStore = cookieStore;
     }
 
     /** to HttpClient */
-    protected void applyCookies(HttpClient httpClient) {
-        httpClient.getState().addCookies(cookies);
-    }
-
-    /** from HttpClient */
-    protected void retrieveCookies(HttpClient httpClient) {
-        this.cookies = httpClient.getState().getCookies();
+    protected void applyCookies(HttpClientBuilder httpClientBuilder) {
+        httpClientBuilder.setDefaultCookieStore(cookieStore);
     }
 }
 

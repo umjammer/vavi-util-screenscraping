@@ -26,35 +26,35 @@ public class SAXParserImpl extends SAXParser {
 
     /** */
     SAXParserImpl() throws SAXException, ParserConfigurationException {
-        parser = new org.cyberneko.html.parsers.SAXParser(); // TODO use Tidy
+        parser = new org.codelibs.nekohtml.parsers.SAXParser(); // TODO use Tidy
     }
 
-    /** */
+    @Override
     public org.xml.sax.Parser getParser() throws SAXException {
         return parser;
     }
 
-    /** */
+    @Override
     public XMLReader getXMLReader() throws SAXException {
         throw new UnsupportedOperationException("not implemented");
     }
 
-    /** */
+    @Override
     public void setProperty(String name, Object value) {
 System.err.println("not implemented");
     }
 
-    /** */
+    @Override
     public Object getProperty(String name) {
         throw new UnsupportedOperationException("not implemented");
     }
 
-    /** */
+    @Override
     public boolean isNamespaceAware() {
         return false;
     }
 
-    /** */
+    @Override
     public boolean isValidating() {
         return false;
     }

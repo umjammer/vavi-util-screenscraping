@@ -10,9 +10,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-
+import org.apache.http.HttpResponse;
+import org.apache.http.ProtocolVersion;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClientBuilder;
 import vavi.net.http.HttpContext;
 import vavi.util.Debug;
 
@@ -48,32 +49,31 @@ public class ApacheHttpScraper<O> extends AbstractApacheHttpScraper<HttpContext,
     /**
      * @throws IllegalStateException when an error occurs
      */
-    public O scrape(HttpContext request) {
+    @Override public O scrape(HttpContext request) {
         try {
-            HttpClient client = new HttpClient();
+            HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 
             String url = "http://" + request.getRemoteHost() + ":" + request.getRemotePort() + request.getRequestURI();
 Debug.println("post url: " + url);
-            PostMethod post;
+            HttpPost post;
             if (proxyHost != null) {
-                post = new PostMethod();
-                applyProxy(post, request.getRemoteHost());
+                post = new HttpPost();
+                applyProxy(httpClientBuilder);
             } else {
-                post = new PostMethod(url);
+                post = new HttpPost(url);
             }
-            applyAuthentication(client, post);
-            applyCookies(client);
+            applyAuthentication(httpClientBuilder);
+            applyCookies(httpClientBuilder);
             applyRequestHeaders(post);
             applyRequestParameters(post, request);
-            post.setHttp11(true);
-            int status = client.executeMethod(post);
+            post.setProtocolVersion(new ProtocolVersion("HTTP", 1, 1));
+            HttpResponse status = httpClientBuilder.build().execute(post);
 
-            errorHandler.handle(status);
+            errorHandler.handle(status.getStatusLine().getStatusCode());
 
             retrieveResponseHeaders(post);
-            retrieveCookies(client);
 
-            O value = scraper.scrape(post.getResponseBodyAsStream());
+            O value = scraper.scrape(status.getEntity().getContent());
 
             post.releaseConnection();
 
@@ -84,11 +84,11 @@ Debug.println("post url: " + url);
     }
 
     /** */
-    private void applyRequestParameters(PostMethod method, HttpContext request) {
+    private void applyRequestParameters(HttpPost method, HttpContext request) {
         for (String name : request.getParameters().keySet()) {
             for (String value : request.getParameters().get(name)) {;
 Debug.println("post param: " + name + ": " + value);
-                method.setParameter(name, value);
+                method.addHeader(name, value);
             }
         }
     }

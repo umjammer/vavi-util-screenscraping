@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -66,6 +67,7 @@ Debug.println(Level.FINE, "XPathFactory: " + factory.getClass().getName());
      * <li> TODO WebScraper#value()
      * <li> TODO now 1 step XPath only
      */
+    @Override
     public List<T> parse(Class<T> type, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
@@ -99,7 +101,7 @@ if (nodeList.size() == 0) {
                             try {
                                 bean = results.get(i);
                             } catch (IndexOutOfBoundsException e) {
-                                bean = type.newInstance();
+                                bean = type.getDeclaredConstructor().newInstance();
                                 results.add(bean);
                             }
 
@@ -117,7 +119,7 @@ Debug.println(Level.FINE, "nodeList: " + nodeList.getLength());
                             try {
                                 bean = results.get(i);
                             } catch (IndexOutOfBoundsException e) {
-                                bean = type.newInstance();
+                                bean = type.getDeclaredConstructor().newInstance();
                                 results.add(bean);
                             }
 
@@ -135,7 +137,7 @@ Debug.println(Level.FINE, field.getName() + ": " + text);
                     try {
                         bean = results.get(0);
                     } catch (IndexOutOfBoundsException e) {
-                        bean = type.newInstance();
+                        bean = type.getDeclaredConstructor().newInstance();
                         results.add(bean);
                     }
 
@@ -148,7 +150,8 @@ Debug.println(Level.FINE, field.getName() + ": " + text);
 
         } catch (XPathExpressionException e) {
             throw new IllegalArgumentException(e);
-        } catch (IllegalAccessException | InstantiationException | IOException e) {
+        } catch (IllegalAccessException | InstantiationException | IOException | NoSuchMethodException |
+                 InvocationTargetException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -165,6 +168,7 @@ Debug.println(Level.FINE, field.getName() + ": " + text);
      * TODO now 2 step XPath only
      * TODO how about: if {@link WebScraper#value()} exists then 2 step
      */
+    @Override
     public void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
@@ -187,7 +191,7 @@ if (nodeList.size() == 0) {
 }
 
                 for (NodeInfo nodeInfo : nodeList) {
-                    T bean = type.newInstance();
+                    T bean = type.getDeclaredConstructor().newInstance();
 
                     NodeInfo node = nodeInfo;
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -216,7 +220,7 @@ if (nodeList.getLength() == 0) {
 }
 
                 for (int i = 0; i < nodeList.getLength(); i++) {
-                    T bean = type.newInstance();
+                    T bean = type.getDeclaredConstructor().newInstance();
 
                     Node node = nodeList.item(i);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -239,7 +243,8 @@ if (nodeList.getLength() == 0) {
 
         } catch (XPathExpressionException e) {
             throw new IllegalArgumentException(e);
-        } catch (IllegalAccessException | InstantiationException | IOException e) {
+        } catch (IllegalAccessException | InstantiationException | IOException | InvocationTargetException |
+                 NoSuchMethodException e) {
             throw new IllegalStateException(e);
         }
     }

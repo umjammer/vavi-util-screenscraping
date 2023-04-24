@@ -18,11 +18,13 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.httpclient.Cookie;
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
-
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import vavi.util.Debug;
 import vavix.util.screenscrape.Scraper;
 import vavix.util.screenscrape.StringSimpleXPathScraper;
@@ -44,7 +46,7 @@ class YouTube {
     static String watchUrlFormat;
     static String getUrlFormat;
 
-    /** */
+    /* */
     static {
         try {
             Properties props = new Properties();
@@ -64,7 +66,7 @@ Debug.printStackTrace(e);
     /** TODO  */
     static class YouTubeURLScraper implements Scraper<URL, File> {
         /** */
-        private HttpClient httpClient = new HttpClient();
+        private HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 
         /**
          * xpath <code>"//DIV[@ID='interactDiv']/SCRIPT"</code>
@@ -72,7 +74,7 @@ Debug.printStackTrace(e);
          */
         StringSimpleXPathScraper myStreamXPathScraper = new StringSimpleXPathScraper(videoXpath) {
             Pattern pattern = Pattern.compile(videoTagRregex);
-            public String scrape(InputStream source) {
+            @Override public String scrape(InputStream source) {
                 String tag;
                 String script = super.scrape(source);
                 Matcher matcher = pattern.matcher(script);
@@ -88,7 +90,7 @@ Debug.printStackTrace(e);
         /**
          * @param url YouTube  URL
          */
-        public File scrape(URL url) {
+        @Override public File scrape(URL url) {
             try {
                 return pattern2(url);
             } catch (IOException e) {
@@ -112,43 +114,48 @@ Debug.printStackTrace(e);
             // tag
             String watchUrl = String.format(watchUrlFormat, videoId);
 System.err.println("watch: " + watchUrl);
-            GetMethod get = new GetMethod(watchUrl);
-            httpClient.getState().addCookie(new Cookie("youtube.com/", "VISITOR_INFO1_LIVE", "H5LU-y_SA9w"));
-            httpClient.getState().addCookie(new Cookie("youtube.com/", "LOGIN_INFO", "9bb3bfa8da28d9518e35b22193026217e3QgAAAAbV91c2VyX2lkX0FORF9zZXNzaW9uX251bWJlcl9tZDVzIAAAADRmNDJmZmU3MTYyNzg0N2UzZTRkZjQxNzcyOWQ4Yjc1dAkAAABtX3VzZXJfaWRsAgAAAKEK9QIw"));
-            httpClient.getState().addCookie(new Cookie("youtube.com/", "is_adult", "8d3a778dcb047f7c9a6ab4917e55b74adAEAAAAx"));
-            httpClient.getState().addCookie(new Cookie("youtube.com/", "watched_video_id_list_vavivavi", "17bc3ed9329253d96fa33e53eea4c750WwEAAABzCwAAAGxHenVtMU5zdDJj"));
-            int status = httpClient.executeMethod(get);
-            if (status != 200) {
-                throw new IllegalStateException("unexpected result when 'watch': " + status);
+            HttpGet get = new HttpGet(watchUrl);
+            BasicCookieStore cookieStore = new BasicCookieStore();
+            BasicClientCookie cookie = new BasicClientCookie("VISITOR_INFO1_LIVE", "H5LU-y_SA9w");
+            cookie.setDomain(".youtube.com");
+            cookie.setAttribute("LOGIN_INFO", "9bb3bfa8da28d9518e35b22193026217e3QgAAAAbV91c2VyX2lkX0FORF9zZXNzaW9uX251bWJlcl9tZDVzIAAAADRmNDJmZmU3MTYyNzg0N2UzZTRkZjQxNzcyOWQ4Yjc1dAkAAABtX3VzZXJfaWRsAgAAAKEK9QIw");
+            cookie.setAttribute("is_adult", "8d3a778dcb047f7c9a6ab4917e55b74adAEAAAAx");
+            cookie.setAttribute("watched_video_id_list_vavivavi", "17bc3ed9329253d96fa33e53eea4c750WwEAAABzCwAAAGxHenVtMU5zdDJj");
+            cookie.setPath("/");
+            cookieStore.addCookie(cookie);
+            httpClientBuilder.setDefaultCookieStore(cookieStore);
+            HttpResponse response = httpClientBuilder.build().execute(get);
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                throw new IllegalStateException("unexpected result when 'watch': " + response);
             }
 
-            String tag = myStreamXPathScraper.scrape(get.getResponseBodyAsStream());
+            String tag = myStreamXPathScraper.scrape(response.getEntity().getContent());
 
             get.releaseConnection();
 
             // flv
             String getUrl = String.format(getUrlFormat, videoId, tag);
 System.err.println("getUrl: " + getUrl);
-            get = new GetMethod(getUrl);
-            status = httpClient.executeMethod(get);
-            if (status == 303) {
+            get = new HttpGet(getUrl);
+            response = httpClientBuilder.build().execute(get);
+            if (response.getStatusLine().getStatusCode() == 303) {
                 //
-                getUrl = get.getResponseHeader("Location").getValue();
+                getUrl = response.getHeaders("Location")[0].getValue();
 System.err.println("redirectUrl: " + getUrl);
-                get = new GetMethod(getUrl);
-                status = httpClient.executeMethod(get);
+                get = new HttpGet(getUrl);
+                response = httpClientBuilder.build().execute(get);
             }
-            if (status != 200) {
-                throw new IllegalStateException("unexpected result when 'get': " + status);
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new IllegalStateException("unexpected result when 'get': " + response);
             } else {
-                for (Header header : get.getResponseHeaders()) {
+                for (Header header : response.getAllHeaders()) {
 System.err.println(header.getName() + "=" + header.getValue());
                 }
             }
 
             // flv
-            InputStream is = get.getResponseBodyAsStream();
-            int length = Integer.parseInt(get.getResponseHeader("Content-Length").getValue());
+            InputStream is = response.getEntity().getContent();
+            int length = Integer.parseInt(response.getHeaders("Content-Length")[0].getValue());
             ReadableByteChannel inputChannel = Channels.newChannel(is);
 
             File file = File.createTempFile("youtube", ".flv");
@@ -179,27 +186,27 @@ System.err.println("downloading... size: " + length);
             // flv
             String getUrl = String.format(getUrlFormat, videoId);
 System.err.println("getUrl: " + getUrl);
-            GetMethod get = new GetMethod(getUrl);
-            int status = httpClient.executeMethod(get);
-            while (status == 302) {
-System.err.println("status2: " + status);
+            HttpGet get = new HttpGet(getUrl);
+            HttpResponse response = httpClientBuilder.build().execute(get);
+            while (response.getStatusLine().getStatusCode() == 302) {
+System.err.println("status2: " + response);
                 //
-                getUrl = get.getResponseHeader("Location").getValue();
+                getUrl = response.getHeaders("Location")[0].getValue();
 System.err.println("redirectUrl: " + getUrl);
-                get = new GetMethod(getUrl);
-                status = httpClient.executeMethod(get);
+                get = new HttpGet(getUrl);
+                response = httpClientBuilder.build().execute(get);
             }
-            if (status != 200) {
-                throw new IllegalStateException("unexpected result when 'get': " + status);
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new IllegalStateException("unexpected result when 'get': " + response);
             } else {
-                for (Header header : get.getResponseHeaders()) {
+                for (Header header : response.getAllHeaders()) {
 System.err.println(header.getName() + "=" + header.getValue());
                 }
             }
 
             // flv
-            InputStream is = get.getResponseBodyAsStream();
-            int length = Integer.parseInt(get.getResponseHeader("Content-Length").getValue());
+            InputStream is = response.getEntity().getContent();
+            int length = Integer.parseInt(response.getHeaders("Content-Length")[0].getValue());
             ReadableByteChannel inputChannel = Channels.newChannel(is);
 
             File file = File.createTempFile("youtube", ".flv");

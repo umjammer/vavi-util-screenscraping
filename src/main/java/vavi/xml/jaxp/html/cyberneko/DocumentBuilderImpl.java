@@ -8,14 +8,13 @@ package vavi.xml.jaxp.html.cyberneko;
 
 import java.io.IOException;
 import java.util.logging.Level;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.html.dom.HTMLDOMImplementationImpl;
 import org.apache.html.dom.HTMLDocumentImpl;
-import org.cyberneko.html.parsers.DOMParser;
+import org.codelibs.nekohtml.parsers.DOMParser;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -23,7 +22,6 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
 import vavi.util.Debug;
 
 
@@ -80,17 +78,17 @@ Debug.println(Level.FINE, "http://xml.org/sax/features/validation: " + this.dbf.
         }
     }
 
-    /** */
+    @Override
     public Document newDocument() {
         return new HTMLDocumentImpl();
     }
 
-    /** */
+    @Override
     public DOMImplementation getDOMImplementation() {
         return HTMLDOMImplementationImpl.getHTMLDOMImplementation();
     }
 
-    /** */
+    @Override
     public Document parse(InputSource is) throws SAXException, IOException {
         if (is == null) {
             throw new IllegalArgumentException("InputSource cannot be null");
@@ -129,34 +127,34 @@ Debug.println(Level.FINE, "http://xml.org/sax/features/validation: " + this.dbf.
 //        }
     }
 
-    /** */
+    @Override
     public boolean isNamespaceAware() {
         return namespaceAware;
     }
 
-    /** */
+    @Override
     public boolean isValidating() {
         return validating;
     }
 
-    /** */
+    @Override
     public void setEntityResolver(EntityResolver er) {
         this.er = er;
     }
 
-    /** */
+    @Override
     public void setErrorHandler(ErrorHandler eh) {
         // If app passes in a ErrorHandler of null,
         // then ignore all errors and warnings
         this.eh = (eh == null) ? new DefaultHandler() : eh;
     }
 
-    /**
-     * TODO 全然機能してない
-     * find encoding specified in html
-     * @param is need mark supported
-     * @return null if not found
-     */
+//    /**
+//     * TODO nothing works
+//     * find encoding specified in html
+//     * @param is need mark supported
+//     * @return null if not found
+//     */
 //    private String findEncoding(InputSource is) throws SAXException, IOException {
 //        String encoding = null;
 //System.err.println(StringUtil.paramString(is));

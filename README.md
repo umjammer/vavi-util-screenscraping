@@ -69,6 +69,6 @@ This library screen-scrapes data from html and injects data into POJO using anno
         List<Result> data = WebScraper.Util.scrape(Result.class, @UrlParam(bar) args[0]);
     ```
  * ~~json parser~~
- * css selector
-   * https://github.com/jhy/jsoup
+ * ~~css selector~~
+   * ~~https://github.com/jhy/jsoup~~ -> [serdes](http://github.com/umjammer/vavi-util-serdes)
  * integrate [serdes](https://github.com/umjammer/vavi-util-serdes)

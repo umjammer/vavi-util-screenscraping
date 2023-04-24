@@ -8,7 +8,7 @@
 
   <groupId>vavi</groupId>
   <artifactId>vavi-util-screenscraping</artifactId>
-  <version>1.0.11</version>
+  <version>1.0.12</version>
 
   <name>Vavi Screen Scraping API</name>
   <organization>
@@ -99,7 +99,7 @@ TODO
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.9.0</version>
+        <version>5.9.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -119,14 +119,25 @@ TODO
       <version>11.4</version>
     </dependency>
     <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-      <version>3.1</version>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.14</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-codec</groupId>
+          <artifactId>commons-codec</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
+<dependency>
+  <groupId>commons-codec</groupId>
+  <artifactId>commons-codec</artifactId>
+  <version>1.15</version>
+</dependency>
     <dependency>
-      <groupId>net.sourceforge.nekohtml</groupId>
+      <groupId>org.codelibs</groupId>
       <artifactId>nekohtml</artifactId>
-      <version>1.9.22</version>
+      <version>2.0.2</version>
     </dependency>
     <dependency>
       <groupId>net.sf.jtidy</groupId>
@@ -134,9 +145,9 @@ TODO
       <version>r938</version>
     </dependency>
     <dependency>
-      <groupId>com.github.cmunilla</groupId>
-      <artifactId>JPath</artifactId>
-      <version>master-SNAPSHOT</version>
+      <groupId>com.jayway.jsonpath</groupId>
+      <artifactId>json-path</artifactId>
+      <version>2.8.0</version>
       <exclusions>
         <exclusion>
           <groupId>org.ow2.asm</groupId>
@@ -145,9 +156,9 @@ TODO
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.github.umjammer.vavi-net-auth</groupId>
+      <groupId>vavi</groupId>
       <artifactId>vavi-net-auth-amazon</artifactId>
-      <version>0.1.4</version>
+      <version>0.1.7</version>
     </dependency>
 
     <dependency>
@@ -190,66 +201,32 @@ TODO
       <version>0.0.2</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>jaxen</groupId>
       <artifactId>jaxen</artifactId>
-      <version>1.2.0</version>
+      <version>2.0.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-api</artifactId>
-      <version>2.7.18</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-transports-http</artifactId>
-      <version>3.5.3</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-frontend-simple</artifactId>
-      <version>3.5.3</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-tools-wsdlto-core</artifactId>
-      <version>3.5.3</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-tools-wsdlto-frontend-jaxws</artifactId>
-      <version>3.5.3</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-tools-wsdlto-databinding-jaxb</artifactId>
-      <version>3.5.3</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.sourceforge.htmlunit</groupId>
+      <groupId>org.htmlunit</groupId>
       <artifactId>htmlunit</artifactId>
-      <version>2.65.1</version>
+      <version>3.1.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.13.4</version>
+      <version>2.14.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.5.13</version>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.14.0</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
@@ -257,5 +234,4 @@ TODO
       <scope>test</scope>
     </dependency>
   </dependencies>
-
 </project>

@@ -67,18 +67,18 @@ if (isDebug) {
  Debug.println(Level.FINE, "nodes: " + nodes);
 }
         if (isTwoPass) {
-            org.codehaus.jettison.json.JSONArray a = (org.codehaus.jettison.json.JSONArray) nodes.get(0);
+            List<?> a = (List<?>) nodes.get(0); // assume json-path's JSONArray has List interface
             return () -> new Iterator<Object>() {
                 int i = 0;
                 @Override
                 public boolean hasNext() {
-                    return i < a.length();
+                    return i < a.size();
                 }
                 @Override
                 public Object next() {
                     try {
                         return a.get(i++);
-                    } catch (org.codehaus.jettison.json.JSONException e) {
+                    } catch (Exception e) {
                         throw new IllegalStateException(e);
                     }
                 }
