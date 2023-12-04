@@ -211,7 +211,7 @@ TODO
     <dependency>
       <groupId>org.htmlunit</groupId>
       <artifactId>htmlunit</artifactId>
-      <version>3.1.0</version>
+      <version>3.9.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
