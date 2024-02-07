@@ -15,12 +15,7 @@
     <name>vavi</name>
   </organization>
   <url>https://github.com/umjammer/vavi-util-screenscraping</url>
-  <description>
-TODO
-
-    @WebScraper#encoding()
-    @Target add exception handler or second, third option
-    xml2xpath</description>
+  <description/>
   <scm>
     <url>https://github.com/umjammer/vavi-util-screenscraping</url>
   </scm>
@@ -28,23 +23,14 @@ TODO
     <url>https://github.com/umjammer/vavi-util-screenscraping/issues</url>
   </issueManagement>
 
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <url>https://maven.pkg.github.com/umjammer/vavi-util-screenscraping</url>
-    </repository>
-  </distributionManagement>
-
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version>
+        <version>3.11.0</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <encoding>UTF-8</encoding>
+          <release>17</release>
           <generatedSourcesDirectory>target/generated-sources/cxf</generatedSourcesDirectory>
         </configuration>
       </plugin>
@@ -52,10 +38,10 @@ TODO
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M7</version>
+        <version>3.2.2</version>
         <configuration>
           <argLine>-Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties</argLine>
-          <forkMode>always</forkMode>
+          <reuseForks>false</reuseForks>
           <trimStackTrace>false</trimStackTrace>
         </configuration>
       </plugin>
@@ -88,10 +74,6 @@ TODO
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
-    <repository>
-      <id>github</id>
-      <url>https://maven.pkg.github.com/umjammer/*</url>
-    </repository>
   </repositories>
 
   <dependencyManagement>
@@ -99,7 +81,7 @@ TODO
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.9.2</version>
+        <version>5.10.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -110,13 +92,13 @@ TODO
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-commons-sandbox</artifactId>
-      <version>0.4.2</version>
+      <version>0.4.4</version>
     </dependency>
 
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>11.4</version>
+      <version>12.3</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -137,7 +119,12 @@ TODO
     <dependency>
       <groupId>org.codelibs</groupId>
       <artifactId>nekohtml</artifactId>
-      <version>2.0.2</version>
+      <version>2.1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.12.2</version>
     </dependency>
     <dependency>
       <groupId>net.sf.jtidy</groupId>
@@ -156,9 +143,9 @@ TODO
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>vavi</groupId>
+      <groupId>com.github.umjammer.vavi-net-auth</groupId>
       <artifactId>vavi-net-auth-amazon</artifactId>
-      <version>0.1.7</version>
+      <version>0.1.9</version>
     </dependency>
 
     <dependency>
@@ -177,18 +164,6 @@ TODO
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>vavi</groupId>
-      <artifactId>vavi-sound-sandbox</artifactId>
-      <version>1.0.4</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>vavi</groupId>
-          <artifactId>vavi-sound-nda</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-commons-net</artifactId>
@@ -217,20 +192,26 @@ TODO
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.14.0</version>
+      <version>2.14.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.14.0</version>
+      <version>2.15.1</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>2.0.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
-      <version>1.7.36</version>
+      <version>2.0.5</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
