@@ -1,5 +1,5 @@
-[![Maven Package](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven-publish.yml)
-[![Java CI with Maven](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven.yml)
+[![Release](https://jitpack.io/v/umjammer/vavi-util-screenscraping)](https://jitpack.io/#umjammer/vavi-util-screenscraping)
+[![Java CI](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml)
 ![Java](https://img.shields.io/badge/Java-8-b07219)
 
@@ -29,9 +29,7 @@ This library screen-scrapes data from html and injects data into POJO using anno
 
 ## Install
 
- * https://github.com/umjammer/vavi-util-screenscraping/packages/1299167
- * this project uses github packages. add a personal access token to `~/.m2/settings.xml`
- * see https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry
+ * [maven](https://jitpack.io/#umjammer/vavi-util-screenscraping)
 
 ## Details
 
@@ -72,3 +70,6 @@ This library screen-scrapes data from html and injects data into POJO using anno
  * ~~css selector~~
    * ~~https://github.com/jhy/jsoup~~ -> [serdes](http://github.com/umjammer/vavi-util-serdes)
  * integrate [serdes](https://github.com/umjammer/vavi-util-serdes)
+ * `@WebScraper#encoding()`
+ * `@Target` add exception handler or second, third option
+ * ~~xml2xpath~~
