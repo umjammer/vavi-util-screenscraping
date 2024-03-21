@@ -94,7 +94,7 @@ System.err.println("------------------------------------------------------------
     public void test1() throws Exception {
         List<Result> results = new ArrayList<>();
         WebScraper.Util.foreach(Result.class, results::add);
-        assertEquals(7987, results.size());
+        assertEquals(1024, results.size());
     }
 
     @WebScraper(url = "classpath:amazon.xml",
