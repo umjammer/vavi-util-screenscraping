@@ -137,5 +137,3 @@ public class RecruitProofreadingV2 {
         app.test1(args);
     }
 }
-
-/* */

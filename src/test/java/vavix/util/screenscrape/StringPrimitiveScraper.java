@@ -77,5 +77,3 @@ public class StringPrimitiveScraper implements Scraper<InputStream, String> {
         return sb.toString();
     }
 }
-
-/* */

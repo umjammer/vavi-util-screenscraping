@@ -20,5 +20,3 @@ public interface UserAgentDao {
     /** */
     List<String> getUserAgents();
 }
-
-/* */

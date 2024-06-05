@@ -69,5 +69,3 @@ public class YahooJapanParse2 {
         scanner.close();
     }
 }
-
-/* */

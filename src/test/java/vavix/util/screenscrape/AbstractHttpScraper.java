@@ -68,5 +68,3 @@ abstract class AbstractHttpScraper<I, O> implements Scraper<I, O> {
         this.proxyPort = Integer.parseInt(props.getProperty("proxy.port", "-1"));
     }
 }
-
-/* */

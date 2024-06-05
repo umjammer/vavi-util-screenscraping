@@ -212,5 +212,3 @@ Debug.println(Level.FINE, "http://xml.org/sax/features/validation: " + this.dbf.
 //        return encoding;
 //    }
 }
-
-/* */

@@ -50,5 +50,3 @@ class getGlobalIpTest {
         System.out.println("SimpleXPathURLScraper: " + scraper.scrape(new URL(url)).trim());
     }
 }
-
-/* */

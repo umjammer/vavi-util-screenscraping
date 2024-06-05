@@ -61,5 +61,3 @@ public abstract class SeleniumInputHandler implements InputHandler<Reader> {
     /** */
     protected abstract WebDriver getDriver();
 }
-
-/* */

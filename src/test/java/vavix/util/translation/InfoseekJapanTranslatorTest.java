@@ -50,5 +50,3 @@ long t2 = System.currentTimeMillis();
 System.out.println("This translation costs " + (System.currentTimeMillis() - t2) + " ms");
     }
 }
-
-/* */

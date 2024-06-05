@@ -40,5 +40,3 @@ Debug.println(Level.FINER, "userAgent: " + userAgent);
         return userAgent;
     }
 }
-
-/* */

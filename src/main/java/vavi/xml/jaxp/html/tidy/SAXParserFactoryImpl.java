@@ -62,5 +62,3 @@ public class SAXParserFactoryImpl extends SAXParserFactory {
         throw new UnsupportedOperationException("not implemented");
     }
 }
-
-/* */

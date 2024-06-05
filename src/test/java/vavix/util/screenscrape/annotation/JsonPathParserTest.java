@@ -73,5 +73,3 @@ System.err.println(text);
         assertEquals(14, WebScraper.Util.scrape(Page.class).size());
     }
 }
-
-/* */

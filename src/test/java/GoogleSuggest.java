@@ -36,5 +36,3 @@ public class GoogleSuggest {
         data.forEach(System.err::println);
     }
 }
-
-/* */

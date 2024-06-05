@@ -72,5 +72,3 @@ public interface InputHandler<T> {
         }
     }
 }
-
-/* */

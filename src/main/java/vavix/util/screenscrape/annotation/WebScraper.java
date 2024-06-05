@@ -246,5 +246,3 @@ public @interface WebScraper {
         }
     }
 }
-
-/* */

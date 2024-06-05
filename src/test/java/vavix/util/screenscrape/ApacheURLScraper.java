@@ -74,5 +74,3 @@ public class ApacheURLScraper<O> extends AbstractApacheHttpScraper<URL, O> {
         }
     }
 }
-
-/* */

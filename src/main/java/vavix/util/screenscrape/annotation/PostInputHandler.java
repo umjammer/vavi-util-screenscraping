@@ -99,5 +99,3 @@ if (connection instanceof HttpURLConnection) {
         }
     }
 }
-
-/* */

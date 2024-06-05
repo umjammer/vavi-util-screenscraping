@@ -396,5 +396,3 @@ System.err.println("body: " + body);
         device.locate(10000);
     }
 }
-
-/* */

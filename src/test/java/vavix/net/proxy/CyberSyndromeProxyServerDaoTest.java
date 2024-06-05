@@ -38,5 +38,3 @@ proxies.forEach(System.err::println);
         }
     }
 }
-
-/* */

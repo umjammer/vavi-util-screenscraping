@@ -103,5 +103,3 @@ public class MonexURLScraper extends ApacheURLScraper<String> {
         }
     }
 }
-
-/* */

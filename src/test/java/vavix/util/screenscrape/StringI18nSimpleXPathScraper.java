@@ -66,5 +66,3 @@ public class StringI18nSimpleXPathScraper extends SimpleXPathScraper<String> {
         }
     }
 }
-
-/* */

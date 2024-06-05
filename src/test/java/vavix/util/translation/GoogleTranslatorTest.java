@@ -51,5 +51,3 @@ System.out.println("This translation costs " + (System.currentTimeMillis() - t1)
         System.exit(0);
     }
 }
-
-/* */

@@ -58,5 +58,3 @@ System.err.println(url);
         app.test2(args);
     }
 }
-
-/* */

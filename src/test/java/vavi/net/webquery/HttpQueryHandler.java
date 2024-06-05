@@ -50,5 +50,3 @@ public class HttpQueryHandler implements QueryHandler {
         }
     }
 }
-
-/* */

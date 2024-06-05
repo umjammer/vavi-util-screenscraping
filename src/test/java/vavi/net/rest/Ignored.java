@@ -105,5 +105,3 @@ System.err.println("script: " + script);
         }
     }
 }
-
-/* */

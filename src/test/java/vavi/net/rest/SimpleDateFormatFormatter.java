@@ -24,5 +24,3 @@ public class SimpleDateFormatFormatter implements Formatter {
         return new SimpleDateFormat(format).format(Date.class.cast(value));
     }
 }
-
-/* */

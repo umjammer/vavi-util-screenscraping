@@ -249,5 +249,3 @@ if (nodeList.getLength() == 0) {
         }
     }
 }
-
-/* */

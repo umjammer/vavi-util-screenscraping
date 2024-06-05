@@ -29,5 +29,3 @@ public abstract class SimpleXPathScraper<O> extends XPathScraper<InputStream, O>
         super(xpath);
     }
 }
-
-/* */

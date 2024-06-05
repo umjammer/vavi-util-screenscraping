@@ -40,5 +40,3 @@ public class PlainInputHandler implements InputHandler<InputStream> {
         return InputHandler._dealUrlAndArgs(url, args);
     }
 }
-
-/* */
