@@ -21,5 +21,3 @@ public interface QueryHandler {
     /** */
     Query getQuery(String url, Map<String, String> parameters, boolean doInput, boolean doOutput);
 }
-
-/* */

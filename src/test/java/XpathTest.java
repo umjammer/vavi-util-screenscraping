@@ -63,5 +63,3 @@ System.err.println(c + " bytes");
 System.err.println("nodeList: " + nodeList.size());
     }
 }
-
-/* */

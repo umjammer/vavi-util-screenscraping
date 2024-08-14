@@ -1,13 +1,17 @@
 [![Release](https://jitpack.io/v/umjammer/vavi-util-screenscraping.svg)](https://jitpack.io/#umjammer/vavi-util-screenscraping)
 [![Java CI](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml)
-![Java](https://img.shields.io/badge/Java-8-b07219)
+![Java](https://img.shields.io/badge/Java-17-b07219)
 
 # Screen Scraping Library for Java
 
 🌏 Scrape the world!
 
-## Introduction
+## Install
+
+* [maven](https://jitpack.io/#umjammer/vavi-util-screenscraping)
+
+## Usage
 
 This library screen-scrapes data from html and injects data into POJO using annotation.
 
@@ -27,11 +31,7 @@ This library screen-scrapes data from html and injects data into POJO using anno
     List<Baz> bazs = WebScraper.Util.scrape(Baz.class);
 ```
 
-## Install
-
- * [maven](https://jitpack.io/#umjammer/vavi-util-screenscraping)
-
-## Details
+### Details
 
  * `InputHandler` ... apply any processing before parsing
 
@@ -44,7 +44,7 @@ This library screen-scrapes data from html and injects data into POJO using anno
 
  * `Parser#foreach()` ... like java collection stream
 
-## Sample
+### Sample
 
  * [Scraping composers from JASRAC database for iTuens](https://github.com/umjammer/vavi-util-screenscraping/wiki)
  * [Scraping json for deep learning proof reading](https://github.com/umjammer/umjammer/blob/wiki/DeepLearningProofReading.md)
@@ -52,6 +52,10 @@ This library screen-scrapes data from html and injects data into POJO using anno
  * [Amazon yourstore collection](https://github.com/umjammer/vavi-util-screenscraping/blob/master/src/test/java/Amazon.java)
  * [Google suggest](https://github.com/umjammer/vavi-util-screenscraping/blob/master/src/test/java/GoogleSuggest.java)
  * [Yahoo! Japan proof reading](https://github.com/umjammer/vavi-util-screenscraping/blob/master/src/test/java/YahooJapanKouseiV1.java)
+
+## References
+
+ * https://www2.jasrac.or.jp/eJwid/
 
 ## TODO
 

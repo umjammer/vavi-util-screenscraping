@@ -62,5 +62,3 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
         throw new IllegalArgumentException("No feature are implemented");
     }
 }
-
-/* */

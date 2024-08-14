@@ -29,5 +29,3 @@ public interface Parser<I, T> {
     /** for less memory */
     void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<I> inputHandler, String ... args);
 }
-
-/* */

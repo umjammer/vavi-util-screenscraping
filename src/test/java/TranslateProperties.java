@@ -43,5 +43,3 @@ public class TranslateProperties {
         props.store(Files.newOutputStream(Paths.get(args[1])), "created by t1");
     }
 }
-
-/* */

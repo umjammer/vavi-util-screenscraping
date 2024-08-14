@@ -206,5 +206,3 @@ System.err.println("lyrics:\n" + lyrics);
 System.err.println("file:\n" + file);
     }
 }
-
-/* */

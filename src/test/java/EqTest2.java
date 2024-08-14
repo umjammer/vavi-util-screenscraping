@@ -210,5 +210,3 @@ System.out.println("  \"url\": \"" + resultAnchor.getHrefAttribute() + "\", ");
         }
     }
 }
-
-/* */

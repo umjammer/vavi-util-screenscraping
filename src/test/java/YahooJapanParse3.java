@@ -101,5 +101,3 @@ System.err.println("sentence: " + sentence);
         scanner.close();
     }
 }
-
-/* */

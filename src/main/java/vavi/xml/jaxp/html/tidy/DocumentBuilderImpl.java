@@ -134,5 +134,3 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         this.eh = (eh == null) ? new DefaultHandler() : eh;
     }
 }
-
-/* */

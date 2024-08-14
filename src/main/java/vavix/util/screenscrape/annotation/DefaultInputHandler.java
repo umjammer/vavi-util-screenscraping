@@ -57,5 +57,3 @@ if (connection instanceof HttpURLConnection) {
         return InputHandler._dealUrlAndArgs(url, args);
     }
 }
-
-/* */

@@ -235,5 +235,3 @@ if (WebScraper.Util.isDebug(type)) {
         }
     }
 }
-
-/* */

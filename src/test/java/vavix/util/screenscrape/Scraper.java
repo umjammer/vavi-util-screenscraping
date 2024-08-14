@@ -20,5 +20,3 @@ public interface Scraper<I, O> {
     /** */
     O scrape(I source);
 }
-
-/* */

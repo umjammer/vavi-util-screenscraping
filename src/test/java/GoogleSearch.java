@@ -95,5 +95,3 @@ public class GoogleSearch {
         scanner.close();
     }
 }
-
-/* */

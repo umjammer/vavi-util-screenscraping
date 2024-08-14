@@ -22,5 +22,3 @@ public interface ProxyServerDao {
     /** return value should be not calculated value but static value. */
     List<InternetAddress> getProxyInetSocketAddresses();
 }
-
-/* */

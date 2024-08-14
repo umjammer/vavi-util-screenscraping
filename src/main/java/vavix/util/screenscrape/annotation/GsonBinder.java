@@ -58,5 +58,3 @@ public class GsonBinder<T> implements Binder {
         }
     }
 }
-
-/* */

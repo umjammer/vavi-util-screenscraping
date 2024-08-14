@@ -135,5 +135,3 @@ abstract class AbstractApacheHttpScraper<I, O> extends AbstractHttpScraper<I, O>
         httpClientBuilder.setDefaultCookieStore(cookieStore);
     }
 }
-
-/* */

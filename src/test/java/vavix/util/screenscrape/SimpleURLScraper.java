@@ -127,5 +127,3 @@ e.printStackTrace(System.err);
         return cookieValue;
     }
 }
-
-/* */

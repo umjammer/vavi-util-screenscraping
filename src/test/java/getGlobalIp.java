@@ -61,5 +61,3 @@ Debug.printStackTrace(e);
         System.out.println(scraper.scrape(new URL(url)));
     }
 }
-
-/* */

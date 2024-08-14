@@ -22,5 +22,3 @@ public interface Formatter {
      */
     String format(String format, Object value);
 }
-
-/* */

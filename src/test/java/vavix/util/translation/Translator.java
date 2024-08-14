@@ -32,5 +32,3 @@ public interface Translator {
     /** グローバル側のロケールを取得します。 */
     Locale getGlobalLocal();
 }
-
-/* */

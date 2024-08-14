@@ -46,5 +46,3 @@ public class PropertiesUserAgentDao implements UserAgentDao {
         }
     }
 }
-
-/* */

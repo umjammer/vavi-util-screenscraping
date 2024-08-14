@@ -26,5 +26,3 @@ public abstract class XPathScraper<I, O> implements Scraper<I, O> {
         this.xpath = xpath;
     }
 }
-
-/* */
