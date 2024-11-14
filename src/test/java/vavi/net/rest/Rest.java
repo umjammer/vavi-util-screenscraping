@@ -17,6 +17,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -144,11 +145,7 @@ System.err.println("ignoreable: " + field.getName());
                 String name = Parameter.Util.getParameterName(field, bean, parameter);
                 String value = Parameter.Util.getParameterValue(field, bean, parameter);
 System.err.println("value: " + name + ", " + value);
-                try {
-                    value = URLEncoder.encode(value, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    assert false;
-                }
+                value = URLEncoder.encode(value, StandardCharsets.UTF_8);
                 parameters.put(name, value);
 System.err.println("use: " + name + ", " + value);
             }
@@ -157,7 +154,7 @@ System.err.println("use: " + name + ", " + value);
             if ("HTTP".equals(protocol)) {
                 if ("GET".equals(method)) {
                     for (Entry<String, String> entry : parameters.entrySet()) {
-                        sb.append(sb.length() == 0 ? '?' : '&');
+                        sb.append(sb.isEmpty() ? '?' : '&');
                         sb.append(entry.getKey());
                         sb.append('=');
                         sb.append(entry.getValue());
@@ -171,7 +168,7 @@ System.err.println("use: " + name + ", " + value);
                 throw new IllegalArgumentException("unknown protocol: " + protocol);
             }
 
-            return url + sb.toString();
+            return url + sb;
         }
 
         public static byte[] getContent(Object bean) throws IOException {

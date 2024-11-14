@@ -11,29 +11,28 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.logging.Level;
-
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import net.sf.saxon.dom.NodeOverNodeInfo;
+import net.sf.saxon.om.NodeInfo;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
 import vavi.beans.BeanUtil;
-import vavi.util.Debug;
 import vavi.xml.util.PrettyPrinter;
 
-import net.sf.saxon.dom.NodeOverNodeInfo;
-import net.sf.saxon.om.NodeInfo;
+import static java.lang.System.getLogger;
 
 
 /**
@@ -46,18 +45,20 @@ import net.sf.saxon.om.NodeInfo;
  */
 public class SaxonXPathParser<T> implements Parser<Reader, T> {
 
+    private static final Logger logger = getLogger(SaxonXPathParser.class.getName());
+
     static final String JAXP_KEY_XPF = XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI;
     static final String JAXP_VALUE_XPF_SAXON = "net.sf.saxon.xpath.XPathFactoryImpl";
 
     /** */
-    protected XPath xPath;
+    protected final XPath xPath;
 
     {
         String backup = System.setProperty(JAXP_KEY_XPF, JAXP_VALUE_XPF_SAXON);
         System.setProperty(JAXP_KEY_XPF, JAXP_VALUE_XPF_SAXON);
         XPathFactory factory = XPathFactory.newInstance();
         assert factory.getClass().getName().equals(JAXP_VALUE_XPF_SAXON) : "not saxon factory: " + factory.getClass().getName();
-Debug.println(Level.FINE, "XPathFactory: " + factory.getClass().getName());
+logger.log(Level.DEBUG, "XPathFactory: " + factory.getClass().getName());
         xPath = factory.newXPath();
         if (backup != null)
             System.setProperty(JAXP_KEY_XPF, backup);
@@ -71,7 +72,7 @@ Debug.println(Level.FINE, "XPathFactory: " + factory.getClass().getName());
     public List<T> parse(Class<T> type, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-Debug.println(Level.FINE, "encoding: " + encoding);
+logger.log(Level.DEBUG, "encoding: " + encoding);
 
             List<T> results = new ArrayList<>();
 
@@ -82,7 +83,7 @@ Debug.println(Level.FINE, "encoding: " + encoding);
                 in.setEncoding(encoding);
 
                 String xpath = Target.Util.getValue(field);
-Debug.println(Level.FINE, "xpath: " + xpath);
+logger.log(Level.DEBUG, "xpath: " + xpath);
 
                 if (WebScraper.Util.isCollection(type)) {
 
@@ -92,8 +93,8 @@ Debug.println(Level.FINE, "xpath: " + xpath);
 
                         @SuppressWarnings("unchecked")
                         List<NodeInfo> nodeList = (List<NodeInfo>) nodeSet;
-if (nodeList.size() == 0) {
- Debug.println(Level.WARNING, "no node list: " + xpath);
+if (nodeList.isEmpty()) {
+ logger.log(Level.WARNING, "no node list: " + xpath);
 }
                         for (int i = 0; i < nodeList.size(); i++) {
                             // because loops for each fields, instantiation should be done once
@@ -106,15 +107,14 @@ if (nodeList.size() == 0) {
                             }
 
                             String text = nodeList.get(i).getStringValue().trim();
-Debug.println(Level.FINE, field.getName() + ": " + text);
+logger.log(Level.DEBUG, field.getName() + ": " + text);
                             BeanUtil.setFieldValue(field, bean, text);
                         }
-                    } else if (nodeSet instanceof NodeList) {
+                    } else if (nodeSet instanceof NodeList nodeList) {
 
-                        NodeList nodeList = (NodeList) nodeSet;
-Debug.println(Level.FINE, "nodeList: " + nodeList.getLength());
+logger.log(Level.DEBUG, "nodeList: " + nodeList.getLength());
                         for (int i = 0; i < nodeList.getLength(); i++) {
-                            // because loops for each fields, instantiation should be done once
+                            // because loops for each field, instantiation should be done once
                             T bean = null;
                             try {
                                 bean = results.get(i);
@@ -124,7 +124,7 @@ Debug.println(Level.FINE, "nodeList: " + nodeList.getLength());
                             }
 
                             String text = nodeList.item(i).getTextContent().trim();
-Debug.println(Level.FINE, field.getName() + ": " + text);
+logger.log(Level.DEBUG, field.getName() + ": " + text);
                             BeanUtil.setFieldValue(field, bean, text);
                         }
                     } else {
@@ -132,7 +132,7 @@ Debug.println(Level.FINE, field.getName() + ": " + text);
                     }
                 } else {
 
-                    // because loops for each fields, instantiation should be done once
+                    // because loops for each field, instantiation should be done once
                     T bean = null;
                     try {
                         bean = results.get(0);
@@ -172,7 +172,7 @@ Debug.println(Level.FINE, field.getName() + ": " + text);
     public void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-//System.err.println("encoding: " + encoding);
+//logger.log(Level.TRACE, "encoding: " + encoding);
 
             InputSource in = new InputSource(inputHandler.getInput(args));
             in.setEncoding(encoding);
@@ -185,9 +185,9 @@ Debug.println(Level.FINE, field.getName() + ": " + text);
 
                 @SuppressWarnings("unchecked")
                 List<NodeInfo> nodeList = (List<NodeInfo>) nodeSet;
-//System.err.println("nodeList: " + nodeList.size());
-if (nodeList.size() == 0) {
- Debug.println(Level.WARNING, "no node list: " + xpath);
+//logger.log(Level.TRACE, "nodeList: " + nodeList.size());
+if (nodeList.isEmpty()) {
+ logger.log(Level.WARNING, "no node list: " + xpath);
 }
 
                 for (NodeInfo nodeInfo : nodeList) {
@@ -211,12 +211,11 @@ if (nodeList.size() == 0) {
 
                     eachHandler.accept(bean);
                 }
-            } else if (nodeSet instanceof NodeList) {
+            } else if (nodeSet instanceof NodeList nodeList) {
 
-                NodeList nodeList = (NodeList) nodeSet;
-//System.err.println("nodeList: " + nodeList.getLength());
+                //logger.log(Level.TRACE, "nodeList: " + nodeList.getLength());
 if (nodeList.getLength() == 0) {
- Debug.println(Level.WARNING, "no node list: " + xpath);
+ logger.log(Level.WARNING, "no node list: " + xpath);
 }
 
                 for (int i = 0; i < nodeList.getLength(); i++) {

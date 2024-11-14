@@ -41,19 +41,19 @@ import org.xml.sax.SAXException;
  */
 public class SAXParserFactoryImpl extends SAXParserFactory {
 
-    /** */
+    @Override
     public SAXParser newSAXParser()
         throws SAXException, ParserConfigurationException {
 
         return new SAXParserImpl();
     }
 
-    /** */
+    @Override
     public void setFeature(String name, boolean value) {
         throw new UnsupportedOperationException("not implemented");
     }
 
-    /** */
+    @Override
     public boolean getFeature(String name) {
         throw new UnsupportedOperationException("not implemented");
     }

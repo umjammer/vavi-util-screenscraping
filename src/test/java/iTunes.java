@@ -7,7 +7,6 @@
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -62,17 +61,16 @@ public class iTunes {
         @Target("/dict/key[text()='Location']/following-sibling::string[1]/text()")
         String location;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(artist);
-            sb.append("\t");
-            sb.append(name);
-            sb.append("\t");
-            sb.append(composer);
-            return sb.toString();
+            String sb = artist +
+                    "\t" +
+                    name +
+                    "\t" +
+                    composer;
+            return sb;
         }
     }
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
+    static final WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
 
     static {
         client.setJavaScriptEngine(null);
@@ -90,6 +88,7 @@ public class iTunes {
         /**
          * @param args 0: artist, 1: title
          */
+        @Override
         public Reader getInput(String ... args) throws IOException {
             if (cache != null) {
                 return new StringReader(cache);
@@ -137,11 +136,10 @@ public class iTunes {
         @Target(value = "//TABLE//TR/TD[4]/A/@href")
         String url;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(CharNormalizerJa.ToHalfAns2.normalize(artist));
-            sb.append(", ");
-            sb.append(CharNormalizerJa.ToHalfAns2.normalize(title));
-            return sb.toString();
+            String sb = CharNormalizerJa.ToHalfAns2.normalize(artist) +
+                    ", " +
+                    CharNormalizerJa.ToHalfAns2.normalize(title);
+            return sb;
         }
     }
 
@@ -151,6 +149,7 @@ public class iTunes {
         /**
          * @param args 0: url
          */
+        @Override
         public Reader getInput(String ... args) throws IOException {
             if (cache != null) {
                 return new StringReader(cache);
@@ -176,11 +175,10 @@ public class iTunes {
         @Target(value = "//TABLE[4]//TR/TD[3]/DIV/text()")
         String type;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(type);
-            sb.append(", ");
-            sb.append(CharNormalizerJa.ToHalfAns2.normalize(name));
-            return sb.toString();
+            String sb = type +
+                    ", " +
+                    CharNormalizerJa.ToHalfAns2.normalize(name);
+            return sb;
         }
     }
 
@@ -190,6 +188,7 @@ public class iTunes {
         /**
          * @param args 0: title
          */
+        @Override
         public Reader getInput(String ... args) throws IOException {
             if (cache != null) {
                 return new StringReader(cache);
@@ -213,14 +212,14 @@ public class iTunes {
             HtmlInput button1 = form1.getInputByName("CMD_SEARCH");
 
             HtmlPage page3 = button1.click();
-            StringBuffer sb = new StringBuffer(page3.asXml());
+            StringBuilder sb = new StringBuilder(page3.asXml());
 
             try {
                 HtmlPage nextPage = page3;
                 while (true) {
                     HtmlAnchor nextAnchor = nextAnchor(nextPage.getAnchors());
 System.err.println("nextAnchor: " + nextAnchor);
-                    nextPage = (HtmlPage) nextAnchor.click();
+                    nextPage = nextAnchor.click();
                     sb.append(nextPage.asXml());
                 }
             } catch (NoSuchElementException e) {
@@ -232,7 +231,7 @@ System.err.println("nextAnchor: " + nextAnchor);
         }
 
         /** */
-        HtmlAnchor nextAnchor(List<HtmlAnchor> anchors) {
+        static HtmlAnchor nextAnchor(List<HtmlAnchor> anchors) {
             for (HtmlAnchor anchor : anchors) {
                 if (anchor.getAttribute("title").equals("次ページの結果を表示します")) {
                     return anchor;
@@ -254,11 +253,10 @@ System.err.println("nextAnchor: " + nextAnchor);
         @Target(value = "//TABLE//TR/TD[3]/A/@href")
         String url;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(CharNormalizerJa.ToHalfAns2.normalize(artist));
-            sb.append(", ");
-            sb.append(CharNormalizerJa.ToHalfAns2.normalize(title));
-            return sb.toString();
+            String sb = CharNormalizerJa.ToHalfAns2.normalize(artist) +
+                    ", " +
+                    CharNormalizerJa.ToHalfAns2.normalize(title);
+            return sb;
         }
     }
 
@@ -268,6 +266,7 @@ System.err.println("nextAnchor: " + nextAnchor);
         /**
          * @param args 0: artist
          */
+        @Override
         public Reader getInput(String ... args) throws IOException {
             if (cache != null) {
                 return new StringReader(cache);
@@ -291,13 +290,13 @@ System.err.println("nextAnchor: " + nextAnchor);
             HtmlInput button1 = form1.getInputByName("CMD_SEARCH");
 
             HtmlPage page3 = button1.click();
-            StringBuffer sb = new StringBuffer(page3.asXml());
+            StringBuilder sb = new StringBuilder(page3.asXml());
 
             try {
                 HtmlPage nextPage = page3;
                 while (true) {
                     HtmlAnchor nextAnchor = nextAnchor(nextPage.getAnchors());
-                    nextPage = (HtmlPage) nextAnchor.click();
+                    nextPage = nextAnchor.click();
                     sb.append(nextPage.asXml());
                 }
             } catch (NoSuchElementException e) {
@@ -309,7 +308,7 @@ System.err.println("nextAnchor: " + nextAnchor);
         }
 
         /** */
-        HtmlAnchor nextAnchor(List<HtmlAnchor> anchors) {
+        static HtmlAnchor nextAnchor(List<HtmlAnchor> anchors) {
             for (HtmlAnchor anchor : anchors) {
                 if (anchor.getAttribute("title").equals("次ページの結果を表示します")) {
                     return anchor;
@@ -331,16 +330,15 @@ System.err.println("nextAnchor: " + nextAnchor);
         @Target(value = "//TABLE//TR/TD[4]/A/@href")
         String url;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(CharNormalizerJa.ToHalfAns2.normalize(artist));
-            sb.append(", ");
-            sb.append(CharNormalizerJa.ToHalfAns2.normalize(title));
-            return sb.toString();
+            String sb = CharNormalizerJa.ToHalfAns2.normalize(artist) +
+                    ", " +
+                    CharNormalizerJa.ToHalfAns2.normalize(title);
+            return sb;
         }
     }
 
     public static String capitalize(String s) {
-        if (s.length() == 0) {
+        if (s.isEmpty()) {
             return s;
         } else {
             return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
@@ -375,11 +373,11 @@ System.err.println("nextAnchor: " + nextAnchor);
         for (Composer composer : cs) {
 //System.err.println(composer);
 //System.err.println(composer.type + ", " + composer.type.indexOf("作詞") + ", " + composer.type.indexOf("作曲"));
-            if ((composer.type.indexOf("作詞") != -1 || composer.type.indexOf("訳詞") != -1) && composer.name.indexOf("権利者") == -1) {
+            if ((composer.type.contains("作詞") || composer.type.contains("訳詞")) && !composer.name.contains("権利者")) {
                 lyrics_.append(normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(composer.name)));
                 lyrics_.append(", ");
             }
-            if ((composer.type.indexOf("作曲") != -1 || composer.type.indexOf("不明") != -1) && composer.name.indexOf("権利者") == -1) {
+            if ((composer.type.contains("作曲") || composer.type.contains("不明")) && !composer.name.contains("権利者")) {
                 music_.append(normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(composer.name)));
                 music_.append(", ");
             }
@@ -397,10 +395,11 @@ System.err.println("nextAnchor: " + nextAnchor);
 
     /** アーティスト名で近い順 */
     static class MyComparator3 implements Comparator<TitleUrl3> {
-        String artist;
+        final String artist;
         MyComparator3(String artist) {
             this.artist = artist.toUpperCase();
         }
+        @Override
         public int compare(TitleUrl3 o1, TitleUrl3 o2) {
             int d1 = LevenshteinDistance.calculate(artist, CharNormalizerJa.ToHalfAns2.normalize(o1.artist)) - LevenshteinDistance.calculate(artist, CharNormalizerJa.ToHalfAns2.normalize(o2.artist));
             return d1;
@@ -409,10 +408,11 @@ System.err.println("nextAnchor: " + nextAnchor);
 
     /** 作品名で近い順 */
     static class MyComparator4 implements Comparator<TitleUrl4> {
-        String name;
+        final String name;
         MyComparator4(String name) {
             this.name = name.toUpperCase();
         }
+        @Override
         public int compare(TitleUrl4 o1, TitleUrl4 o2) {
             int d1 = LevenshteinDistance.calculate(name, CharNormalizerJa.ToHalfAns2.normalize(o1.title)) - LevenshteinDistance.calculate(name, CharNormalizerJa.ToHalfAns2.normalize(o2.title));
             return d1;
@@ -474,7 +474,7 @@ System.err.println(each);
 
         // 1. plain artist, name
         List<TitleUrl> urls = WebScraper.Util.scrape(TitleUrl.class, each.artist, each.name);
-        if (urls.size() > 0) {
+        if (!urls.isEmpty()) {
             System.out.println("RESULT\t" + each + getComposer(urls.get(0).url));
             return;
         }
@@ -484,7 +484,7 @@ System.err.println(each);
         if (each.albumArtist != null && !each.albumArtist.isEmpty()) {
             normalizedArtist = each.albumArtist;
             List<TitleUrl> urls2 = WebScraper.Util.scrape(TitleUrl.class, normalizedArtist, each.name);
-            if (urls2.size() > 0) {
+            if (!urls2.isEmpty()) {
                 System.out.println("RESULTa\t" + each + getComposer(urls2.get(0).url));
                 return;
             }
@@ -502,7 +502,7 @@ System.err.println(each);
             normalizedName = matcher.group(1);
         }
         List<TitleUrl> urls3 = WebScraper.Util.scrape(TitleUrl.class, normalizedArtist, normalizedName);
-        if (urls3.size() > 0) {
+        if (!urls3.isEmpty()) {
             System.out.println("RESULTn\t" + each + getComposer(urls3.get(0).url));
             return;
         }
@@ -510,8 +510,8 @@ System.err.println(each);
         // 4. by artist only
         int ca = 0;
         List<TitleUrl4> url4s = WebScraper.Util.scrape(TitleUrl4.class, normalizedArtist);
-        if (url4s.size() > 0) {
-            Collections.sort(url4s, new MyComparator4(normalizedName));
+        if (!url4s.isEmpty()) {
+            url4s.sort(new MyComparator4(normalizedName));
             for (TitleUrl4 url4 : url4s) {
                 if (ca == 0 && normalizedName.equalsIgnoreCase(CharNormalizerJa.ToHalfAns2.normalize(url4.title))) {
                     System.out.println("RESULTp\t" + each + getComposer(url4.url));
@@ -528,12 +528,12 @@ System.err.println(each);
         // 5. by name only
         List<TitleUrl3> url3s = WebScraper.Util.scrape(TitleUrl3.class, normalizedName);
         int cn = 0;
-        if (url3s.size() > 0) {
+        if (!url3s.isEmpty()) {
             matcher = normalizeArticlePattern.matcher(normalizedArtist);
             if (matcher.matches()) {
                 normalizedArtist = matcher.group(2);
             }
-            Collections.sort(url3s, new MyComparator3(normalizedArtist));
+            url3s.sort(new MyComparator3(normalizedArtist));
             for (TitleUrl3 url3 : url3s) {
                 System.out.println("MAYBEn" + cn + "\t" + each + "(" + getComposer(url3.url) + ")" + "\t[" + CharNormalizerJa.ToHalfAns2.normalize(url3.artist) + ", " + CharNormalizerJa.ToHalfAns2.normalize(url3.title) + "]");
                 cn++;

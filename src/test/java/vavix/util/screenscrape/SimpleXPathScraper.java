@@ -22,7 +22,7 @@ import javax.xml.xpath.XPathFactory;
 public abstract class SimpleXPathScraper<O> extends XPathScraper<InputStream, O> {
 
     /** */
-    protected XPath xPath = XPathFactory.newInstance().newXPath();
+    protected final XPath xPath = XPathFactory.newInstance().newXPath();
 
     /** */
     public SimpleXPathScraper(String xpath) {

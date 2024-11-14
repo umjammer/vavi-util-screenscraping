@@ -26,6 +26,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
     /**
      *
      */
+    @Override
     public DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
         return new DocumentBuilderImpl(this);
     }
@@ -33,6 +34,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
     /**
      * Allows the user to set specific attributes on the underlying implementation.
      */
+    @Override
     public void setAttribute(String name, Object value) throws IllegalArgumentException {
         if ("encoding".equals(name)) {
             this.encoding = (String) value;
@@ -44,6 +46,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
     /**
      * Allows the user to retrieve specific attributes on the underlying implementation.
      */
+    @Override
     public Object getAttribute(String name) throws IllegalArgumentException {
         if ("encoding".equals(name)) {
             return encoding;
@@ -53,11 +56,13 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
     }
 
     /** @see javax.xml.parsers.DocumentBuilderFactory#setFeature(java.lang.String, boolean) */
+    @Override
     public void setFeature(String feature, boolean enabled) throws ParserConfigurationException {
         throw new IllegalArgumentException("No feature are implemented");
     }
 
     /** @see javax.xml.parsers.DocumentBuilderFactory#getFeature(java.lang.String) */
+    @Override
     public boolean getFeature(String feature) throws ParserConfigurationException {
         throw new IllegalArgumentException("No feature are implemented");
     }

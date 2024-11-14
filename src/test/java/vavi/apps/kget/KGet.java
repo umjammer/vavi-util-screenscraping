@@ -42,12 +42,12 @@ import vavix.util.screenscrape.Scraper;
 @SuppressWarnings("deprecation")
 class KGet {
 
-    static String lyricsUrlXpath;
-    static String targetXpath;
-    static String searchUrlFormat;
-    static String lyricsUrlFormat;
-    static String userAgent;
-    static String encoding;
+    static final String lyricsUrlXpath;
+    static final String targetXpath;
+    static final String searchUrlFormat;
+    static final String lyricsUrlFormat;
+    static final String userAgent;
+    static final String encoding;
 
     /* */
     static {
@@ -70,9 +70,9 @@ Debug.printStackTrace(e);
     /** */
     static class KGetURLScraper implements Scraper<String[], File> {
         /** */
-        private HttpClient httpClient = HttpClients.createDefault();
+        private final HttpClient httpClient = HttpClients.createDefault();
 
-        XPath xPath = XPathFactory.newInstance().newXPath();
+        final XPath xPath = XPathFactory.newInstance().newXPath();
 
         /**
          * <pre>
@@ -109,7 +109,7 @@ System.err.println("search: " + searchUrl);
 //System.err.println("lyricsUrlXpath: " + lyricsUrlXpath);
                 String lyricsUrl = xPath.evaluate(lyricsUrlXpath, document);
 System.err.println("lyricsUrl: " + lyricsUrl);
-                if (lyricsUrl.equals("")) {
+                if (lyricsUrl.isEmpty()) {
                     throw new IllegalArgumentException(args[0] + "/" + args[1] + " not found.");
                 }
 
@@ -135,7 +135,7 @@ System.err.println("redirectUrl: " + lyricsUrl);
 
                 String target = xPath.evaluate(targetXpath, document);
 System.err.println("target: " + target);
-                if (lyricsUrl.equals("")) {
+                if (lyricsUrl.isEmpty()) {
                     throw new IllegalArgumentException(args[0] + "/" + args[1] + " not found.");
                 }
 

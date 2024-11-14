@@ -30,7 +30,7 @@ public class Amazon {
 
     /** */
     public static class MyInput extends SeleniumInputHandler {
-        private static WebDriver driver;
+        private static final WebDriver driver;
 
         @PropsEntity(url = "file://${user.dir}/local.properties")
         public static class Id {
@@ -52,6 +52,7 @@ public class Amazon {
             }
         }
 
+        @Override
         protected WebDriver getDriver() {
             return driver;
         }
@@ -68,11 +69,10 @@ public class Amazon {
         // TODO url
         String author = "";
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(title);
-            sb.append(", ");
-            sb.append(author);
-            return sb.toString();
+            String sb = title +
+                    ", " +
+                    author;
+            return sb;
         }
     }
 

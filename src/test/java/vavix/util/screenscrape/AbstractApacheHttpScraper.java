@@ -70,7 +70,7 @@ abstract class AbstractApacheHttpScraper<I, O> extends AbstractHttpScraper<I, O>
     }
 
     /** */
-    protected ErrorHandler<Integer> errorHandler = status -> {
+    protected final ErrorHandler<Integer> errorHandler = status -> {
         if (status != 200) {
             throw new IllegalStateException("unexpected result: " + status);
         }

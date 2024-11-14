@@ -6,17 +6,20 @@
 
 package vavix.util.screenscrape.annotation;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.logging.Level;
 
 import vavi.beans.BeanUtil;
 import vavi.beans.Binder;
-import vavi.util.Debug;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -27,6 +30,8 @@ import vavi.util.Debug;
  * @version 0.00 2020/03/20 nsano initial version <br>
  */
 public abstract class BaseParser<I, T, N> implements Parser<I, T> {
+
+    private static final Logger logger = getLogger(BaseParser.class.getName());
 
     /** If you want to modify the selector by the field condition, implement a method in a sub class. */
     protected String fixSelector(Field field, String selector) {
@@ -73,7 +78,7 @@ public abstract class BaseParser<I, T, N> implements Parser<I, T> {
         isDebug = WebScraper.Util.isDebug(type);
         encoding = WebScraper.Util.getEncoding(type);
 if (WebScraper.Util.isDebug(type)) {
- Debug.println(Level.FINER, "encoding: " + encoding);
+ logger.log(Level.TRACE, "encoding: " + encoding);
 }
         isCollection = WebScraper.Util.isCollection(type);
         try {
@@ -84,10 +89,11 @@ if (WebScraper.Util.isDebug(type)) {
                         return results.get(i);
                     } else {
                         try {
-                            T bean = type.newInstance();
+                            T bean = type.getDeclaredConstructor().newInstance();
                             results.add(bean);
                             return bean;
-                        } catch (InstantiationException | IllegalAccessException e) {
+                        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                                 InvocationTargetException e) {
                             throw new IllegalStateException(e);
                         }
                     }
@@ -118,7 +124,7 @@ if (WebScraper.Util.isDebug(type)) {
         isDebug = WebScraper.Util.isDebug(type);
         encoding = WebScraper.Util.getEncoding(type);
 if (WebScraper.Util.isDebug(type)) {
- Debug.println(Level.FINER, "encoding: " + encoding);
+ logger.log(Level.TRACE, "encoding: " + encoding);
 }
         isCollection = WebScraper.Util.isCollection(type);
         try {
@@ -129,10 +135,11 @@ if (WebScraper.Util.isDebug(type)) {
                         return results.get(i);
                     } else {
                         try {
-                            T bean = type.newInstance();
+                            T bean = type.getDeclaredConstructor().newInstance();
                             results.add(bean);
                             return bean;
-                        } catch (InstantiationException | IllegalAccessException e) {
+                        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                                 InvocationTargetException e) {
                             throw new IllegalStateException(e);
                         }
                     }
@@ -226,7 +233,7 @@ if (WebScraper.Util.isDebug(type)) {
         N document = getDocument(inputHandler.getInput(args));
 
         for (N node : selectAll(selector, document)) {
-            T bean = type.newInstance();
+            T bean = type.getDeclaredConstructor().newInstance();
 
             N subDocument = getSubDocument(node);
 
@@ -238,14 +245,14 @@ if (WebScraper.Util.isDebug(type)) {
                 boolean optional = Target.Util.isOptional(field);
                 try {
 if (isDebug) {
- Debug.println(Level.FINER, fixSelector(field, subSelector) + ", " + subDocument);
+ logger.log(Level.TRACE, fixSelector(field, subSelector) + ", " + subDocument);
 }
                     String text = asText(select(fixSelector(field, subSelector), subDocument));
                     binder.bind(bean, field, field.getType(), text, option);
                 } catch (Exception e) {
                     if (!optional) {
 if (isDebug) {
- Debug.println(Level.FINE, e + "\n" + subDocument);
+ logger.log(Level.DEBUG, e + "\n" + subDocument);
 }
                     }
                 }

@@ -38,7 +38,7 @@ import vavi.util.Debug;
 public class StringJaxenXPathScraper extends XPathScraper<InputStream, String> {
 
     /** encoding for html */
-    private String encoding;
+    private final String encoding;
 
     StringJaxenXPathScraper(String xpath, String encoding) {
         super(xpath);
@@ -46,22 +46,23 @@ public class StringJaxenXPathScraper extends XPathScraper<InputStream, String> {
     }
 
     /** 翻訳します。 */
+    @Override
     public String scrape(InputStream source) {
 
         try {
             InputSource is = new InputSource(new InputStreamReader(source, encoding));
             Document document = builder.parse(is);
-// PrettyPrinter pp = new PrettyPrinter(new PrintWriter(System.out));
-// pp.print(document);
+//PrettyPrinter pp = new PrettyPrinter(new PrintWriter(System.out));
+//pp.print(document);
 
             XPath xPath = new DOMXPath(xpath);
             List<?> list = xPath.selectNodes(document);
-// Debug.println(list.size());
+//Debug.println(list.size());
             Iterator<?> i = list.iterator();
             String value = null;
             if (i.hasNext()) {
                 Node node = (Node) i.next();
-// Debug.println(node);
+//Debug.println(node);
                 value = node.getNodeValue();
             }
 
@@ -76,9 +77,9 @@ public class StringJaxenXPathScraper extends XPathScraper<InputStream, String> {
     }
 
     /** */
-    private static DocumentBuilder builder;
+    private static final DocumentBuilder builder;
 
-    /** */
+    /* */
     static {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setValidating(false);

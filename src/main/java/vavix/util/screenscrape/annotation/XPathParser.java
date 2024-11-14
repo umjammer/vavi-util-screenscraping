@@ -11,12 +11,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,6 +39,8 @@ import vavi.beans.BeanUtil;
 import vavi.util.Debug;
 import vavi.xml.util.PrettyPrinter;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * XPathParser.
@@ -48,17 +52,19 @@ import vavi.xml.util.PrettyPrinter;
  */
 public class XPathParser<T> implements Parser<Reader, T> {
 
-    /** */
-    protected XPath xPath;
+    private static final Logger logger = getLogger(XPathParser.class.getName());
 
     /** */
-    protected DocumentBuilder db;
+    protected final XPath xPath;
+
+    /** */
+    protected final DocumentBuilder db;
 
     {
-Debug.println(Level.FINER, XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI);
+logger.log(Level.TRACE, XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI);
 //        System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "org.apache.xpath.jaxp.XPathFactoryImpl");
         xPath = XPathFactory.newInstance().newXPath();
-Debug.println(Level.FINER, XPathFactory.newInstance().getClass());
+logger.log(Level.TRACE, XPathFactory.newInstance().getClass());
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
@@ -73,10 +79,11 @@ Debug.println(Level.FINER, XPathFactory.newInstance().getClass());
      * TODO InputHandler needs cache because Reader is inside of fields loop
      * <li> TODO now 1 step XPath only
      */
+    @Override
     public List<T> parse(Class<T> type, InputHandler<Reader> handler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-Debug.println(Level.FINER, "encoding: " + encoding);
+logger.log(Level.TRACE, "encoding: " + encoding);
             Reader reader = handler.getInput(args);
 
             InputSource in = new InputSource(reader);
@@ -84,7 +91,7 @@ Debug.println(Level.FINER, "encoding: " + encoding);
 
             Document document = db.parse(in);
 if (WebScraper.Util.isDebug(type)) {
- if (Debug.isLoggable(Level.FINE)) {
+ if (Debug.isLoggable(java.util.logging.Level.FINE)) {
   PrettyPrinter pp = new PrettyPrinter(System.err);
   pp.print(document);
  }
@@ -95,34 +102,34 @@ if (WebScraper.Util.isDebug(type)) {
             for (Field field : targetFields) {
 
                 String xpath = Target.Util.getValue(field);
-Debug.println(Level.FINER, "xpath: " + xpath);
+logger.log(Level.TRACE, "xpath: " + xpath);
 
                 if (WebScraper.Util.isCollection(type)) {
 
                     NodeList nodeList = (NodeList) xPath.evaluate(xpath, document, XPathConstants.NODESET);
-Debug.println(Level.FINER, "nodeList: " + nodeList.getLength());
+logger.log(Level.TRACE, "nodeList: " + nodeList.getLength());
                     for (int i = 0; i < nodeList.getLength(); i++) {
-                        // because loops for each fields, instantiation should be done once
+                        // because loops for each field, instantiation should be done once
                         T bean = null;
                         try {
                             bean = results.get(i);
                         } catch (IndexOutOfBoundsException e) {
-                            bean = type.newInstance();
+                            bean = type.getDeclaredConstructor().newInstance();
                             results.add(bean);
                         }
 
                         String text = nodeList.item(i).getTextContent().trim();
-Debug.println(Level.FINER, field.getName() + ": " + text);
+logger.log(Level.TRACE, field.getName() + ": " + text);
                         BeanUtil.setFieldValue(field, bean, text);
                     }
                 } else {
 
-                    // because loops for each fields, instantiation should be done once
+                    // because loops for each field, instantiation should be done once
                     T bean = null;
                     try {
                         bean = results.get(0);
                     } catch (IndexOutOfBoundsException e) {
-                        bean = type.newInstance();
+                        bean = type.getDeclaredConstructor().newInstance();
                         results.add(bean);
                     }
 
@@ -135,7 +142,8 @@ Debug.println(Level.FINER, field.getName() + ": " + text);
 
         } catch (XPathExpressionException | SAXException e) {
             throw new IllegalArgumentException(e);
-        } catch (IllegalAccessException | InstantiationException | IOException e) {
+        } catch (IllegalAccessException | InstantiationException | IOException | NoSuchMethodException |
+                 InvocationTargetException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -152,10 +160,11 @@ Debug.println(Level.FINER, field.getName() + ": " + text);
      * TODO now 2 step XPath only
      * TODO how about: if {@link WebScraper#value()} exists then 2 step
      */
+    @Override
     public void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<Reader> inputHandler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
-Debug.println(Level.FINER, "encoding: " + encoding);
+logger.log(Level.TRACE, "encoding: " + encoding);
 
             InputSource in = new InputSource(inputHandler.getInput(args));
             in.setEncoding(encoding);
@@ -165,25 +174,25 @@ Debug.println(Level.FINER, "encoding: " + encoding);
             Object nodeSet = xPath.evaluate(xpath, in, XPathConstants.NODESET);
 
             NodeList nodeList = (NodeList) nodeSet;
-//System.err.println("nodeList: " + nodeList.getLength());
+//logger.log(Level.TRACE, "nodeList: " + nodeList.getLength());
 if (WebScraper.Util.isDebug(type)) {
  if (nodeList.getLength() == 0) {
-//  System.err.println("xpath: " + xpath);
-  Debug.println(Level.FINE, "no node list: " + xpath);
+//logger.log(Level.TRACE, "xpath: " + xpath);
+  logger.log(Level.DEBUG, "no node list: " + xpath);
   new PrettyPrinter(System.err).print(new InputSource(inputHandler.getInput(args)));
  }
 }
 
             for (int i = 0; i < nodeList.getLength(); i++) {
-                T bean = type.newInstance();
+                T bean = type.getDeclaredConstructor().newInstance();
 
                 Node node = nodeList.item(i);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 new PrettyPrinter(new PrintWriter(baos)).print(node);
 if (WebScraper.Util.isDebug(type)) {
- if (Debug.isLoggable(Level.FINE)) {
+ if (Debug.isLoggable(java.util.logging.Level.FINE)) {
   System.err.println("-------------------------------------------------------------");
-  System.err.println(baos.toString()); // TODO use encoding
+  System.err.println(baos); // TODO use encoding
  }
 }
                 InputSource is = new InputSource(new ByteArrayInputStream(baos.toByteArray()));
@@ -203,7 +212,8 @@ if (WebScraper.Util.isDebug(type)) {
 
         } catch (XPathExpressionException | SAXException e) {
             throw new IllegalArgumentException(e);
-        } catch (IllegalAccessException | InstantiationException | IOException e) {
+        } catch (IllegalAccessException | InstantiationException | IOException | NoSuchMethodException |
+                 InvocationTargetException e) {
             throw new IllegalStateException(e);
         }
     }

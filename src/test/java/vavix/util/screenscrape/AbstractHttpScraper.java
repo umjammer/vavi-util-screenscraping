@@ -24,7 +24,7 @@ import java.util.Properties;
 @Deprecated
 abstract class AbstractHttpScraper<I, O> implements Scraper<I, O> {
     /** */
-    protected Scraper<InputStream, O> scraper;
+    protected final Scraper<InputStream, O> scraper;
 
     /** */
     public AbstractHttpScraper(Scraper<InputStream, O> scraper) {
@@ -32,7 +32,7 @@ abstract class AbstractHttpScraper<I, O> implements Scraper<I, O> {
     }
 
     /** */
-    protected Map<String, String> requestHeaders = new HashMap<>();
+    protected final Map<String, String> requestHeaders = new HashMap<>();
 
     /** */
     protected Map<String, List<String>> responseHeaders;

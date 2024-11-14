@@ -45,23 +45,27 @@ public class DocumentBuilderImpl extends DocumentBuilder {
 
     /** */
     @SuppressWarnings("unused")
-    private DOMImplementation domParser = new DOMImplementation() {
+    private final DOMImplementation domParser = new DOMImplementation() {
 
+        @Override
         public Document createDocument(String namespaceURI, String qualifiedName, DocumentType doctype) throws DOMException {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public DocumentType createDocumentType(String qualifiedName, String publicId, String systemId) throws DOMException {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public Object getFeature(String feature, String version) {
             // TODO Auto-generated method stub
             return null;
         }
 
+        @Override
         public boolean hasFeature(String feature, String version) {
             // TODO Auto-generated method stub
             return false;
@@ -87,21 +91,22 @@ public class DocumentBuilderImpl extends DocumentBuilder {
 
     }
 
-    /** */
+    @Override
     public Document newDocument() {
         return (Document) new org.w3c.tidy.Node(org.w3c.tidy.Node.ROOT_NODE, new byte[0], 0, 0) {
+            @Override
             public Node getAdapter() {
                 return super.getAdapter();
             }
         }.getAdapter();
     }
 
-    /** */
+    @Override
     public DOMImplementation getDOMImplementation() {
         throw new UnsupportedOperationException("not implmented yet");
     }
 
-    /** */
+    @Override
     public Document parse(InputSource is) throws SAXException, IOException {
         if (is == null) {
             throw new IllegalArgumentException("InputSource cannot be null");
@@ -116,12 +121,12 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         }
 
         String encoding = (String) dbf.getAttribute("encoding");
-// System.err.println("encoding: " + encoding);
+//logger.log(Level.TRACE, "encoding: " + encoding);
         if (encoding != null) {
 //            domParser.setInputEncoding(encoding);
 //            domParser.setCharEncoding(org.w3c.tidy.Configuration.UTF8);
         }
-//System.err.println("encoding: " + domParser.getInputEncoding());
+//logger.log(Level.TRACE, "encoding: " + domParser.getInputEncoding());
 
         InputStream inputStream = is.getByteStream();
         if (inputStream == null) {
@@ -131,22 +136,22 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         return document;
     }
 
-    /** */
+    @Override
     public boolean isNamespaceAware() {
         return namespaceAware;
     }
 
-    /** */
+    @Override
     public boolean isValidating() {
         return validating;
     }
 
-    /** */
+    @Override
     public void setEntityResolver(EntityResolver er) {
         this.er = er;
     }
 
-    /** */
+    @Override
     public void setErrorHandler(ErrorHandler eh) {
         // If app passes in a ErrorHandler of null,
         // then ignore all errors and warnings

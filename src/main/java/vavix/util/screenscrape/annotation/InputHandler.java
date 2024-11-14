@@ -52,23 +52,19 @@ public interface InputHandler<T> {
      * @throws IllegalArgumentException when url is null.
      */
     static String[] _dealUrlAndArgs(String url, String... args) {
-        try {
-            String[] newArgs = new String[args.length + 1];
-            if (url != null && !url.isEmpty()) {
-                int c = 0;
-                for (String arg : args) {
-                    url = url.replace("{" + c + "}", URLEncoder.encode(arg, StandardCharsets.UTF_8.name()));
-//System.err.println(url + ", " + arg);
-                    newArgs[c + 1] = arg;
-                    c++;
-                }
-                newArgs[0] = url;
-                return newArgs;
-            } else {
-                throw new IllegalArgumentException("url should not be null or empty");
+        String[] newArgs = new String[args.length + 1];
+        if (url != null && !url.isEmpty()) {
+            int c = 0;
+            for (String arg : args) {
+                url = url.replace("{" + c + "}", URLEncoder.encode(arg, StandardCharsets.UTF_8));
+//logger.log(Level.TRACE, url + ", " + arg);
+                newArgs[c + 1] = arg;
+                c++;
             }
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException(e);
+            newArgs[0] = url;
+            return newArgs;
+        } else {
+            throw new IllegalArgumentException("url should not be null or empty");
         }
     }
 }

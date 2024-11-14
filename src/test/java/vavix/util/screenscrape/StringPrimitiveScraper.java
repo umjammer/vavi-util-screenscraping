@@ -24,14 +24,14 @@ import java.util.NoSuchElementException;
 public class StringPrimitiveScraper implements Scraper<InputStream, String> {
 
     /** encoding for html */
-    private String encoding;
+    private final String encoding;
 
     /** */
     StringPrimitiveScraper(String encoding) {
         this.encoding = encoding;
     }
 
-    /** */
+    @Override
     public String scrape(InputStream is) {
         String html;
         try {

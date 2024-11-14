@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,7 +34,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
 @Disabled
 public class GoogleSearch {
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
+    static final WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
 
     static {
         client.setJavaScriptEngine(null);
@@ -46,12 +47,13 @@ public class GoogleSearch {
         /**
          * @param args 0: artist
          */
+        @Override
         public Reader getInput(String ... args) throws IOException {
 
             String name = args[0];
 
             if (!name.equals(cacheKey)) {
-                HtmlPage page = client.getPage("https://www.google.com/search?q=" + URLEncoder.encode(name, "UTF-8") + "#lr=lang_ja");
+                HtmlPage page = client.getPage("https://www.google.com/search?q=" + URLEncoder.encode(name, StandardCharsets.UTF_8) + "#lr=lang_ja");
                 cache = page.asXml();
                 cacheKey = name;
             }
@@ -69,13 +71,12 @@ public class GoogleSearch {
         @Target("//SPAN[@class='st']/text()")
         String pronunciation;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-//            sb.append("name: ");
+            //            sb.append("name: ");
 //            sb.append(name);
 //            sb.append(", ");
-            sb.append("pronunciation: ");
-            sb.append(pronunciation);
-            return sb.toString();
+            String sb = "pronunciation: " +
+                    pronunciation;
+            return sb;
         }
     }
 

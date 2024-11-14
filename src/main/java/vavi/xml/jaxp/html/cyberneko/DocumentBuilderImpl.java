@@ -7,7 +7,8 @@
 package vavi.xml.jaxp.html.cyberneko;
 
 import java.io.IOException;
-import java.util.logging.Level;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -22,7 +23,8 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import vavi.util.Debug;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -34,8 +36,10 @@ import vavi.util.Debug;
  */
 public class DocumentBuilderImpl extends DocumentBuilder {
 
+    private static final Logger logger = getLogger(DocumentBuilderImpl.class.getName());
+
     /** */
-    private DocumentBuilderFactory dbf;
+    private final DocumentBuilderFactory dbf;
 
     /** */
     private EntityResolver er = null;
@@ -69,7 +73,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
                   parser.setFeature("http://cyberneko.org/html/features/augmentations", true);
                   parser.setFeature("http://xml.org/sax/features/namespaces", false);
                   parser.setProperty("http://cyberneko.org/html/properties/names/elems", "lower");
-Debug.println(Level.FINE, "http://xml.org/sax/features/validation: " + this.dbf.isValidating());
+logger.log(Level.DEBUG, "http://xml.org/sax/features/validation: " + this.dbf.isValidating());
 //              }
 
         } catch (SAXException e) {
@@ -95,7 +99,7 @@ Debug.println(Level.FINE, "http://xml.org/sax/features/validation: " + this.dbf.
         }
 
         String encoding = (String) dbf.getAttribute("encoding");
-//System.err.println("encoding: " + encoding);
+//logger.log(Level.TRACE, "encoding: " + encoding);
 
 //        if (encoding == null) {
 //            encoding = findEncoding(is);
@@ -104,7 +108,7 @@ Debug.println(Level.FINE, "http://xml.org/sax/features/validation: " + this.dbf.
         if (encoding != null) {
             is.setEncoding(encoding);
         }
-//System.err.println("encoding: " + is.getEncoding());
+//logger.log(Level.TRACE, "encoding: " + is.getEncoding());
 
 //        if (domParser instanceof DOMFragmentParser) {
 //            DOMFragmentParser parser = (DOMFragmentParser) domParser;
@@ -157,20 +161,20 @@ Debug.println(Level.FINE, "http://xml.org/sax/features/validation: " + this.dbf.
 //     */
 //    private String findEncoding(InputSource is) throws SAXException, IOException {
 //        String encoding = null;
-//System.err.println(StringUtil.paramString(is));
+//logger.log(Level.TRACE, StringUtil.paramString(is));
 //
 //        Reader reader = null;
 //        InputStream in = is.getByteStream();
 //        if (in == null) {
 //            reader = is.getCharacterStream();
 //            if (!reader.markSupported()) {
-//System.err.println("mark unsupported reader");
+//logger.log(Level.TRACE, "mark unsupported reader");
 //                return null;
 //            }
 //            reader.mark(16384);
 //        } else {
 //            if (!in.markSupported()) {
-//System.err.println("mark unsupported stream");
+//logger.log(Level.TRACE, "mark unsupported stream");
 //                return null;
 //            }
 //            in.mark(16384);
@@ -198,9 +202,9 @@ Debug.println(Level.FINE, "http://xml.org/sax/features/validation: " + this.dbf.
 //                    encoding = st.nextToken();
 //                }
 //            }
-//System.err.println("encoding: " + encoding);
+//logger.log(Level.TRACE, "encoding: " + encoding);
 //        } catch (XPathExpressionException e) {
-//System.err.println(e);
+//logger.log(Level.TRACE, e);
 //        }
 //
 //        if (in != null) {

@@ -6,10 +6,14 @@
 
 package vavi.xml.jaxp.html.tidy;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.SAXException;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -21,8 +25,10 @@ import org.xml.sax.SAXException;
 @SuppressWarnings(value="deprecation")
 public class SAXParserImpl extends SAXParser {
 
+    private static final Logger logger = getLogger(SAXParserImpl.class.getName());
+
     /** */
-    private org.xml.sax.Parser parser;
+    private final org.xml.sax.Parser parser;
 
     /** */
     SAXParserImpl() throws SAXException, ParserConfigurationException {
@@ -41,7 +47,7 @@ public class SAXParserImpl extends SAXParser {
 
     @Override
     public void setProperty(String name, Object value) {
-System.err.println("not implemented");
+logger.log(Level.TRACE, "not implemented");
     }
 
     @Override

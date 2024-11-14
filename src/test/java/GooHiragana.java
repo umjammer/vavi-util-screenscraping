@@ -41,13 +41,12 @@ public class GooHiragana {
         @Target
         String converted;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(request_id);
-            sb.append(",");
-            sb.append(output_type);
-            sb.append(",");
-            sb.append(converted);
-            return sb.toString();
+            String sb = request_id +
+                    "," +
+                    output_type +
+                    "," +
+                    converted;
+            return sb;
         }
         static final String BODY = "{\"app_id\":\"{0}\",\"request_id\":\"001\", \"sentence\":\"{1}\",\"output_type\":\"katakana\"}";
     }

@@ -6,11 +6,12 @@
 
 package vavix.net.proxy;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
 
-import vavi.util.Debug;
+import static java.lang.System.getLogger;
 
 
 /**
@@ -21,6 +22,8 @@ import vavi.util.Debug;
  */
 public class UserAgentSwitcher {
 
+    private static final Logger logger = getLogger(UserAgentSwitcher.class.getName());
+
     /** */
     private UserAgentDao userAgentDao;
 
@@ -30,13 +33,13 @@ public class UserAgentSwitcher {
     }
 
     /** */
-    private Random random = new Random(System.currentTimeMillis());
+    private final Random random = new Random(System.currentTimeMillis());
 
     /** */
     public String getUserAgent() {
         List<String> userAgents = userAgentDao.getUserAgents();
         String userAgent = userAgents.get(random.nextInt(userAgents.size()));
-Debug.println(Level.FINER, "userAgent: " + userAgent);
+logger.log(Level.TRACE, "userAgent: " + userAgent);
         return userAgent;
     }
 }

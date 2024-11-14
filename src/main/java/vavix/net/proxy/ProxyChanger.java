@@ -28,7 +28,7 @@ public class ProxyChanger {
     }
 
     /** */
-    private Random random = new Random(System.currentTimeMillis());
+    private final Random random = new Random(System.currentTimeMillis());
 
     /** TODO ProxyInternetAddress で bad or quality */
     public static class InternetAddress {
@@ -70,7 +70,7 @@ public class ProxyChanger {
         int max = proxyAddresses.size();
         int current = random.nextInt(max);
         InternetAddress proxyAddress = proxyAddresses.get(current);
-//Debug.println("proxyAddress: " + proxyAddress + " (" + current + "/" + max + ")");
+//logger.log(Level.DEBUG, "proxyAddress: " + proxyAddress + " (" + current + "/" + max + ")");
         return proxyAddress;
     }
 }

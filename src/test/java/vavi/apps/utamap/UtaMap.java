@@ -54,7 +54,7 @@ Debug.printStackTrace(e);
     /** */
     static class UtaMapURLScraper implements Scraper<URL, File> {
         /** */
-        private HttpClient httpClient = HttpClients.createDefault();
+        private final HttpClient httpClient = HttpClients.createDefault();
 
         /**
          * <pre>

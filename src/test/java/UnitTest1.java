@@ -96,7 +96,7 @@ System.err.println("N: " + title + " -> " + normalizedName);
             System.err.println(title);
             Matcher matcher = iTunes.normalizeComposerPattern.matcher(title);
             if (matcher.matches()) {
-                Assertions.assertFalse(true);
+                Assertions.fail();
             }
         }
         titles = new String[] {
@@ -113,7 +113,7 @@ System.err.println("N: " + title + " -> " + normalizedName);
             System.err.println(title);
             Matcher matcher = iTunes.normalizeComposerPattern.matcher(title);
             if (!matcher.matches()) {
-                Assertions.assertFalse(true);
+                Assertions.fail();
             }
         }
     }
@@ -161,7 +161,7 @@ System.err.println("N: " + title + " -> " + normalizedName);
       };
 
       for (String url : us) {
-          final Pattern pattern = Pattern.compile("(.*)(main\\.jsp.*)");
+          Pattern pattern = Pattern.compile("(.*)(main\\.jsp.*)");
           Matcher matcher = pattern.matcher(url);
           if (matcher.matches()) {
               url = matcher.group(2);

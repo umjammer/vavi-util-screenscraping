@@ -37,23 +37,23 @@ import vavix.util.screenscrape.StringSimpleXPathScraper;
 public class InfoseekJapanTranslator implements Translator {
 
     /** url host */
-    private static String HOST;
+    private static final String HOST;
     /** url port */
-    private static int PORT;
+    private static final int PORT;
     /** url path, specify one {0} */
-    private static String TO_LOCAL;
+    private static final String TO_LOCAL;
     /** url path, specify one {0} */
-    private static String TO_GLOBAL;
+    private static final String TO_GLOBAL;
 
     /** url encoding */
-    private static String encoding;
+    private static final String encoding;
 
     /**
      * Commons HttpClient, POST method
      */
     private static class MyScraper extends ApacheHttpScraper<String> {
         /** */
-        static UserAgentSwitcher userAgentSwitcher;
+        static final UserAgentSwitcher userAgentSwitcher;
         /* */
         static {
             userAgentSwitcher = new UserAgentSwitcher();
@@ -64,7 +64,7 @@ public class InfoseekJapanTranslator implements Translator {
             super(new StringSimpleXPathScraper(xpath));
         }
         /** */
-        public MyScraper(String xpath, final String referer) {
+        public MyScraper(String xpath, String referer) {
             super(new StringI18nSimpleXPathScraper(xpath, encoding),
                   new Properties() {
                     {
@@ -90,7 +90,7 @@ public class InfoseekJapanTranslator implements Translator {
      */
     private static class MyScraper2 extends SimpleURLScraper<String> {
         /** */
-        static UserAgentSwitcher userAgentSwitcher;
+        static final UserAgentSwitcher userAgentSwitcher;
         /* */
         static {
             userAgentSwitcher = new UserAgentSwitcher();
@@ -101,7 +101,7 @@ public class InfoseekJapanTranslator implements Translator {
             super(new StringSimpleXPathScraper(xpath));
         }
         /** */
-        public MyScraper2(String xpath, final String cookie, final String referer) {
+        public MyScraper2(String xpath, String cookie, String referer) {
             super(new StringI18nSimpleXPathScraper(xpath, encoding),
                   new Properties() {{
                         String userAgent = userAgentSwitcher.getUserAgent();
@@ -125,7 +125,7 @@ public class InfoseekJapanTranslator implements Translator {
     }
 
     /** post */
-    private String translate(String word, String base, String selector) throws IOException {
+    private static String translate(String word, String base, String selector) throws IOException {
         MyScraper scraper1 = new MyScraper(xpath1);
         HttpContext request = new HttpContext();
         URL url01 = new URL(url1);
@@ -157,7 +157,7 @@ Debug.println("url: " + url);
     }
 
     /** get */
-    private String translate2(String word, String base, String selector) throws IOException {
+    private static String translate2(String word, String base, String selector) throws IOException {
         MyScraper2 scraper1 = new MyScraper2(xpath1);
         String token = scraper1.scrape(new URL(url1));
         String cookie = scraper1.getCookie();
@@ -182,11 +182,11 @@ Debug.println("url: " + url);
     }
 
     /** */
-    private static String url1;
+    private static final String url1;
     /** */
-    private static String xpath1;
+    private static final String xpath1;
     /** */
-    private static String xpath2;
+    private static final String xpath2;
 
     /* */
     static {
@@ -212,13 +212,11 @@ Debug.printStackTrace(e);
         }
     }
 
-    /** */
     @Override
     public Locale getLocalLocale() {
         return Locale.JAPANESE;
     }
 
-    /** */
     @Override
     public Locale getGlobalLocal() {
         return Locale.ENGLISH;

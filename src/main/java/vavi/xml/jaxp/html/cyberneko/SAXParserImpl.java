@@ -7,6 +7,8 @@
 package vavi.xml.jaxp.html.cyberneko;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,8 @@ import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * This implements JAXP parser interface for cyberneko HTML parser.
@@ -33,8 +37,10 @@ import org.xml.sax.XMLReader;
 @SuppressWarnings(value="deprecation")
 public class SAXParserImpl extends SAXParser {
 
+    private static final Logger logger = getLogger(SAXParserImpl.class.getName());
+
     /** */
-    private org.xml.sax.Parser parser;
+    private final org.xml.sax.Parser parser;
 
     /** */
     SAXParserImpl() throws SAXException, ParserConfigurationException {
@@ -49,12 +55,12 @@ public class SAXParserImpl extends SAXParser {
     @Override
     public XMLReader getXMLReader() throws SAXException {
         return new XMLReader() {
-            Map<String, Object> properties = new HashMap<>();
+            final Map<String, Object> properties = new HashMap<>();
             @Override
             public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
                 properties.put(name, value);
             }
-            Map<String, Boolean> features = new HashMap<>();
+            final Map<String, Boolean> features = new HashMap<>();
             @Override
             public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
                 features.put(name, value);
@@ -128,7 +134,7 @@ public class SAXParserImpl extends SAXParser {
 
     @Override
     public void setProperty(String name, Object value) {
-System.err.println("not implemented");
+logger.log(Level.TRACE, "not implemented");
     }
 
     @Override

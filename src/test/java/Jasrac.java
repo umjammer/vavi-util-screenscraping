@@ -34,7 +34,7 @@ import vavix.util.screenscrape.annotation.XPathParser;
  */
 public class Jasrac {
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
+    static final WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
 
     static {
         client.setJavaScriptEngine(null); // TODO
@@ -46,6 +46,7 @@ public class Jasrac {
         /**
          * @param args 0: artist, 1: title
          */
+        @Override
         public Reader getInput(String ... args) throws IOException {
             if (cache != null) {
                 return new StringReader(cache);
@@ -74,14 +75,14 @@ public class Jasrac {
             HtmlInput button1 = form1.getInputByName("CMD_SEARCH");
 
             HtmlPage page3 = button1.click();
-            StringBuffer sb = new StringBuffer(page3.asXml());
+            StringBuilder sb = new StringBuilder(page3.asXml());
 
 int p = 0;
             try {
                 HtmlPage nextPage = page3;
                 while (true) {
                     HtmlAnchor nextAnchor = nextAnchor(nextPage.getAnchors());
-                    nextPage = (HtmlPage) nextAnchor.click();
+                    nextPage = nextAnchor.click();
                     sb.append(nextPage.asXml());
 System.err.println("page: " + ++p);
                 }
@@ -95,7 +96,7 @@ System.err.println("last page: " + sb.length());
         }
 
         /** */
-        HtmlAnchor nextAnchor(List<HtmlAnchor> anchors) {
+        static HtmlAnchor nextAnchor(List<HtmlAnchor> anchors) {
             for (HtmlAnchor anchor : anchors) {
                 if (anchor.getAttribute("title").equals("次ページの結果を表示します")) {
                     return anchor;
@@ -115,13 +116,12 @@ System.err.println("last page: " + sb.length());
         @Target(value = "//TABLE//TR/TD[4]/A/@href")
         String url;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(CharNormalizerJa.ToHalfAns2.normalize(artist));
-            sb.append(", ");
-            sb.append(CharNormalizerJa.ToHalfAns2.normalize(title));
+            String sb = CharNormalizerJa.ToHalfAns2.normalize(artist) +
+                    ", " +
+                    CharNormalizerJa.ToHalfAns2.normalize(title);
 //            sb.append(", ");
 //            sb.append(url);
-            return sb.toString();
+            return sb;
         }
     }
 
@@ -131,6 +131,7 @@ System.err.println("last page: " + sb.length());
         /**
          * @param args 0: url
          */
+        @Override
         public Reader getInput(String ... args) throws IOException {
             if (cache != null) {
                 return new StringReader(cache);
@@ -156,11 +157,10 @@ System.err.println("last page: " + sb.length());
         @Target(value = "//TABLE[4]//TR/TD[3]/DIV/text()")
         String type;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(type);
-            sb.append(", ");
-            sb.append(CharNormalizerJa.ToHalfAns2.normalize(name));
-            return sb.toString();
+            String sb = type +
+                    ", " +
+                    CharNormalizerJa.ToHalfAns2.normalize(name);
+            return sb;
         }
     }
 
@@ -171,11 +171,11 @@ System.err.println("last page: " + sb.length());
         for (Composer composer : cs) {
 //System.err.println(composer);
 //System.err.println(composer.type + ", " + composer.type.indexOf("作詞") + ", " + composer.type.indexOf("作曲"));
-            if ((composer.type.indexOf("作詞") != -1 || composer.type.indexOf("訳詞") != -1) && composer.name.indexOf("権利者") == -1) {
+            if ((composer.type.contains("作詞") || composer.type.contains("訳詞")) && !composer.name.contains("権利者")) {
                 lyrics_.append(iTunes.normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(composer.name)));
                 lyrics_.append(", ");
             }
-            if ((composer.type.indexOf("作曲") != -1 || composer.type.indexOf("不明") != -1) && composer.name.indexOf("権利者") == -1) {
+            if ((composer.type.contains("作曲") || composer.type.contains("不明")) && !composer.name.contains("権利者")) {
                 music_.append(iTunes.normalizeComposer(CharNormalizerJa.ToHalfAns2.normalize(composer.name)));
                 music_.append(", ");
             }

@@ -9,11 +9,12 @@ package vavix.net.proxy;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -23,13 +24,14 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import vavi.util.Debug;
 import vavix.net.proxy.ProxyChanger.InternetAddress;
 import vavix.util.screenscrape.annotation.HtmlXPathParser;
 import vavix.util.screenscrape.annotation.InputHandler;
 import vavix.util.screenscrape.annotation.Target;
 import vavix.util.screenscrape.annotation.WebScraper;
 import vavix.util.selenium.SeleniumUtil;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -39,6 +41,8 @@ import vavix.util.selenium.SeleniumUtil;
  * @version 0.00 071004 nsano initial version <br>
  */
 public class CyberSyndromeProxyServerDao implements ProxyServerDao {
+
+    private static final Logger logger = getLogger(CyberSyndromeProxyServerDao.class.getName());
 
     /** */
     public CyberSyndromeProxyServerDao() {
@@ -50,7 +54,7 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
     }
 
     /** */
-    private List<InternetAddress> proxyAddresses = new ArrayList<>();
+    private final List<InternetAddress> proxyAddresses = new ArrayList<>();
 
     @Override
     public List<InternetAddress> getProxyInetSocketAddresses() {
@@ -59,14 +63,14 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
 
     // selenium
     public static class MyInput implements InputHandler<Reader> {
-        WebDriver driver;
+        final WebDriver driver;
         {
             driver = new SeleniumUtil().getWebDriver();
         }
 
         @Override
         public Reader getInput(String ... args) throws IOException {
-            driver.navigate().to("http://www.cybersyndrome.net/plr6.html");
+            driver.navigate().to("https://www.cybersyndrome.net/plr6.html");
             SeleniumUtil.waitFor(driver);
 
             return new StringReader(driver.findElement(By.tagName("html")).getAttribute("innerHTML"));
@@ -106,37 +110,37 @@ public class CyberSyndromeProxyServerDao implements ProxyServerDao {
     }
 
     /** TODO use timer */
-    private void updateProxyAddresses() throws IOException {
+    private static void updateProxyAddresses() throws IOException {
 
         ExecutorService executorService = Executors.newCachedThreadPool();
 
         WebScraper.Util.foreach(ProxyInternetAddress.class, address -> {
             try {
-//Debug.println("SUBMIT: " + address.address);
+//logger.log(Level.TRACE, "SUBMIT: " + address.address);
                 if (!address.address.isEmpty()) {
                     executorService.submit(new ProxyChecker(address));
                     Thread.sleep(300);
                 }
             } catch (Exception e) {
-Debug.println(Level.WARNING, "ERROR: " + address.address);
+logger.log(Level.WARNING, "ERROR: " + address.address);
             }
         });
     }
 
     static class ProxyChecker implements Runnable {
-        ProxyInternetAddress address;
+        final ProxyInternetAddress address;
         ProxyChecker(ProxyInternetAddress address) {
             this.address = address;
         }
         @Override public void run() {
-Debug.println("TRY: " + address.address);
+logger.log(Level.DEBUG, "TRY: " + address.address);
             HttpHost proxy = new HttpHost(address.getHostName(), address.getPort());
 
             try (CloseableHttpClient client = HttpClients.custom().setProxy(proxy).build()) {
 
-                HttpHead head = new HttpHead("http://www.yahoo.co.jp/");
+                HttpHead head = new HttpHead("https://www.yahoo.co.jp/");
                 HttpResponse response = client.execute(head);
-//Debug.println("STA: " + status);
+//logger.log(Level.TRACE, "STA: " + status);
                 boolean alive = response.getStatusLine().getStatusCode() == HttpStatus.SC_OK;
                 address.setAlive(alive);
             } catch (Exception e) {

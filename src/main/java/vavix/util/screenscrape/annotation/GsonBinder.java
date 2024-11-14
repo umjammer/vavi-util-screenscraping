@@ -28,7 +28,7 @@ import vavi.beans.Binder;
 public class GsonBinder<T> implements Binder {
 
     /** */
-    private Gson gson = new GsonBuilder().create();
+    private final Gson gson = new GsonBuilder().create();
 
     /**
      * @param elseValue when the fieldClass is List.class, {@link TypeToken} is
@@ -42,7 +42,7 @@ public class GsonBinder<T> implements Binder {
             @SuppressWarnings({"unchecked", "rawtypes"})
             Type listType = elseValue instanceof Class ?
                 getTypeToken((Class) elseValue).getType() : new TypeToken<ArrayList<T>>() {}.getType();
-//System.err.println("listType: " + listType.getTypeName());
+//logger.log(Level.TRACE, "listType: " + listType.getTypeName());
             BeanUtil.setFieldValue(field, destBean, gson.fromJson(value, listType));
         } else {
             BeanUtil.setFieldValue(field, destBean, gson.fromJson(value, fieldClass));
@@ -50,7 +50,7 @@ public class GsonBinder<T> implements Binder {
     }
 
     /** */
-    private TypeToken<?> getTypeToken(Class<TypeToken<?>> clazz) {
+    private static TypeToken<?> getTypeToken(Class<TypeToken<?>> clazz) {
         try {
             return clazz.getDeclaredConstructor().newInstance();
         } catch (Exception e) {

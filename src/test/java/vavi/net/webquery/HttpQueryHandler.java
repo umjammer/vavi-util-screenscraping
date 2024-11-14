@@ -31,7 +31,7 @@ public class HttpQueryHandler implements QueryHandler {
                 StringBuilder sb = new StringBuilder();
 
                 for (Entry<String, String> entry : parameters.entrySet()) {
-                    sb.append(sb.length() == 0 ? '?' : '&');
+                    sb.append(sb.isEmpty() ? '?' : '&');
                     sb.append(entry.getKey());
                     sb.append('=');
                     sb.append(entry.getValue());

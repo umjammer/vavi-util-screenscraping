@@ -49,7 +49,7 @@ public class WebScraperTest {
             System.setProperty(JAXP_KEY_DBF, backup);
     }
 
-    protected XPath xPath;
+    protected final XPath xPath;
 
     {
         System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "org.apache.xpath.jaxp.XPathFactoryImpl");
@@ -111,16 +111,15 @@ System.err.println("------------------------------------------------------------
         @Target(value = "//DIV[2]/DIV/DIV/DIV/DIV[1]/DIV/DIV/DIV/DIV[2]/DIV[2]/SPAN/text()")
         String author;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(date.replaceAll("[年月]", "/").replace("日", ""));
-            sb.append(",\"");
-            sb.append(CharNormalizerJa.ToHalf.normalize(price).replace('￥', '¥'));
-            sb.append("\",\"");
-            sb.append(title);
-            sb.append("\",\"");
-            sb.append(author.replaceAll("\\s+", " "));
-            sb.append("\"");
-            return sb.toString();
+            String sb = date.replaceAll("[年月]", "/").replace("日", "") +
+                    ",\"" +
+                    CharNormalizerJa.ToHalf.normalize(price).replace('￥', '¥') +
+                    "\",\"" +
+                    title +
+                    "\",\"" +
+                    author.replaceAll("\\s+", " ") +
+                    "\"";
+            return sb;
         }
     }
 
