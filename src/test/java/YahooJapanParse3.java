@@ -41,6 +41,7 @@ public class YahooJapanParse3 {
         /**
          * @param args 1: sentence
          */
+        @Override
         public Reader getInput(String ... args) throws IOException {
 
             String appid = args[0];
@@ -72,16 +73,15 @@ System.err.println("sentence: " + sentence);
         @Target("//ResultSet/ma_result/word_list/word/pos/text()")
         String pos;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("surface: ");
-            sb.append(surface);
-            sb.append(", ");
-            sb.append("pos: ");
-            sb.append(pos);
-            sb.append(", ");
-            sb.append("reading: ");
-            sb.append(reading);
-            return sb.toString();
+            String sb = "surface: " +
+                    surface +
+                    ", " +
+                    "pos: " +
+                    pos +
+                    ", " +
+                    "reading: " +
+                    reading;
+            return sb;
         }
     }
 

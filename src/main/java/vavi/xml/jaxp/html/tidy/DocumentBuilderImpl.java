@@ -69,21 +69,22 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         domParser.setOnlyErrors(false);
     }
 
-    /** */
+    @Override
     public Document newDocument() {
         return (Document) new org.w3c.tidy.Node(org.w3c.tidy.Node.ROOT_NODE, new byte[0], 0, 0) {
+            @Override
             public Node getAdapter() {
                 return super.getAdapter();
             }
         }.getAdapter();
     }
 
-    /** */
+    @Override
     public DOMImplementation getDOMImplementation() {
         throw new UnsupportedOperationException("not implemented yet");
     }
 
-    /** */
+    @Override
     public Document parse(InputSource is) throws SAXException, IOException {
         if (is == null) {
             throw new IllegalArgumentException("InputSource cannot be null");
@@ -98,11 +99,11 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         }
 
         String encoding = (String) dbf.getAttribute("encoding");
-// System.err.println("encoding: " + encoding);
+//logger.log(Level.TRACE, "encoding: " + encoding);
         if (encoding != null) {
             domParser.setInputEncoding(encoding);
         }
-//System.err.println("encoding: " + domParser.getInputEncoding());
+//logger.log(Level.TRACE, "encoding: " + domParser.getInputEncoding());
 
         InputStream inputStream = is.getByteStream();
         if (inputStream == null) {
@@ -112,22 +113,22 @@ public class DocumentBuilderImpl extends DocumentBuilder {
         return document;
     }
 
-    /** */
+    @Override
     public boolean isNamespaceAware() {
         return namespaceAware;
     }
 
-    /** */
+    @Override
     public boolean isValidating() {
         return validating;
     }
 
-    /** */
+    @Override
     public void setEntityResolver(EntityResolver er) {
         this.er = er;
     }
 
-    /** */
+    @Override
     public void setErrorHandler(ErrorHandler eh) {
         // If app passes in a ErrorHandler of null,
         // then ignore all errors and warnings

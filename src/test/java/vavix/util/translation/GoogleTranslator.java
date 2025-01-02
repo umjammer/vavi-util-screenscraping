@@ -7,7 +7,6 @@
 package vavix.util.translation;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
@@ -22,7 +21,6 @@ import vavix.net.proxy.ProxyChanger;
 import vavix.net.proxy.ProxyChanger.InternetAddress;
 import vavix.net.proxy.ProxyServerDao;
 import vavix.net.proxy.UserAgentSwitcher;
-import vavix.util.screenscrape.Scraper;
 import vavix.util.screenscrape.SimpleURLScraper;
 import vavix.util.screenscrape.StringI18nSimpleXPathScraper;
 
@@ -37,23 +35,23 @@ import vavix.util.screenscrape.StringI18nSimpleXPathScraper;
 public class GoogleTranslator implements Translator {
 
     /** url host */
-    private static String HOST;
+    private static final String HOST;
     /** url port */
-    private static int PORT;
+    private static final int PORT;
     /** url path, specify one {0} */
-    private static String TO_LOCAL;
+    private static final String TO_LOCAL;
     /** url path, specify one {0} */
-    private static String TO_GLOBAL;
+    private static final String TO_GLOBAL;
 
     /** url encoding */
-    private static String encoding;
+    private static final String encoding;
 
     /** */
     private static class MyScraper extends SimpleURLScraper<String> {
         /** */
-        static UserAgentSwitcher userAgentSwitcher;
+        static final UserAgentSwitcher userAgentSwitcher;
         /** */
-        static ProxyChanger proxyChanger;
+        static final ProxyChanger proxyChanger;
         /* */
         static {
             userAgentSwitcher = new UserAgentSwitcher();
@@ -63,11 +61,7 @@ public class GoogleTranslator implements Translator {
             ProxyServerDao proxyServerDao = new CyberSyndromeProxyServerDao();
             proxyChanger.setProxyServerDao(proxyServerDao);
             while (proxyServerDao.getProxyInetSocketAddresses().size() < 5) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    System.err.println(e);
-                }
+                try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
             }
         }
         /** */
@@ -75,7 +69,7 @@ public class GoogleTranslator implements Translator {
             super(source -> null);
         }
         /** */
-        public MyScraper(String xpath, final String cookie, final String referer) {
+        public MyScraper(String xpath, String cookie, String referer) {
             super(new StringI18nSimpleXPathScraper(xpath, encoding),
                   new Properties() {
                     {
@@ -103,12 +97,13 @@ Debug.println("userAgent: " + userAgent);
     /**
      * @param word use {@link #encoding} when url encoding
      */
+    @Override
     public String toLocal(String word) throws IOException {
         return translate(word, TO_LOCAL);
     }
 
     /** */
-    private String translate(String word, String base) throws IOException {
+    private static String translate(String word, String base) throws IOException {
         MyScraper scraper1 = new MyScraper();
         scraper1.scrape(new URL(url1));
         String cookie = scraper1.getCookie();
@@ -126,14 +121,15 @@ Debug.println("url: " + url);
     /**
      * @param word use {@link #encoding} when url encoding
      */
+    @Override
     public String toGlobal(String word) throws IOException {
         return translate(word, TO_GLOBAL);
     }
 
     /** */
-    private static String url1;
+    private static final String url1;
     /** */
-    private static String xpath2;
+    private static final String xpath2;
 
     /* */
     static {
@@ -158,12 +154,12 @@ Debug.printStackTrace(e);
         }
     }
 
-    /** */
+    @Override
     public Locale getLocalLocale() {
         return Locale.JAPANESE;
     }
 
-    /** */
+    @Override
     public Locale getGlobalLocal() {
         return Locale.ENGLISH;
     }

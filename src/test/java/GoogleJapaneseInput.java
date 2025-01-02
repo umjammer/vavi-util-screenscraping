@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -24,12 +25,12 @@ import com.google.gson.GsonBuilder;
 public class GoogleJapaneseInput {
 
     /** */
-    Gson gson = new GsonBuilder().create();
+    final Gson gson = new GsonBuilder().create();
 
     /** */
     void test1(String[] args) throws Exception {
         String text = "こんにちは、きょうもげんきです。";
-        String url = String.format("https://www.google.com/transliterate?langpair=%s&text=%s", URLEncoder.encode("ja-Hira|ja", "utf-8"), URLEncoder.encode(text, "utf-8"));
+        String url = String.format("https://www.google.com/transliterate?langpair=%s&text=%s", URLEncoder.encode("ja-Hira|ja", StandardCharsets.UTF_8), URLEncoder.encode(text, StandardCharsets.UTF_8));
 System.err.println(url);
         List<?> list = null;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(URI.create(url).toURL().openStream()))) {
@@ -41,7 +42,7 @@ System.err.println(url);
     /** not working */
     void test2(String[] args) throws Exception {
         String text = "薄茶色のシミがあちこちについた掛け布団。座ったら、五分でお尻が序くなってきそうだ。";
-        String url = String.format("https://www.google.com/transliterate?langpair=%s&text=%s", URLEncoder.encode("ja|ja-Hira", "utf-8"), URLEncoder.encode(text, "utf-8"));
+        String url = String.format("https://www.google.com/transliterate?langpair=%s&text=%s", URLEncoder.encode("ja|ja-Hira", StandardCharsets.UTF_8), URLEncoder.encode(text, StandardCharsets.UTF_8));
 System.err.println(url);
         List<?> list = null;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(URI.create(url).toURL().openStream()))) {

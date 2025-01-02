@@ -31,12 +31,10 @@ public class SimpleURLScraper<O> extends AbstractHttpScraper<URL, O> {
     }
 
     /** */
-    protected ErrorHandler<HttpURLConnection> errorHandler = new ErrorHandler<HttpURLConnection>() {
-        public void handle(HttpURLConnection connection) throws IOException {
-            int status = connection.getResponseCode();
-            if (status != HttpURLConnection.HTTP_OK) {
-                throw new IllegalStateException("unexpected result: " + status);
-            }
+    protected final ErrorHandler<HttpURLConnection> errorHandler = connection -> {
+        int status = connection.getResponseCode();
+        if (status != HttpURLConnection.HTTP_OK) {
+            throw new IllegalStateException("unexpected result: " + status);
         }
     };
 
@@ -50,10 +48,11 @@ public class SimpleURLScraper<O> extends AbstractHttpScraper<URL, O> {
      */
     public SimpleURLScraper(Scraper<InputStream, O> scraper, Properties props) {
         this(scraper);
-        final String account = props.getProperty("auth.account");
-        final String password = props.getProperty("auth.password");
+        String account = props.getProperty("auth.account");
+        String password = props.getProperty("auth.password");
         if (account != null && password != null) {
             Authenticator.setDefault(new Authenticator() {
+                @Override
                 protected PasswordAuthentication getPasswordAuthentication(){
                     return new PasswordAuthentication(account, password.toCharArray());
                 }
@@ -66,6 +65,7 @@ public class SimpleURLScraper<O> extends AbstractHttpScraper<URL, O> {
     /**
      * @throws IllegalStateException when an error occurs
      */
+    @Override
     public O scrape(URL url) {
         try {
             applyProxy();
@@ -115,15 +115,15 @@ e.printStackTrace(System.err);
     public String getCookie() {
         List<String> values = responseHeaders.get("Set-Cookie");
 
-        String cookieValue = null;
+        StringBuilder cookieValue = null;
         for (String value : values) {
              if (cookieValue == null) {
-                 cookieValue = value;
+                 cookieValue = new StringBuilder(value);
              } else {
-                 cookieValue = cookieValue + ";" + value;
+                 cookieValue.append(";").append(value);
              }
         }
 //Debug.println("cookie: " + cookieValue);
-        return cookieValue;
+        return cookieValue.toString();
     }
 }

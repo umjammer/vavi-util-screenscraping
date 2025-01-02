@@ -29,7 +29,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
  */
 public class EqTest2 {
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
+    static final WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
 
     static {
         client.setJavaScriptEngine(null);
@@ -41,6 +41,7 @@ public class EqTest2 {
         /**
          * @param args 0: number of answer pattern, 1: sex, 2: age
          */
+        @Override
         public Reader getInput(String ... args) throws IOException {
             if (cache != null) {
                 return new StringReader(cache);
@@ -129,12 +130,8 @@ System.out.println("  \"url\": \"" + resultAnchor.getHrefAttribute() + "\", ");
             return new StringReader(cache);
         }
 
-        void sleep() {
-            try {
-                Thread.sleep(333);
-            } catch (InterruptedException e) {
-                System.err.println(e);
-            }
+        static void sleep() {
+            try { Thread.sleep(333); } catch (InterruptedException ignored) {}
         }
     }
 
@@ -147,13 +144,12 @@ System.out.println("  \"url\": \"" + resultAnchor.getHrefAttribute() + "\", ");
         @Target(value = "//div[@class='quin']")
         String desc;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("\"result\": {");
-            sb.append("\"score\": ").append(score);
-            sb.append(", ");
-            sb.append("\"desc\": \"").append(desc).append("\"");
-            sb.append("}");
-            return sb.toString();
+            String sb = "\"result\": {" +
+                    "\"score\": " + score +
+                    ", " +
+                    "\"desc\": \"" + desc + "\"" +
+                    "}";
+            return sb;
         }
     }
 

@@ -19,7 +19,7 @@ package vavix.util.screenscrape;
 public abstract class XPathScraper<I, O> implements Scraper<I, O> {
 
     /** 切り出しに用いる XPath */
-    protected String xpath;
+    protected final String xpath;
 
     /** @param xpath 切り出しに用いる XPath 文字列 */
     protected XPathScraper(String xpath) {

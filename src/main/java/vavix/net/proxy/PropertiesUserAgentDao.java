@@ -22,9 +22,10 @@ import java.util.Properties;
 public class PropertiesUserAgentDao implements UserAgentDao {
 
     /** */
-    private static List<String> userAgents = new ArrayList<>();
+    private static final List<String> userAgents = new ArrayList<>();
 
     /** always returns same instances */
+    @Override
     public List<String> getUserAgents() {
         return userAgents;
     }

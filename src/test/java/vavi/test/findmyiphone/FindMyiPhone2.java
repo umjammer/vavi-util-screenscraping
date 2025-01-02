@@ -36,9 +36,9 @@ public class FindMyiPhone2 {
     private static final String BuildVersion = "145";
 
     private String partition = null;
-    private Map<String, Device> devices = new HashMap<>();
-    private String username;
-    private String password;
+    private final Map<String, Device> devices = new HashMap<>();
+    private final String username;
+    private final String password;
 
     /**
      * @param username iCloud account
@@ -234,12 +234,12 @@ System.err.println("body: " + body);
             body.put("maxDeviceLoadTime", 60000);
             body.put("maxLocatingTime", 90000);
             body.put("preferredLanguage", "en");
-            body.put("prefsUpdateTime", 1276872996660l);
+            body.put("prefsUpdateTime", 1276872996660L);
             body.put("sessionLifespan", 900000);
             ObjectNode sub = body.putObject("timezone");
             sub.put("currentOffset", -25200000);
             sub.put("previousOffset", -28800000);
-            sub.put("previousTransition", 1268560799999l);
+            sub.put("previousTransition", 1268560799999L);
             sub.put("tzCurrentName", "Pacific Daylight Time");
             sub.put("tzName", "America/Los_Angeles");
             body.put("validRegion", true);
@@ -278,12 +278,12 @@ System.err.println("body: " + body);
             body.put("maxDeviceLoadTime", 60000);
             body.put("maxLocatingTime", 90000);
             body.put("preferredLanguage", "en");
-            body.put("prefsUpdateTime", 1276872996660l);
+            body.put("prefsUpdateTime", 1276872996660L);
             body.put("sessionLifespan", 900000);
             ObjectNode sub = body.putObject("timezone");
             sub.put("currentOffset", -25200000);
             sub.put("previousOffset", -28800000);
-            sub.put("previousTransition", 1268560799999l);
+            sub.put("previousTransition", 1268560799999L);
             sub.put("tzCurrentName", "Pacific Daylight Time");
             sub.put("tzName", "America/Los_Angeles");
             body.put("validRegion", true);
@@ -336,50 +336,49 @@ System.err.println("body: " + body);
 
         /* */
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("deviceStatus: ");
-            sb.append(deviceStatus);
-            sb.append(", ");
-            sb.append("name: ");
-            sb.append(name);
-            sb.append(", ");
-            sb.append("deviceClass: ");
-            sb.append(deviceClass);
-            sb.append(", ");
-            sb.append("deviceModel: ");
-            sb.append(deviceModel);
-            sb.append(", ");
-            sb.append("latitude: ");
-            sb.append(latitude);
-            sb.append(", ");
-            sb.append("longitude: ");
-            sb.append(longitude);
-            sb.append(", ");
-            sb.append("horizontalAccuracy: ");
-            sb.append(horizontalAccuracy);
-            sb.append(", ");
-            sb.append("locationTimestamp: ");
-            sb.append(new Date(locationTimestamp));
-            sb.append(", ");
-            sb.append("batteryLevel: ");
-            sb.append(batteryLevel);
-            sb.append(", ");
-            sb.append("chargingStatus: ");
-            sb.append(chargingStatus);
-            sb.append(", ");
-            sb.append("isLocating: ");
-            sb.append(isLocating);
-            sb.append(", ");
-            sb.append("locationType: ");
-            sb.append(locationType);
-            sb.append(", ");
-            sb.append("locationFinished: ");
-            sb.append(locationFinished);
-            sb.append(", ");
-            sb.append("id: ");
-            sb.append(id);
+            String sb = "deviceStatus: " +
+                    deviceStatus +
+                    ", " +
+                    "name: " +
+                    name +
+                    ", " +
+                    "deviceClass: " +
+                    deviceClass +
+                    ", " +
+                    "deviceModel: " +
+                    deviceModel +
+                    ", " +
+                    "latitude: " +
+                    latitude +
+                    ", " +
+                    "longitude: " +
+                    longitude +
+                    ", " +
+                    "horizontalAccuracy: " +
+                    horizontalAccuracy +
+                    ", " +
+                    "locationTimestamp: " +
+                    new Date(locationTimestamp) +
+                    ", " +
+                    "batteryLevel: " +
+                    batteryLevel +
+                    ", " +
+                    "chargingStatus: " +
+                    chargingStatus +
+                    ", " +
+                    "isLocating: " +
+                    isLocating +
+                    ", " +
+                    "locationType: " +
+                    locationType +
+                    ", " +
+                    "locationFinished: " +
+                    locationFinished +
+                    ", " +
+                    "id: " +
+                    id;
 
-            return sb.toString();
+            return sb;
         }
     }
 

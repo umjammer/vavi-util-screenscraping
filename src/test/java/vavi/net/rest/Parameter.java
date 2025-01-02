@@ -77,7 +77,7 @@ public @interface Parameter {
                 return Formatted.Util.getFieldValueAsString(field, fieldValue);
             } else {
                 if (fieldClass.isEnum() && Enumerated.Util.isEnumetated(field)) {
-                    return Enumerated.Util.getFieldValueAsString(field, Enum.class.cast(fieldValue));
+                    return Enumerated.Util.getFieldValueAsString(field, (Enum) fieldValue);
                 } else {
                     return fieldValue == null ? null : fieldValue.toString();
                 }

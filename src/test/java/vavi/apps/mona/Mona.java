@@ -36,8 +36,8 @@ import vavix.util.screenscrape.SimpleXPathScraper;
 class Mona {
 
     static String urlIdsRegex;
-    static String menuUrl;
-    static String userAgent;
+    static final String menuUrl;
+    static final String userAgent;
 
     /** */
     static {
@@ -95,10 +95,11 @@ Debug.printStackTrace(e);
      */
     static class MenuScraper implements Scraper<URL, List<Menu>> {
         /** */
-        class MenuXPathScraper extends SimpleXPathScraper<NodeList> {
+        static class MenuXPathScraper extends SimpleXPathScraper<NodeList> {
             MenuXPathScraper(String xpath) {
                 super(xpath);
             }
+            @Override
             public NodeList scrape(InputStream source) {
                 NodeList nodeList = null;
                 try {
@@ -116,6 +117,7 @@ Debug.printStackTrace(e);
          * </pre>
          * @param url UtaMap  Yahoo! URL
          */
+        @Override
         public List<Menu> scrape(URL url) {
             try {
                 URLConnection uc = url.openConnection();

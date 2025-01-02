@@ -8,10 +8,7 @@ package vavix.net.proxy;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import vavix.net.proxy.ProxyChanger.InternetAddress;
@@ -31,21 +28,20 @@ public class ProxyChangerTest {
         main(new String[0]);
     }
 
-
     /** */
     public static void main(String[] args) throws Exception {
         ProxyChanger proxyChanger = new ProxyChanger();
         ProxyServerDao proxyServerDao = new CyberSyndromeProxyServerDao();
         proxyChanger.setProxyServerDao(proxyServerDao);
-/*
-        while (proxyServerDao.getProxyInetSocketAddresses().size() < 5) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                System.err.println(e);
-            }
-        }
-*/
+
+//        while (proxyServerDao.getProxyInetSocketAddresses().size() < 5) {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                System.err.println(e);
+//            }
+//        }
+
         List<InternetAddress> proxyAddresses = proxyServerDao.getProxyInetSocketAddresses();
         for (InternetAddress proxyAddress : proxyAddresses) {
             System.err.println("proxy: " + proxyAddress);

@@ -11,12 +11,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.logging.Level;
 
-import vavi.util.Debug;
+import static java.lang.System.getLogger;
 
 
 /**
@@ -30,21 +31,24 @@ import vavi.util.Debug;
  */
 public class DefaultInputHandler implements InputHandler<Reader> {
 
+    private static final Logger logger = getLogger(DefaultInputHandler.class.getName());
+
     /**
      * CAUTION!!! Reader depends on <code>-Dfile.encoding</code>.
      *
      * @param args 0: url ({#} is embedded), 1, 2, 3...: {@link WebScraper.Util#scrape(Class, String...)}'s args or
      *             {@link WebScraper.Util#foreach(Class, java.util.function.Consumer, String...)}'s args.
      */
+    @Override
     public Reader getInput(String ... args) throws IOException {
         String url = args[0];
-Debug.println(Level.FINE, "url: " + url);
+logger.log(Level.DEBUG, "url: " + url);
         URLConnection connection = new URL(url).openConnection();
 if (connection instanceof HttpURLConnection) {
- Debug.println(Level.FINE, "responseCode: " + ((HttpURLConnection) connection).getResponseCode());
+ logger.log(Level.DEBUG, "responseCode: " + ((HttpURLConnection) connection).getResponseCode());
 }
         InputStream is = connection.getInputStream();
-//System.err.println(StringUtil.getDump(baos.toByteArray()));
+//logger.log(Level.TRACE, StringUtil.getDump(baos.toByteArray()));
         // CAUTION!!! InputStreamReader depends on `-Dfile.encoding`.
         return new BufferedReader(new InputStreamReader(is));
     }
@@ -53,6 +57,7 @@ if (connection instanceof HttpURLConnection) {
      * args will be embedded in url.
      * @param args will be url-encoded.
      */
+    @Override
     public String[] dealUrlAndArgs(String url, String ... args) {
         return InputHandler._dealUrlAndArgs(url, args);
     }

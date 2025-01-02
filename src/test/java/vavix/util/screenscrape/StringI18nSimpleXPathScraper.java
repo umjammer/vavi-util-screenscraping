@@ -25,7 +25,7 @@ import org.xml.sax.InputSource;
 public class StringI18nSimpleXPathScraper extends SimpleXPathScraper<String> {
 
     /** encoding for html */
-    private String encoding;
+    private final String encoding;
 
     /** */
     public StringI18nSimpleXPathScraper(String xpath, String encoding) {
@@ -34,6 +34,7 @@ public class StringI18nSimpleXPathScraper extends SimpleXPathScraper<String> {
     }
 
     /** 。 */
+    @Override
     public String scrape(InputStream is) {
 
         try {

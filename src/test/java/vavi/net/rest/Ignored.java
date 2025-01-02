@@ -94,7 +94,7 @@ System.err.println("field: " + parameterField.getName() + ", " + (fieldValue == 
             try {
                 Object result = engine.eval(script);
 System.err.println("script: " + script);
-                if (Boolean.class.isInstance(result)) {
+                if (result instanceof Boolean) {
                     return (Boolean) result;
                 } else {
                     throw new IllegalArgumentException("script doesn't return boolean: " + result);

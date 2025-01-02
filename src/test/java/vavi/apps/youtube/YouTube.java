@@ -40,11 +40,11 @@ import vavix.util.screenscrape.StringSimpleXPathScraper;
 @SuppressWarnings("deprecation")
 class YouTube {
 
-    static String videoXpath;
-    static String videoTagRregex;
-    static String urlVideoIdRegex;
-    static String watchUrlFormat;
-    static String getUrlFormat;
+    static final String videoXpath;
+    static final String videoTagRregex;
+    static final String urlVideoIdRegex;
+    static final String watchUrlFormat;
+    static final String getUrlFormat;
 
     /* */
     static {
@@ -66,14 +66,14 @@ Debug.printStackTrace(e);
     /** TODO  */
     static class YouTubeURLScraper implements Scraper<URL, File> {
         /** */
-        private HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+        private final HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 
         /**
          * xpath <code>"//DIV[@ID='interactDiv']/SCRIPT"</code>
          * tag
          */
-        StringSimpleXPathScraper myStreamXPathScraper = new StringSimpleXPathScraper(videoXpath) {
-            Pattern pattern = Pattern.compile(videoTagRregex);
+        final StringSimpleXPathScraper myStreamXPathScraper = new StringSimpleXPathScraper(videoXpath) {
+            final Pattern pattern = Pattern.compile(videoTagRregex);
             @Override public String scrape(InputStream source) {
                 String tag;
                 String script = super.scrape(source);

@@ -37,7 +37,7 @@ public @interface Formatted {
     /**
      * TODO アノテーションがメソッド指定の場合
      */
-    static class Util {
+    class Util {
 
         /** */
         public static boolean isFormatted(Field field) {

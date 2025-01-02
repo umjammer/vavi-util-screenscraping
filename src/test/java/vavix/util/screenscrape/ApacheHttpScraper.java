@@ -84,10 +84,10 @@ Debug.println("post url: " + url);
     }
 
     /** */
-    private void applyRequestParameters(HttpPost method, HttpContext request) {
+    private static void applyRequestParameters(HttpPost method, HttpContext request) {
         for (String name : request.getParameters().keySet()) {
-            for (String value : request.getParameters().get(name)) {;
-Debug.println("post param: " + name + ": " + value);
+            for (String value : request.getParameters().get(name)) {
+                Debug.println("post param: " + name + ": " + value);
                 method.addHeader(name, value);
             }
         }

@@ -29,7 +29,7 @@ import vavix.util.screenscrape.ApacheURLScraper;
 public class MonexURLScraper extends ApacheURLScraper<String> {
 
     /** */
-    private HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+    private final HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 
     /**
      * @param props use followings
@@ -83,7 +83,7 @@ public class MonexURLScraper extends ApacheURLScraper<String> {
         }
     }
 
-    /** */
+    @Override
     public String scrape(URL url) {
         try {
             HttpGet get = new HttpGet(url.toString());

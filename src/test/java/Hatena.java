@@ -20,7 +20,7 @@ import vavix.util.screenscrape.annotation.WebScraper;
  */
 public class Hatena {
 
-    static WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
+    static final WebClient client = new WebClient(BrowserVersion.FIREFOX_ESR);
 
     static {
         client.setJavaScriptEngine(null);
@@ -37,13 +37,12 @@ public class Hatena {
         @Target(value = "/SECTION/DIV[3]/P/text()")
         String desc;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(title);
-            sb.append(",");
-            sb.append(date.replaceAll("\\s", ""));
-            sb.append(",");
-            sb.append(desc);
-            return sb.toString();
+            String sb = title +
+                    "," +
+                    date.replaceAll("\\s", "") +
+                    "," +
+                    desc;
+            return sb;
         }
     }
 

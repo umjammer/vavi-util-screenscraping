@@ -40,16 +40,15 @@ public class YahooJapanParse2 {
         @Target("//ResultSet/ma_result/word_list/word/pos/text()")
         String pos;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("surface: ");
-            sb.append(surface);
-            sb.append(", ");
-            sb.append("pos: ");
-            sb.append(pos);
-            sb.append(", ");
-            sb.append("reading: ");
-            sb.append(reading);
-            return sb.toString();
+            String sb = "surface: " +
+                    surface +
+                    ", " +
+                    "pos: " +
+                    pos +
+                    ", " +
+                    "reading: " +
+                    reading;
+            return sb;
         }
     }
 

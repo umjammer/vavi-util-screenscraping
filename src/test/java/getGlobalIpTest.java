@@ -10,7 +10,6 @@ import java.util.Properties;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import vavix.util.screenscrape.ApacheURLScraper;
 import vavix.util.screenscrape.Scraper;
 import vavix.util.screenscrape.SimpleURLScraper;
 import vavix.util.screenscrape.StringSimpleXPathScraper;

@@ -39,6 +39,7 @@ public class AmazonPurchaseHistory {
         /**
          * @param args 0: url, 1: ignore, 2: start
          */
+        @Override
         public Reader getInput(String ... args) throws IOException {
 
             String url = args[0];
@@ -88,16 +89,15 @@ public class AmazonPurchaseHistory {
         @Target(value = "//DIV[2]/DIV/DIV/DIV/DIV[1]/DIV/DIV/DIV/DIV[2]/DIV[2]/SPAN/text()")
         String author;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(date.replaceAll("[年月]", "/").replace("日", ""));
-            sb.append(",\"");
-            sb.append(CharNormalizerJa.ToHalf.normalize(price).replace('￥', '¥'));
-            sb.append("\",\"");
-            sb.append(title);
-            sb.append("\",\"");
-            sb.append(author.replaceAll("\\s+", " "));
-            sb.append("\"");
-            return sb.toString();
+            String sb = date.replaceAll("[年月]", "/").replace("日", "") +
+                    ",\"" +
+                    CharNormalizerJa.ToHalf.normalize(price).replace('￥', '¥') +
+                    "\",\"" +
+                    title +
+                    "\",\"" +
+                    author.replaceAll("\\s+", " ") +
+                    "\"";
+            return sb;
         }
     }
 

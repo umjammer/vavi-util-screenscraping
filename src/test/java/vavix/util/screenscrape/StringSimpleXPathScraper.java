@@ -31,7 +31,7 @@ public class StringSimpleXPathScraper extends SimpleXPathScraper<String> {
         super(xpath);
     }
 
-    /** */
+    @Override
     public String scrape(InputStream source) {
         try {
             try {

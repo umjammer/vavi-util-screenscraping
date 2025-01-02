@@ -85,7 +85,7 @@ public @interface WebScraper {
         public static InputHandler<?> getInputHandler(Class<?> type) {
             try {
                 WebScraper webScraper = type.getAnnotation(WebScraper.class);
-                return webScraper.input().newInstance();
+                return webScraper.input().getDeclaredConstructor().newInstance();
             } catch (Exception e) {
                 throw new IllegalStateException(e);
             }
@@ -96,7 +96,7 @@ public @interface WebScraper {
         public static <T> Parser<?, T> getParser(Class<T> type) {
             try {
                 WebScraper webScraper = type.getAnnotation(WebScraper.class);
-                return webScraper.parser().newInstance();
+                return webScraper.parser().getDeclaredConstructor().newInstance();
             } catch (Exception e) {
                 throw new IllegalStateException(e);
             }

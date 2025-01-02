@@ -21,6 +21,6 @@ public class SimpleDateFormatFormatter implements Formatter {
 
     @Override
     public String format(String format, Object value) {
-        return new SimpleDateFormat(format).format(Date.class.cast(value));
+        return new SimpleDateFormat(format).format((Date) value);
     }
 }

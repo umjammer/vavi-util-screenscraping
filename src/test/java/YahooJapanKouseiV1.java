@@ -39,17 +39,16 @@ public class YahooJapanKouseiV1 {
         @Target(value = "/ResultSet/Result/ShitekiInfo")
         String shitekiInfo;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(startPos);
-            sb.append(",");
-            sb.append(length);
-            sb.append(",");
-            sb.append(surface);
-            sb.append(",");
-            sb.append(shitekiWord);
-            sb.append(",");
-            sb.append(shitekiInfo);
-            return sb.toString();
+            String sb = startPos +
+                    "," +
+                    length +
+                    "," +
+                    surface +
+                    "," +
+                    shitekiWord +
+                    "," +
+                    shitekiInfo;
+            return sb;
         }
     }
 

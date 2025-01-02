@@ -12,12 +12,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.logging.Level;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -33,6 +35,8 @@ import vavi.beans.BeanUtil;
 import vavi.util.Debug;
 import vavi.xml.util.PrettyPrinter;
 import vavi.xml.util.XPathDebugger;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -50,14 +54,16 @@ import vavi.xml.util.XPathDebugger;
  */
 public class HtmlXPathParser<T> implements Parser<Reader, T> {
 
+    private static final Logger logger = getLogger(HtmlXPathParser.class.getName());
+
     /** */
-    protected XPath xPath;
+    protected final XPath xPath;
 
     {
-Debug.println(Level.FINER, XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI);
+logger.log(Level.TRACE, XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI);
         System.setProperty(XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI, "org.apache.xpath.jaxp.XPathFactoryImpl");
         xPath = XPathFactory.newInstance().newXPath();
-Debug.println(Level.FINER, XPathFactory.newInstance().getClass());
+logger.log(Level.TRACE, XPathFactory.newInstance().getClass());
     }
 
     static final String JAXP_KEY_DBF = "javax.xml.parsers.DocumentBuilderFactory";
@@ -77,14 +83,15 @@ Debug.println(Level.FINER, XPathFactory.newInstance().getClass());
     }
 
     /**
-     * TODO Reader は、 InputSource の引数ならどれでもとか
+     * TODO A Reader can be any of the arguments of an InputSource.
      * <li> TODO now 1 step XPath only
      */
+    @Override
     public List<T> parse(Class<T> type, InputHandler<Reader> handler, String ... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
 if (WebScraper.Util.isDebug(type)) {
- Debug.println(Level.FINER, "encoding: " + encoding);
+ logger.log(Level.TRACE, "encoding: " + encoding);
 }
             List<T> results = new ArrayList<>();
 
@@ -100,29 +107,29 @@ if (WebScraper.Util.isDebug(type)) {
 
                 String xpath = Target.Util.getValue(field);
 if (WebScraper.Util.isDebug(type)) {
- Debug.println(Level.FINE, "xpath: " + xpath);
+ logger.log(Level.DEBUG, "xpath: " + xpath);
 }
                 if (WebScraper.Util.isCollection(type)) {
 
                     NodeList nodeList = (NodeList) xPath.evaluate(xpath, in, XPathConstants.NODESET);
 if (WebScraper.Util.isDebug(type)) {
  if (nodeList.getLength() == 0) {
-  Debug.println(Level.FINE, "nodeList: " + nodeList.getLength());
+  logger.log(Level.DEBUG, "nodeList: " + nodeList.getLength());
  }
 }
                     for (int i = 0; i < nodeList.getLength(); i++) {
-                        // because loops for each fields, instantiation should be done once
+                        // because loops for each field, instantiation should be done once
                         T bean = null;
                         try {
                             bean = results.get(i);
                         } catch (IndexOutOfBoundsException e) {
-                            bean = type.newInstance();
+                            bean = type.getDeclaredConstructor().newInstance();
                             results.add(bean);
                         }
 
                         String text = nodeList.item(i).getTextContent().trim();
 if (WebScraper.Util.isDebug(type)) {
- Debug.println(Level.FINE, field.getName() + ": " + text);
+ logger.log(Level.DEBUG, field.getName() + ": " + text);
 }
                         BeanUtil.setFieldValue(field, bean, text);
                     }
@@ -133,13 +140,13 @@ if (WebScraper.Util.isDebug(type)) {
                     try {
                         bean = results.get(0);
                     } catch (IndexOutOfBoundsException e) {
-                        bean = type.newInstance();
+                        bean = type.getDeclaredConstructor().newInstance();
                         results.add(bean);
                     }
 
                     String text = ((String) xPath.evaluate(xpath, in, XPathConstants.STRING)).trim();
 if (WebScraper.Util.isDebug(type)) {
- Debug.println(Level.FINE, field.getName() + ": " + text);
+ logger.log(Level.DEBUG, field.getName() + ": " + text);
 }
                     BeanUtil.setFieldValue(field, bean, text);
                 }
@@ -149,7 +156,8 @@ if (WebScraper.Util.isDebug(type)) {
 
         } catch (XPathExpressionException e) {
             throw new IllegalArgumentException(e);
-        } catch (IllegalAccessException | InstantiationException | IOException e) {
+        } catch (IllegalAccessException | InstantiationException | IOException | NoSuchMethodException |
+                 InvocationTargetException e) {
             throw new IllegalStateException(e);
         } finally {
             pop();
@@ -159,20 +167,22 @@ if (WebScraper.Util.isDebug(type)) {
     /**
      * <h4>2 step XPath</h4>
      * <p>
-     *  {@link WebScraper#value()} で指定した XPath で取得できる部分 XML から
-     *  {@link Target#value()} で指定した XPath で取得する方法。
+     *  A method to obtain a part of XML that can be obtained using the XPath
+     *  specified in {@link WebScraper#value()} using the XPath specified in {@link Target#value()}.
      * </p>
      * <p>
-     * you need to specify at the first element of the {@link Target#value()} as same as the last element in {@link WebScraper#value()}.
+     * you need to specify at the first element of the {@link Target#value()}
+     * as same as the last element in {@link WebScraper#value()}.
      * </p>
      * <li> TODO now 2 step XPath only
      * <li> TODO {@link WebScraper#value()} が存在すれば 2 step とか
      */
+    @Override
     public void foreach(Class<T> type, Consumer<T> eachHandler, InputHandler<Reader> inputHandler, String... args) {
         try {
             String encoding = WebScraper.Util.getEncoding(type);
 if (WebScraper.Util.isDebug(type)) {
- Debug.println(Level.FINE, "encoding: " + encoding);
+ logger.log(Level.DEBUG, "encoding: " + encoding);
 }
             push();
             System.setProperty(JAXP_KEY_DBF, JAXP_VALUE_DBF_CYBERNEKO);
@@ -187,22 +197,23 @@ if (WebScraper.Util.isDebug(type)) {
             NodeList nodeList = (NodeList) nodeSet;
 if (WebScraper.Util.isDebug(type)) {
  if (nodeList.getLength() == 0) {
-  Debug.println("no node list: " + xpath);
+  logger.log(Level.DEBUG, "no node list: " + xpath);
   XPathDebugger.getEntryList(new InputSource(inputHandler.getInput(args))).forEach(System.err::println);
  }
 }
             // below is needed for sub xpath query
-            // !!!CAUTION!!! when adding debugging code or etc. check the code needs cyberneko or not, and position against this line. <- what r u saying?
+            // !!!CAUTION!!! when adding debugging code or etc. check the code needs cyberneko or not,
+            //               and position against this line. <- what r u saying?
             pop();
 
             for (int i = 0; i < nodeList.getLength(); i++) {
-                T bean = type.newInstance();
+                T bean = type.getDeclaredConstructor().newInstance();
 
                 Node node = nodeList.item(i);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 new PrettyPrinter(new PrintWriter(baos)).print(node); // TODO use constructor w/ encoding
 if (WebScraper.Util.isDebug(type)) {
- if (Debug.isLoggable(Level.FINE)) {
+ if (Debug.isLoggable(java.util.logging.Level.FINE)) {
   System.err.println("-------------------------------------------------------------");
   System.err.println(baos); // TODO use encoding
  }
@@ -217,7 +228,7 @@ if (WebScraper.Util.isDebug(type)) {
  if (text == null) {
   XPathDebugger.getEntryList(new InputSource(new StringReader(baos.toString()))).forEach(System.err::println);
  } else {
-  Debug.println(Level.FINE, "subXpath: " + subXpath + ": " + text);
+  logger.log(Level.DEBUG, "subXpath: " + subXpath + ": " + text);
  }
 }
                     BeanUtil.setFieldValue(field, bean, text.trim());
@@ -228,7 +239,8 @@ if (WebScraper.Util.isDebug(type)) {
 
         } catch (XPathExpressionException e) {
             throw new IllegalArgumentException(e);
-        } catch (IllegalAccessException | InstantiationException | IOException e) {
+        } catch (IllegalAccessException | InstantiationException | IOException | NoSuchMethodException |
+                 InvocationTargetException e) {
             throw new IllegalStateException(e);
         } finally {
             pop();

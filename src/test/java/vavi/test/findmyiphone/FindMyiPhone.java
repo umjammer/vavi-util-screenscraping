@@ -80,7 +80,7 @@ public class FindMyiPhone {
         HttpPost devicemgmt = new HttpPost("https://secure.me.com/wo/WebObjects/DeviceMgmt.woa/?lang=en");
         devicemgmt.addHeader("X-Mobileme-Version", "1.0");
         devicemgmt.addHeader("X-Mobileme-Isc", isc);
-        devicemgmt.setEntity(new UrlEncodedFormEntity(new ArrayList<NameValuePair>()));
+        devicemgmt.setEntity(new UrlEncodedFormEntity(new ArrayList<>()));
         HttpResponse devicePage = hc.execute(devicemgmt);
 
         // Extract the device ids from their html encoded in json

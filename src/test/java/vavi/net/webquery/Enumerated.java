@@ -30,7 +30,7 @@ public @interface Enumerated {
     /**
      * TODO アノテーションがメソッド指定の場合
      */
-    static class Util {
+    class Util {
 
         /** */
         public static boolean isEnumetated(Field field) {
@@ -45,13 +45,10 @@ public @interface Enumerated {
          */
         public static <E extends Enum<E>> String getFieldValueAsString(Field field, E fieldValue) {
             Enumerated enumerated = field.getAnnotation(Enumerated.class);
-            switch (enumerated.value()) {
-            case ORDINAL:
-                return fieldValue == null ? "null" : String.valueOf(fieldValue.ordinal());
-            case STRING:
-            default:
-                return fieldValue == null ? "null" : fieldValue.name();
-            }
+            return switch (enumerated.value()) {
+                case ORDINAL -> fieldValue == null ? "null" : String.valueOf(fieldValue.ordinal());
+                default -> fieldValue == null ? "null" : fieldValue.name();
+            };
         }
     }
 }

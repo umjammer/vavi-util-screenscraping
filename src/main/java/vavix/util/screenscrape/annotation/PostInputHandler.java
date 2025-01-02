@@ -12,13 +12,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
-import java.util.logging.Level;
 
-import vavi.util.Debug;
+import static java.lang.System.getLogger;
 
 
 /**
@@ -35,19 +36,22 @@ import vavi.util.Debug;
  */
 public class PostInputHandler implements InputHandler<InputStream> {
 
+    private static final Logger logger = getLogger(PostInputHandler.class.getName());
+
     /**
      * @param args 0: url, 1: body, 2: content-type, 3...: {@link WebScraper.Util#scrape(Class, String...)}'s args or
      *             {@link WebScraper.Util#foreach(Class, java.util.function.Consumer, String...)}'s args.
      */
+    @Override
     public InputStream getInput(String ... args) throws IOException {
         String url = args[0];
         String body = dealBodyAndArgs(args[1], Arrays.copyOfRange(args, 3, args.length));
         String contentType = args[2];
         String userAgent = System.getProperty("vavix.util.screenscrape.annotation.PostInputHandler.userAgent");
-Debug.println(Level.INFO, "url: " + url);
-Debug.println(Level.INFO, "body: " + body);
-Debug.println(Level.INFO, "contentType: " + contentType);
-Debug.println(Level.INFO, "userAgent: " + userAgent);
+logger.log(Level.INFO, "url: " + url);
+logger.log(Level.INFO, "body: " + body);
+logger.log(Level.INFO, "contentType: " + contentType);
+logger.log(Level.INFO, "userAgent: " + userAgent);
         URLConnection connection = new URL(url).openConnection();
         connection.setDoInput(true);
         connection.setDoOutput(true);
@@ -62,10 +66,10 @@ Debug.println(Level.INFO, "userAgent: " + userAgent);
         writer.flush();
         writer.close();
 if (connection instanceof HttpURLConnection) {
- Debug.println(Level.FINE, "responseCode: " + ((HttpURLConnection) connection).getResponseCode());
+ logger.log(Level.DEBUG, "responseCode: " + ((HttpURLConnection) connection).getResponseCode());
 }
         InputStream is = connection.getInputStream();
-//System.err.println(StringUtil.getDump(baos.toByteArray()));
+//logger.log(Level.TRACE, StringUtil.getDump(baos.toByteArray()));
         // CAUTION!!! InputStreamReader depends on `-Dfile.encoding`.
         return new BufferedInputStream(is);
     }
@@ -75,6 +79,7 @@ if (connection instanceof HttpURLConnection) {
      * @param args 0: body, 1: content-type, 2... (will be url-encoded)
      * @return 0: url, 1: body, 2: content-type, 3...
      */
+    @Override
     public String[] dealUrlAndArgs(String url, String ... args) {
         String[] tmp = InputHandler._dealUrlAndArgs(url, Arrays.copyOfRange(args, 2, args.length));
         String[] result = new String[args.length + 1];

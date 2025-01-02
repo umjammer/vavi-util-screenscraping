@@ -51,46 +51,45 @@ public class RecruitProofreadingV2 {
         String normalizedSentence;
         @Target
         String checkedSentence;
-        class Alert {
+        static class Alert {
             int pos;
             String word;
             float score;
             List<String> suggestions;
             @Override
             public String toString() {
-                StringBuilder sb = new StringBuilder();
-                sb.append("Alert [pos=");
-                sb.append(pos);
-                sb.append(", word=");
-                sb.append(word);
-                sb.append(", score=");
-                sb.append(score);
-                sb.append(", suggestions=");
-                sb.append(suggestions);
-                sb.append("]");
-                return sb.toString();
+                String sb = "Alert [pos=" +
+                        pos +
+                        ", word=" +
+                        word +
+                        ", score=" +
+                        score +
+                        ", suggestions=" +
+                        suggestions +
+                        "]";
+                return sb;
             }
         }
         // TODO should be eliminated
-        public static class MyTypeToken extends com.google.gson.reflect.TypeToken<ArrayList<Alert>> { public MyTypeToken() { super(); }};
+        public static class MyTypeToken extends com.google.gson.reflect.TypeToken<ArrayList<Alert>> { public MyTypeToken() { super(); }}
+
         @Target(option = MyTypeToken.class) /* should be "option = Alert.class" */
         List<Alert> alerts;
         public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(resultID);
-            sb.append(",");
-            sb.append(status);
-            sb.append(",");
-            sb.append(message);
-            sb.append(",");
-            sb.append(inputSentence);
-            sb.append(",");
-            sb.append(normalizedSentence);
-            sb.append(",");
-            sb.append(checkedSentence);
-            sb.append(",");
-            sb.append(alerts);
-            return sb.toString();
+            String sb = resultID +
+                    "," +
+                    status +
+                    "," +
+                    message +
+                    "," +
+                    inputSentence +
+                    "," +
+                    normalizedSentence +
+                    "," +
+                    checkedSentence +
+                    "," +
+                    alerts;
+            return sb;
         }
     }
 
@@ -102,7 +101,7 @@ public class RecruitProofreadingV2 {
 
     int line = 1;
     int count = 0;
-    Pattern pattern = Pattern.compile("[。、「」]"); // TODO check
+    final Pattern pattern = Pattern.compile("[。、「」]"); // TODO check
 
     void test2(String[] args) throws Exception {
         Path file = Paths.get(args[0]);

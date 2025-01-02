@@ -26,6 +26,7 @@ public class PlainInputHandler implements InputHandler<InputStream> {
     /**
      * @param args 0: url
      */
+    @Override
     public InputStream getInput(String ... args) throws IOException {
         String url = args[0];
         URLConnection connection = new URL(url).openConnection();
@@ -36,6 +37,7 @@ public class PlainInputHandler implements InputHandler<InputStream> {
     /**
      * args will be embedded in url.
      */
+    @Override
     public String[] dealUrlAndArgs(String url, String ... args) {
         return InputHandler._dealUrlAndArgs(url, args);
     }

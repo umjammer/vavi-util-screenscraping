@@ -47,24 +47,23 @@ System.err.println(text);
         @Target
         String type;
         public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("Page [src=");
-            builder.append(src);
-            builder.append(", width=");
-            builder.append(width);
-            builder.append(", height=");
-            builder.append(height);
-            builder.append(", type=");
-            builder.append(type);
-            builder.append("]");
-            return builder.toString();
+            String builder = "Page [src=" +
+                    src +
+                    ", width=" +
+                    width +
+                    ", height=" +
+                    height +
+                    ", type=" +
+                    type +
+                    "]";
+            return builder;
         }
     }
 
     @Test
     void test2() throws Exception {
         AtomicInteger i = new AtomicInteger();
-        WebScraper.Util.foreach(Page.class, e -> { i.incrementAndGet(); });
+        WebScraper.Util.foreach(Page.class, e -> i.incrementAndGet());
         assertEquals(14, i.get());
     }
 
