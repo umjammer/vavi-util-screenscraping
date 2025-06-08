@@ -173,7 +173,7 @@
     <dependency>
       <groupId>com.github.umjammer.vavi-net-auth</groupId> <!-- vavi / com.github.umjammer.vavi-net-auth -->
       <artifactId>vavi-net-auth-amazon</artifactId>
-      <version>0.1.13</version>
+      <version>0.1.14</version>
     </dependency>
 
     <dependency>
