@@ -5,6 +5,8 @@
 
 # Screen Scraping Library for Java
 
+<img alt="logo" src="src/test/resources/web-scraper.png" width="100" />
+
 🌏 Scrape the world!
 
 ## Install
@@ -57,6 +59,10 @@ This library screen-scrapes data from html and injects data into POJO using anno
 
  * https://www2.jasrac.or.jp/eJwid/
 
+### TechAKnow
+
+ * SAXParseException: Content is not allowed in prolog. ... remove **BOM**
+
 ## TODO
 
  * ~~Tidy version~~
@@ -77,3 +83,7 @@ This library screen-scrapes data from html and injects data into POJO using anno
  * `@WebScraper#encoding()`
  * `@Target` add exception handler or second, third option
  * ~~xml2xpath~~
+
+---
+
+<sub><a href="https://www.flaticon.com/free-icons/online-scraper" title="online scraper icons">Online scraper icons created by SetitikPixelStudio - Flaticon</a></sub>
