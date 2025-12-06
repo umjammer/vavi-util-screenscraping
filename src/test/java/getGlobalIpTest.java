@@ -27,11 +27,6 @@ import vavix.util.screenscrape.StringSimpleXPathScraper;
 @SuppressWarnings("deprecation")
 class getGlobalIpTest {
 
-    static {
-        System.setProperty("vavi.util.logging.VaviFormatter.extraClassMethod",
-                           "org\\.apache\\.commons\\.logging\\.impl\\.Jdk14Logger#\\w+");
-    }
-
     static final String url = "http://x68000.q-e-d.net/~68user/net/sample/http-auth/secret.html";
     static final String realm = "Secret File";
     static final String host = "x68000.q-e-d.net";
