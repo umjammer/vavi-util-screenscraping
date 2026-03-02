@@ -15,7 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -23,11 +22,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
-
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 import vavi.util.properties.annotation.Property;
 import vavi.util.properties.annotation.PropsEntity;
 
@@ -97,7 +94,6 @@ public class FindMyiPhone {
         List<JsonNode> results = new ArrayList<>();
 
         // For each available device, get the location
-        JsonFactory jf = new JsonFactory();
         for (String device : deviceList) {
             HttpPost locate = new HttpPost("https://secure.me.com/wo/WebObjects/DeviceMgmt.woa/wa/LocateAction/locateStatus");
             locate.addHeader("X-Mobileme-Version", "1.0");
@@ -106,7 +102,7 @@ public class FindMyiPhone {
             locate.setHeader("Content-type", "application/json");
             HttpResponse location = hc.execute(locate);
             InputStream inputStream = location.getEntity().getContent();
-            JsonParser jp = jf.createJsonParser(inputStream);
+            JsonParser jp = JsonMapper.builder().build().createParser(inputStream);
             jp.nextToken(); // ugly
 
             results.add(jp.readValueAsTree());
