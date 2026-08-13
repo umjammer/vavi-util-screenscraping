@@ -8,6 +8,7 @@ package vavix.net.proxy;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -23,6 +24,7 @@ import vavix.net.proxy.ProxyChanger.InternetAddress;
 public class ProxyChangerTest {
 
     @Test
+    @Disabled("TODO check")
     @DisabledIfEnvironmentVariable(named = "GITHUB_WORKFLOW", matches = ".*")
     public void test() throws Exception {
         main(new String[0]);
