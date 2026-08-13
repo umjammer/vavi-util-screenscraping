@@ -12,9 +12,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -97,7 +97,7 @@ System.err.println(this.partition);
         JsonNode node = mapper.readTree(response.getEntity().getContent());
 //System.err.println(node);
 
-        String statusCode = node.get("statusCode").asText();
+        String statusCode = node.get("statusCode").asString();
 //System.err.println(statusCode);
         if (!statusCode.equals("200")) {
             throw new IOException("statusCode: " + statusCode);
@@ -110,19 +110,19 @@ System.err.println(this.partition);
             JsonNode location = content.get("location");
             if (!location.isNull()) {
                 device.locationTimestamp = location.get("timeStamp").asLong();
-                device.locationType = location.get("positionType").asText();
+                device.locationType = location.get("positionType").asString();
                 device.horizontalAccuracy = location.get("horizontalAccuracy").asDouble();
                 device.locationFinished = location.get("locationFinished").asBoolean();
                 device.longitude = location.get("longitude").asDouble();
                 device.latitude = location.get("latitude").asDouble();
             }
             device.isLocating = content.get("isLocating").asBoolean();
-            device.deviceModel = content.get("deviceModel").asText();
-            device.deviceStatus = content.get("deviceStatus").asText();
-            device.id = content.get("id").asText();
-            device.name = content.get("name").asText();
-            device.deviceClass = content.get("deviceClass").asText();
-            device.chargingStatus = content.get("batteryStatus").asText();
+            device.deviceModel = content.get("deviceModel").asString();
+            device.deviceStatus = content.get("deviceStatus").asString();
+            device.id = content.get("id").asString();
+            device.name = content.get("name").asString();
+            device.deviceClass = content.get("deviceClass").asString();
+            device.chargingStatus = content.get("batteryStatus").asString();
             device.batteryLevel = content.get("batteryLevel").asDouble();
 
             devices.put(device.name, device);
