@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import vavi.net.www.protocol.URLStreamHandlerUtil;
-
 
 /**
  * WebScraper.
@@ -173,11 +171,6 @@ public @interface WebScraper {
             }
 
             return targetFields;
-        }
-
-        /* for "classpath" schema */
-        static {
-            URLStreamHandlerUtil.loadService();
         }
 
         /**

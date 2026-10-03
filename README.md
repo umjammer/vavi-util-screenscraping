@@ -3,11 +3,13 @@
 [![CodeQL](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/vavi-util-screenscraping/actions/workflows/codeql-analysis.yml)
 ![Java](https://img.shields.io/badge/Java-17-b07219)
 
-# Screen Scraping Library for Java
+# vavi-util-screenscraping
+
+🌏 Scrape the world!
 
 <img alt="logo" src="src/test/resources/web-scraper.png" width="100" />
 
-🌏 Scrape the world!
+Screen Scraping Library for Java
 
 ## Install
 
@@ -59,7 +61,7 @@ This library screen-scrapes data from html and injects data into POJO using anno
 
  * https://www2.jasrac.or.jp/eJwid/
 
-### TechAKnow
+### Tech Know
 
  * SAXParseException: Content is not allowed in prolog. ... remove **BOM**
 
