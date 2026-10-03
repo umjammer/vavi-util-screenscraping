@@ -191,6 +191,10 @@
           <groupId>io.opentelemetry</groupId>
           <artifactId>opentelemetry-api</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>com.github.umjammer.rococoa</groupId>
+          <artifactId>rococoa-contrib</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
 <dependency>
